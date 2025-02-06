@@ -1,0 +1,351 @@
+@import url('clash-display.css');
+
+/* ============================================
+   CSS Custom Properties (Dark Theme)
+   ============================================ */
+:root {
+  /* Color Palette for Dark Theme */
+  --color-primary: #BB86FC;      /* Accent color (light purple) */
+  --color-secondary: #3700B3;    /* Secondary accent (for hover states) */
+  --color-background: #121212;   /* Dark background (almost black) */
+  --color-text: #F5F5F5;         /* Light text (almost white / creme) */
+
+  /* Font Family */
+  --font-base: 'ClashDisplay-Medium', sans-serif;
+
+  /* Spacing */
+  --padding-base: 1rem;
+  --padding-large: 2rem;
+
+  /* Transition */
+  --transition-speed: 0.3s;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ============================================
+   Global Styles
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* ============================================
+   Header & Navigation
+   ============================================ */
+header {
+  background-color: var(--color-background);
+  padding: var(--padding-base) 2rem;
+}
+
+.nav-list {
+  background-color: var(--color-background);  /* Use dark background for nav */
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-list li {
+  margin: 0 1rem;
+}
+
+.nav-list a {
+  color: var(--color-text);  /* Light text for nav links */
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: color var(--transition-speed);
+}
+
+.nav-list a:hover {
+  color: var(--color-primary);
+}
+
+/* ============================================
+   Hero Section
+   ============================================ */
+.hero {
+  text-align: center;
+  padding: var(--padding-large);
+}
+
+h1 a, p a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.hero p {
+  font-size: 3rem;
+  color: var(--color-text);
+}
+
+/* Container for the artist image and biography */
+.artist-bio-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+/* Artist Image */
+.artist-image {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+/* Biography Section inside the Flex Container */
+.artist-bio-container .biography {
+  flex: 1;
+  text-align: left;
+  margin: 0;
+}
+
+.artist-bio-container .biography h2 {
+  text-align: left;
+}
+
+/* ============================================
+   Hero Buttons Container
+   ============================================ */
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Large Button Styling */
+.btn,
+.large-btn {
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color var(--transition-speed) ease;
+  border-radius: 4px;
+}
+
+.large-btn {
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.large-btn:hover,
+.btn:hover {
+  background-color: var(--color-secondary);
+}
+
+/* ============================================
+   Main Content & Sections
+   ============================================ */
+main {
+  padding: var(--padding-large);
+}
+
+.introduction,
+.biography,
+.exhibitions {
+  max-width: 900px;
+  margin: 2rem auto;
+  margin-top: 25%;
+  margin-bottom: 15%;
+  text-align: left;
+  font-size: 1.2rem;
+  color: var(--color-text);
+}
+
+section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--color-text);
+}
+
+/* ============================================
+   Grid Layouts for Works & Prints
+   ============================================ */
+.works-grid,
+.prints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.work-item,
+.print-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.work-item {
+  max-height: fit-content;
+}
+
+.work-item img,
+.print-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s;
+}
+
+.work-item:hover img,
+.print-item:hover img {
+  transform: scale(1.05);
+}
+
+.work-item h3 {
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--color-text);
+}
+
+/* ============================================
+   CV Section
+   ============================================ */
+.cv article {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: var(--padding-base);
+  border-bottom: 1px solid var(--color-secondary);
+  color: var(--color-text);
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+footer {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  text-align: center;
+  padding: var(--padding-base) 0;
+  margin-top: 2rem;
+}
+
+/* ============================================
+   Accordion Styles for Works Page
+   ============================================ */
+.accordion-button {
+  background-color: var(--color-text);
+  color: var(--color-background);
+  cursor: pointer;
+  padding: var(--padding-base);
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1.5rem;
+  transition: background-color var(--transition-speed) ease;
+  margin-bottom: 0.5rem;
+}
+
+.accordion-button.active,
+.accordion-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.panel {
+  padding: 0 var(--padding-base);
+  background-color: var(--color-background);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+/* Container for the name and email fields */
+.contact-info {
+  display: flex;
+  gap: 1rem; /* Adjusts spacing between the fields */
+  margin-bottom: 1.5rem; /* Adds space below the name/email row */
+}
+
+/* Make each field group take equal space */
+.contact-info .form-group {
+  flex: 1;
+}
+
+/* Ensure labels are block elements and inputs take full width */
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button[type=submit] {
+  padding:5px 15px; 
+  background:#F5F5F5; 
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; 
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+}
