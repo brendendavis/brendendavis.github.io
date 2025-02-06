@@ -306,6 +306,69 @@ footer {
 .gallery img:hover {
   transform: scale(1.05);
 }
+/* ============================================
+   Contact Form Styling
+   ============================================ */
+   form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: var(--padding-large);
+    background-color: rgba(255, 255, 255, 0.1); /* Slight background for contrast */
+    border-radius: 8px;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--color-text);
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-family: var(--font-base);
+    color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-primary);
+    border-radius: 4px;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 8px rgba(187, 134, 252, 0.5); /* Light purple glow */
+    outline: none;
+  }
+  
+  .form-group textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 150px; /* Set a minimum height */
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color-text);
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+  }
+  
+  button[type="submit"]:hover {
+    background-color: var(--color-secondary);
+  }
 
 /* ============================================
    Responsive Adjustments
