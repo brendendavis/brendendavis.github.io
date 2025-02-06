@@ -125,8 +125,8 @@ h1 a, p a {
 }
 @media (max-width: 768px) {
   .artist-image {
-    width: 80%;     /* Increase the width to 80% on mobile */
-    max-width: none; /* Remove the max-width if it's limiting the size */
+    width: 100%;     /* Increase the width to 80% on mobile */
+    max-width: 400px; /* Remove the max-width if it's limiting the size */
     display: block;
     margin-left: auto;
     margin-right: auto;
