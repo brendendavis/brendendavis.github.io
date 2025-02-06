@@ -144,7 +144,7 @@ h1 a, p a {
 }
 @media (max-width: 768px) {
   .artist-image {
-    width: 80%;      /* Increase image size on mobile */
+    width: 200%;      /* Increase image size on mobile */
     max-width: none; /* Remove any max-width limitation */
     display: block;
     margin: 0 auto 2rem auto; /* Center the image */
