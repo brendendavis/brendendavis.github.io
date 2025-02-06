@@ -61,7 +61,7 @@ header {
 }
 
 .nav-list {
-  background-color: var(--color-background);  /* Use dark background for nav */
+  background-color: var(--color-background);  /* Using dark background for nav */
   list-style: none;
   display: flex;
   justify-content: center;
@@ -107,7 +107,9 @@ h1 a, p a {
   color: var(--color-text);
 }
 
-/* Container for the artist image and biography */
+/* ============================================
+   Artist Image and Biography Container
+   ============================================ */
 .artist-bio-container {
   display: flex;
   align-items: flex-start;
@@ -123,15 +125,7 @@ h1 a, p a {
   border-radius: 0;
   margin-bottom: 0;
 }
-@media (max-width: 768px) {
-  .artist-image {
-    width: 100%;     /* Increase the width to 80% on mobile */
-    max-width: 400px; /* Remove the max-width if it's limiting the size */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
+
 /* Biography Section inside the Flex Container */
 .artist-bio-container .biography {
   flex: 1;
@@ -141,20 +135,6 @@ h1 a, p a {
 
 .artist-bio-container .biography h2 {
   text-align: left;
-}
-@media (max-width: 768px) {
-  .artist-image {
-    width: 200%;      /* Increase image size on mobile */
-    max-width: none; /* Remove any max-width limitation */
-    display: block;
-    margin: 0 auto 2rem auto; /* Center the image */
-  }
-
-  /* Adjust the biography text font size and line height */
-  .biography h2 {
-    font-size: 1rem;    /* Reduce font size for mobile */
-    line-height: 1.4;   /* Adjust line-height for better readability */
-  }
 }
 
 /* ============================================
@@ -167,7 +147,9 @@ h1 a, p a {
   flex-wrap: wrap;
 }
 
-/* Large Button Styling */
+/* ============================================
+   Large Button Styling
+   ============================================ */
 .btn,
 .large-btn {
   display: inline-block;
@@ -324,45 +306,26 @@ footer {
 .gallery img:hover {
   transform: scale(1.05);
 }
-/* Container for the name and email fields */
-.contact-info {
-  display: flex;
-  gap: 1rem; /* Adjusts spacing between the fields */
-  margin-bottom: 1.5rem; /* Adds space below the name/email row */
-}
-
-/* Make each field group take equal space */
-.contact-info .form-group {
-  flex: 1;
-}
-
-/* Ensure labels are block elements and inputs take full width */
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-button[type=submit] {
-  padding:5px 15px; 
-  background:#F5F5F5; 
-  border:0 none;
-  cursor:pointer;
-  -webkit-border-radius: 5px;
-  border-radius: 5px; 
-}
 
 /* ============================================
    Responsive Adjustments
    ============================================ */
 @media (max-width: 768px) {
+  /* Stack artist image and biography vertically */
+  .artist-bio-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Increase artist image size on mobile */
+  .artist-image {
+    width: 80%;        /* Use 80% of the container width */
+    max-width: none;    /* Remove max-width constraint */
+    display: block;
+    margin: 0 auto 2rem;
+  }
+
+  /* Adjust hero text sizes */
   .hero h1 {
     font-size: 2.5rem;
   }
@@ -370,4 +333,11 @@ button[type=submit] {
     font-size: 1.2rem;
   }
 
+  /* Adjust biography text (single <h2> with line breaks) */
+  .biography h2 {
+    font-size: 1rem;
+    line-height: 1.4;
+    text-align: center;
+    margin: 0 1rem;
+  }
 }
