@@ -1,4 +1,4 @@
-@import url('clash-display.css');
+@import url('../css/clash-display.css'); /* Fix the import path */
 
 /* ============================================
    CSS Custom Properties (Dark Theme)
