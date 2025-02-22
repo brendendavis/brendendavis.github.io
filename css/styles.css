@@ -236,7 +236,7 @@ section h2 {
   font-size: 1.2rem;
   color: var(--color-text);
 }
-
+ 
 /* ============================================
    CV Section
    ============================================ */
@@ -409,5 +409,27 @@ footer {
     }
     .hero p {
       font-size: 1.2rem;
+    }
+  }
+  @media (max-width: 768px) {
+    /* Container for iframe */
+    .work-item {
+      position: relative;
+      width: 100%;
+      /* 16:9 aspect ratio */
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+  
+    /* iframe sizing */
+    .work-item iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   }
