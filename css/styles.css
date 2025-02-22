@@ -5,7 +5,7 @@
    ============================================ */
 :root {
   /* Color Palette for Dark Theme */
-  --color-primary: #BB86FC;      /* Accent color (light purple) */
+  --color-primary: #72879e;      /* Accent color */
   --color-secondary: #3700B3;    /* Secondary accent (for hover states) */
   --color-background: #121212;   /* Dark background (almost black) */
   --color-text: #F5F5F5;         /* Light text (almost white / creme) */
