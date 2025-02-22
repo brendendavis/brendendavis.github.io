@@ -413,7 +413,7 @@ footer {
   }
   @media (max-width: 768px) {
     /* Container for iframe */
-    #animation-panel {
+    #videoworks {
       position: relative;
       width: 100%;
       /* 16:9 aspect ratio */
