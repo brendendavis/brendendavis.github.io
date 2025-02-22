@@ -376,7 +376,15 @@ footer {
   button[type="submit"]:hover {
     background-color: var(--color-secondary);
   }
-
+/* ============================================
+   Desktop Specific Gallery Layout
+   ============================================ */
+@media (min-width: 769px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+}
 /* ============================================
    Responsive Adjustments
    ============================================ */
