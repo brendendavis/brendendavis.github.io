@@ -386,14 +386,9 @@ footer {
       flex-direction: column;
       align-items: center;
     }
-  @media (max-width: 900px) {
-  .panel {
-    max-height: none !important;
-  }
-}
       @media (max-width: 768px) {
   iframe {
-    width: 100%;
+    width: 80%;
     height: auto;
     aspect-ratio: 16 / 9;
   }
