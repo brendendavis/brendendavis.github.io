@@ -381,48 +381,47 @@ footer {
    Responsive Adjustments
    ============================================ */
    @media (max-width: 768px) {
-    /* Stack artist image and biography vertically */
-    .artist-bio-container {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    /* Artist image adjustments */
-    .artist-image {
-      width: 100%;
-      max-width: 400px;
-      display: block;
-      margin: 0 auto rem;
-    }
-  
-    /* Biography text adjustments */
-    .biography h2 {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      text-align: left;
-      margin: 0 0.5rem;
-    }
-  
-    /* Adjust hero text sizes */
-    .hero h1 {
-      font-size: 2.5rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-    }
+  /* Stack artist image and biography vertically */
+  .artist-bio-container {
+    flex-direction: column;
+    align-items: center;
   }
-  @media (max-width: 768px) {
-    /* Container for iframe */
-    #videoworks {
-      position: relative;
-      width: 100%;
-      /* 16:9 aspect ratio */
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-    .work-item iframe {
+
+  /* Artist image adjustments */
+  .artist-image {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto rem;
+  }
+
+  /* Biography text adjustments */
+  .biography h2 {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: left;
+    margin: 0 0.5rem;
+  }
+
+  /* Adjust hero text sizes */
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+  /* NEW VIDEO SECTION - UPDATED */
+  .work-item {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .work-item iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -430,5 +429,12 @@ footer {
     height: 100%;
     border: none;
   }
+
+  /* Adjust gallery layout */
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
   
   }
