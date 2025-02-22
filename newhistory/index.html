@@ -28,10 +28,35 @@
       margin: 0 auto;
       padding: 20px 0;
     }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .video-container {
+      flex: 1;
+      max-width: 300px;
+    }
+    .video-container p {
+      
+      max-width: 400px;
+    }
+
+    .exhibition-video {
+  width: 100%;
+  height: auto;
+  max-height: 600px; /* Limit height for portrait video */
+  object-fit: contain;
+}
 
     .featured-artists {
-      text-align: center;
+      text-align: right;
       margin-top: -50px; /* Reduces space between statement and artists list */
+      margin-top: 5%;
     }
 
     .featured-artists ul {
@@ -41,7 +66,7 @@
     }
 
     .featured-artists li {
-      margin: 10px 0;
+      margin: 50px 0;
     }
 
     .biography {
@@ -53,6 +78,19 @@
       margin: 0 auto;
       padding: 0 20px;
     }
+    /* Make layout responsive */
+    @media (max-width: 768px) {
+      .content-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50%;
+      }
+
+      .video-container {
+        width: 100%;
+      }
+    }
+   
   </style>
 </head>
 <body>
@@ -102,6 +140,9 @@
           <p>NEW HISTORY is more than an exhibition—it is an act of reclamation and reimagining. These works interrogate the complexities of lived experience while boldly envisioning liberated futures. Through storytelling, both personal and collective, these artists demonstrate how the past informs our present while illuminating pathways to possible futures, inviting viewers to engage with history not as a fixed narrative, but as a living document that we continuously rewrite through our actions, our art, and our dreams.</p>
         </div>
       </section>
+   <!-- Artists and Video Container -->
+   <div class="content-container">
+    <section class="featured-artists">
       <h2 id="artists-heading">Featured Artists</h2>
       <ul>
         <li>Jonathan Buckley (JBUCK)</li>
@@ -110,6 +151,18 @@
         <li>Brenden Davis</li>
       </ul>
     </section>
+
+    <div class="video-container">
+      <video 
+        src="/images/nhvideotour.mp4"
+        class="exhibition-video"
+        controls
+        autoplay muted>
+        Your browser does not support the video element.
+      </video>
+      <p><a href="https://danieljohnsonmakesart.com">video footage by <br> daniel johnson</a></p>
+    </div>
+  </div>
   </main>
 
   <footer>
