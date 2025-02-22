@@ -391,6 +391,13 @@ footer {
     max-height: none !important;
   }
 }
+      @media (max-width: 768px) {
+  iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
     /* Artist image adjustments */
     .artist-image {
       width: 100%;
