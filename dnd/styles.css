@@ -305,6 +305,15 @@ table tr:hover {
 #saving-throws input[type="checkbox"] {
   margin: 0;
 }
+#spellSearchResults {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  width: 100%;
+}
 footer {
   background-color: var(--primary-color);
   color: #f6f5ff;
