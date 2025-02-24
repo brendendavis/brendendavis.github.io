@@ -801,8 +801,13 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
   document.getElementById('spellSearchInput')?.addEventListener('input', debounce(searchSpells, 300));
 
   function searchSpells() {
-  const searchTerm = document.getElementById("spellSearchInput").value.toLowerCase().trim();
+  const searchInput = document.getElementById("spellSearchInput");
+  const searchTerm = searchInput.value.toLowerCase().trim();
   const resultsDiv = document.getElementById("spellSearchResults");
+  
+  // Save current scroll position
+  const scrollY = window.scrollY;
+  
   resultsDiv.innerHTML = "";
 
   if (!searchTerm) return;
@@ -851,6 +856,10 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
   });
 
   resultsDiv.appendChild(list);
+
+  // Restore scroll position and focus
+  window.scrollTo(0, scrollY);
+  searchInput.focus();
 }
 
 function addSpellToList(spell, listType) {
