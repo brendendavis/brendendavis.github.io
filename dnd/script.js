@@ -801,90 +801,84 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
   document.getElementById('spellSearchInput')?.addEventListener('input', debounce(searchSpells, 300));
 
   function searchSpells() {
-    const searchTerm = document.getElementById("spellSearchInput").value.toLowerCase().trim();
-    const resultsDiv = document.getElementById("spellSearchResults");
-    resultsDiv.innerHTML = "";
-    
-    if (!searchTerm) {
-      resultsDiv.textContent = "Please enter a search term";
-      return;
-    }
-    
-    const existingSpells = new Set(
-      [...document.querySelectorAll("#knownSpellsList li, #preparedSpellsList li")].map(
-        li => li.dataset.spellName.toLowerCase()
-      )
-    );
-    
-    const matches = spellsData.filter(spell => {
-      const nameMatch = spell.name.toLowerCase().includes(searchTerm);
-      const descMatch = spell.description.toLowerCase().includes(searchTerm);
-      return (nameMatch || descMatch) && !existingSpells.has(spell.name.toLowerCase());
-    });
-    
-    if (matches.length === 0) {
-      resultsDiv.textContent = " ";
-      return;
-    }
-    
-    const list = document.createElement("ul");
-    matches.forEach(spell => {
-      const li = document.createElement("li");
-      li.dataset.spellName = spell.name;
-      // In the searchSpells function, modify the button creation
-li.innerHTML = 
-'<div class="spell-result">' +
-'<strong>' + spell.name + '</strong> ' +
-'<em>(' + (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + ')</em> ' +
-'<button type="button" class="add-known">+ Known</button> ' +  // Add type="button"
-'<button type="button" class="add-prepared">+ Prepared</button>' +  // Add type="button"
-'</div>' +
-'<div class="spell-details">' +
-'<small>' + spell.school + ' • ' + spell.range + '</small>' +
-'<p>' + spell.description.substring(0, 100) + '...</p>' +
-'</div>';
-        
-    // Update the event listeners for the buttons
-li.querySelector(".add-known").addEventListener("click", (e) => {
-  e.preventDefault();
-  addSpellToList(spell, "known");
-});
+  const searchTerm = document.getElementById("spellSearchInput").value.toLowerCase().trim();
+  const resultsDiv = document.getElementById("spellSearchResults");
+  resultsDiv.innerHTML = "";
 
-li.querySelector(".add-prepared").addEventListener("click", (e) => {
-  e.preventDefault();
-  addSpellToList(spell, "prepared");
-});
-    });
-    
-    resultsDiv.appendChild(list);
-  }
+  if (!searchTerm) return;
 
- function addSpellToList(spell, listType) {
-    const listId = listType === "known" ? "knownSpellsList" : "preparedSpellsList";
-    const list = document.getElementById(listId);
-    
-    if (Array.from(list.children).some(li => li.dataset.spellName.toLowerCase() === spell.name.toLowerCase())) {
-        alert(spell.name + " is already in " + listType + " spells!");
-        return;
-    }
-    
+  const existingSpells = new Set(
+    [...document.querySelectorAll("#knownSpellsList li, #preparedSpellsList li")].map(
+      li => li.dataset.spellName.toLowerCase()
+    )
+  );
+
+  const matches = spellsData.filter(spell =>
+    (spell.name.toLowerCase().includes(searchTerm) || spell.description.toLowerCase().includes(searchTerm)) &&
+    !existingSpells.has(spell.name.toLowerCase())
+  );
+
+  if (matches.length === 0) return;
+
+  const list = document.createElement("ul");
+  matches.forEach(spell => {
     const li = document.createElement("li");
     li.dataset.spellName = spell.name;
-    li.innerHTML = 
-        '<div class="spell-item">' +
-        spell.name + ' <small>(' + 
-        (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + 
-        ')</small>' +
-        '<button type="button" class="remove-spell">×</button>' +
-        '</div>';
-        
-    li.querySelector(".remove-spell").addEventListener("click", (event) => {
-        event.preventDefault(); // Prevent form submission
-        li.remove();
-        saveState(); // Make sure to save state after removing
+    li.innerHTML = `
+      <div class="spell-result">
+        <strong>${spell.name}</strong> 
+        <em>(${spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level})</em> 
+        <button type="button" class="add-known">+ Known</button>
+        <button type="button" class="add-prepared">+ Prepared</button>
+      </div>
+      <div class="spell-details">
+        <small>${spell.school} • ${spell.range}</small>
+        <p>${spell.description.substring(0, 100)}...</p>
+      </div>
+    `;
+
+    li.querySelector(".add-known").addEventListener("click", (e) => {
+      e.preventDefault();
+      addSpellToList(spell, "known");
     });
+
+    li.querySelector(".add-prepared").addEventListener("click", (e) => {
+      e.preventDefault();
+      addSpellToList(spell, "prepared");
+    });
+
     list.appendChild(li);
-    saveState(); // Save state after adding
+  });
+
+  resultsDiv.appendChild(list);
+}
+
+function addSpellToList(spell, listType) {
+  const listId = listType === "known" ? "knownSpellsList" : "preparedSpellsList";
+  const list = document.getElementById(listId);
+
+  if (Array.from(list.children).some(li => li.dataset.spellName.toLowerCase() === spell.name.toLowerCase())) {
+    alert(`${spell.name} is already in ${listType} spells!`);
+    return;
+  }
+
+  const li = document.createElement("li");
+  li.dataset.spellName = spell.name;
+  li.innerHTML = `
+    <div class="spell-item">
+      ${spell.name} <small>(${spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level})</small>
+      <button type="button" class="remove-spell">×</button>
+    </div>
+  `;
+
+  li.querySelector(".remove-spell").addEventListener("click", (e) => {
+    e.preventDefault();
+    li.remove();
+    saveState();
+  });
+
+  list.appendChild(li);
+  saveState();
 }
 
   window.rollAbilities = () => {
