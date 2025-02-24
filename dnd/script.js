@@ -716,6 +716,7 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
   document.getElementById('diceResults').innerHTML = rollOutput;
 };
 
+
   const loadWeaponsData = () => {
     fetch("weapons.json")
       .then(response => {
