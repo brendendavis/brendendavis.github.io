@@ -621,14 +621,44 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
     rolls.sort((a, b) => b - a);
     return rolls.slice(0, 3).reduce((sum, roll) => sum + roll, 0);
   };
-
-  const rollAllAbilities = () => {
+  
+  const rollAllAbilities = (event) => {
+    event.preventDefault(); // Prevents page reload
     ["str", "dex", "con", "int", "wis", "cha"].forEach(stat => {
       const elem = document.getElementById(stat);
       if (elem) elem.value = rollAbility();
     });
     recalc();
   };
+  
+  // Expose to global scope
+  window.rollAllAbilities = rollAllAbilities;
+  
+  // Existing DOMContentLoaded listener
+  document.addEventListener("DOMContentLoaded", () => {
+    updateRace();
+    updateScoreMethod();
+    recalc();
+    loadSpellsData();
+    loadWeaponsData();
+  
+    const levelInput = document.getElementById("level");
+    if (levelInput) {
+      levelInput.addEventListener("change", updateSpellSlots);
+      levelInput.addEventListener("input", updateSpellSlots);
+    }
+  
+    const scoreMethodSelect = document.getElementById('scoreMethod');
+    if (scoreMethodSelect) {
+      scoreMethodSelect.addEventListener('change', updateScoreMethod);
+      scoreMethodSelect.dispatchEvent(new Event('change'));
+    }
+  
+    const rollDiceButton = document.getElementById("rollDiceButton");
+    if (rollDiceButton) {
+      rollDiceButton.addEventListener("click", rollAllAbilities); // Using addEventListener
+    }
+  });
 
   const pointBuyCost = score => {
     if (score < 8) return 999;
@@ -648,43 +678,43 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
     document.getElementById("remainingPoints").innerText = remaining;
   };
 
-  const rollDice = () => {
+  const rollDice = (event) => {
+    event.preventDefault(); // Prevents form submission
     const formula = document.getElementById('diceFormula').value.trim();
     if (!formula) {
       document.getElementById('diceResults').innerHTML = 'Please enter a dice formula.';
       return;
     }
-
     let total = 0;
-    let rollOutput = '';
-    const diceRegex = /([+-]?)(\d*)d(\d+)|([+-]?)(\d+)/g;
-    let match;
+  let rollOutput = '';
+  const diceRegex = /([+-]?)(\d*)d(\d+)|([+-]?)(\d+)/g;
+  let match;
 
-    while ((match = diceRegex.exec(formula)) !== null) {
-      if (match[3]) {
-        const sign = match[1] === '-' ? -1 : 1;
-        const numDice = match[2] ? parseInt(match[2]) : 1;
-        const sides = parseInt(match[3]);
-        let sum = 0;
-        let rolls = [];
-        for (let i = 0; i < numDice; i++) {
-          const roll = Math.floor(Math.random() * sides) + 1;
-          rolls.push(roll);
-          sum += roll;
-        }
-        total += sign * sum;
-        rollOutput += `<div>${sign === 1 ? '' : '-'}${numDice}d${sides} [${rolls.join(', ')}] = ${sum}</div>`;
-      } else if (match[5]) {
-        const sign = match[4] === '-' ? -1 : 1;
-        const value = parseInt(match[5]);
-        total += sign * value;
-        rollOutput += `<div>${sign === 1 ? '+' : '-'}${value}</div>`;
+  while ((match = diceRegex.exec(formula)) !== null) {
+    if (match[3]) {
+      const sign = match[1] === '-' ? -1 : 1;
+      const numDice = match[2] ? parseInt(match[2]) : 1;
+      const sides = parseInt(match[3]);
+      let sum = 0;
+      let rolls = [];
+      for (let i = 0; i < numDice; i++) {
+        const roll = Math.floor(Math.random() * sides) + 1;
+        rolls.push(roll);
+        sum += roll;
       }
+      total += sign * sum;
+      rollOutput += `<div>${sign === 1 ? '' : '-'}${numDice}d${sides} [${rolls.join(', ')}] = ${sum}</div>`;
+    } else if (match[5]) {
+      const sign = match[4] === '-' ? -1 : 1;
+      const value = parseInt(match[5]);
+      total += sign * value;
+      rollOutput += `<div>${sign === 1 ? '+' : '-'}${value}</div>`;
     }
+  }
 
-    rollOutput += `<div><strong>Total: ${total}</strong></div>`;
-    document.getElementById('diceResults').innerHTML = rollOutput;
-  };
+  rollOutput += `<div><strong>Total: ${total}</strong></div>`;
+  document.getElementById('diceResults').innerHTML = rollOutput;
+};
 
   const loadWeaponsData = () => {
     fetch("weapons.json")
@@ -800,48 +830,61 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
     matches.forEach(spell => {
       const li = document.createElement("li");
       li.dataset.spellName = spell.name;
-      li.innerHTML = 
-        '<div class="spell-result">' +
-        '<strong>' + spell.name + '</strong> ' +
-        '<em>(' + (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + ')</em> ' +
-        '<button class="add-known">+ Known</button> ' +
-        '<button class="add-prepared">+ Prepared</button>' +
-        '</div>' +
-        '<div class="spell-details">' +
-        '<small>' + spell.school + ' • ' + spell.range + '</small>' +
-        '<p>' + spell.description.substring(0, 100) + '...</p>' +
-        '</div>';
+      // In the searchSpells function, modify the button creation
+li.innerHTML = 
+'<div class="spell-result">' +
+'<strong>' + spell.name + '</strong> ' +
+'<em>(' + (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + ')</em> ' +
+'<button type="button" class="add-known">+ Known</button> ' +  // Add type="button"
+'<button type="button" class="add-prepared">+ Prepared</button>' +  // Add type="button"
+'</div>' +
+'<div class="spell-details">' +
+'<small>' + spell.school + ' • ' + spell.range + '</small>' +
+'<p>' + spell.description.substring(0, 100) + '...</p>' +
+'</div>';
         
-      li.querySelector(".add-known").addEventListener("click", () => addSpellToList(spell, "known"));
-      li.querySelector(".add-prepared").addEventListener("click", () => addSpellToList(spell, "prepared"));
-      list.appendChild(li);
+    // Update the event listeners for the buttons
+li.querySelector(".add-known").addEventListener("click", (e) => {
+  e.preventDefault();
+  addSpellToList(spell, "known");
+});
+
+li.querySelector(".add-prepared").addEventListener("click", (e) => {
+  e.preventDefault();
+  addSpellToList(spell, "prepared");
+});
     });
     
     resultsDiv.appendChild(list);
   }
 
-  function addSpellToList(spell, listType) {
+ function addSpellToList(spell, listType) {
     const listId = listType === "known" ? "knownSpellsList" : "preparedSpellsList";
     const list = document.getElementById(listId);
     
     if (Array.from(list.children).some(li => li.dataset.spellName.toLowerCase() === spell.name.toLowerCase())) {
-      alert(spell.name + " is already in " + listType + " spells!");
-      return;
+        alert(spell.name + " is already in " + listType + " spells!");
+        return;
     }
     
     const li = document.createElement("li");
     li.dataset.spellName = spell.name;
     li.innerHTML = 
-      '<div class="spell-item">' +
-      spell.name + ' <small>(' + 
-      (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + 
-      ')</small>' +
-      '<button class="remove-spell">×</button>' +
-      '</div>';
-      
-    li.querySelector(".remove-spell").addEventListener("click", () => li.remove());
+        '<div class="spell-item">' +
+        spell.name + ' <small>(' + 
+        (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + 
+        ')</small>' +
+        '<button type="button" class="remove-spell">×</button>' +
+        '</div>';
+        
+    li.querySelector(".remove-spell").addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent form submission
+        li.remove();
+        saveState(); // Make sure to save state after removing
+    });
     list.appendChild(li);
-  }
+    saveState(); // Save state after adding
+}
 
   window.rollAbilities = () => {
     ["str", "dex", "con", "int", "wis", "cha"].forEach(ability => {
@@ -853,6 +896,7 @@ document.querySelectorAll('input, select, textarea').forEach(el => {
   window.rollDice = rollDice;
   window.updateRace = updateRace;
   window.updateClass = updateClass;
+  window.rollAllAbilities = rollAllAbilities;
 
   // Consolidated DOMContentLoaded listener
   document.addEventListener("DOMContentLoaded", () => {
