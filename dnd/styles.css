@@ -306,9 +306,44 @@ table tr:hover {
   margin: 0;
 }
 footer {
-  background-color: var(--body-bg);
+  background-color: var(--primary-color);
   color: #f6f5ff;
   text-align: center;
-  padding: var(--padding-base) 0;
-  margin-top: 2rem;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-radius: 8px;
+  box-shadow: var(--btn-shadow);
+  position: relative;
+  border-top: 2px solid var(--accent-color);
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/diagmonds.png');
+  opacity: 0.1;
+  z-index: 0;
+}
+
+footer p {
+  position: relative;
+  margin: 0;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
+
+/* If you have links in the footer */
+footer a {
+  color: var(--btn-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
 }
