@@ -347,3 +347,6 @@ footer a:hover {
   color: var(--hover-color);
   text-decoration: underline;
 }
+footer a:visited {
+  color: #f6f5ff;
+}
