@@ -928,3 +928,4 @@ function addSpellToList(spell, listType) {
     }
   });
 })();
+ 
