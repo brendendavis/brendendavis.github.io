@@ -17,22 +17,22 @@ async function loadSpellsData() {
         spellsData.forEach(spell => {
             const li = document.createElement('li');
             li.innerHTML = `
-                <div class="spell-item">
-                    <strong>${spell.name}</strong>
-                    <em>(${spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level})</em>
-                    <div class="spell-details">
-                        <small>${spell.school} • ${spell.range}</small>
-                        <p>${spell.description}</p>
-                        <p><strong>Casting Time:</strong> ${spell.casting_time}</p>
-                        <p><strong>Classes:</strong> ${spell.classes.join(', ')}</p>
-                        <p><strong>Components:</strong> ${spell.components.raw}</p>
-                    </div>
-                    <div class="spell-actions">
-                        <button class="add-known">+ Known</button>
-                        <button class="add-prepared">+ Prepared</button>
-                    </div>
-                </div>
-            `;
+    <div class="spell-item">
+        <strong>${spell.name}</strong>
+        <em>(${spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level})</em>
+        <div class="spell-details">
+            <small>${spell.school} • ${spell.range}</small>
+            <p>${spell.description}</p>
+            <p><strong>Casting Time:</strong> ${spell.casting_time}</p>
+            <p><strong>Classes:</strong> ${spell.classes.join(', ')}</p>
+            <p><strong>Components:</strong> ${spell.components.raw}</p>
+        </div>
+        <div class="spell-actions">
+            <button type="button" class="add-known">+ Known</button>
+            <button type="button" class="add-prepared">+ Prepared</button>
+        </div>
+    </div>
+`;
 
             // Add event listeners to the buttons
             li.querySelector(".add-known").addEventListener("click", () => {
