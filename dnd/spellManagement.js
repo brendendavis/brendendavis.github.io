@@ -163,3 +163,4 @@ document.getElementById('spellSearchInput').addEventListener('keydown', function
         searchSpells();         // Call your search function
     }
 });
+ 
