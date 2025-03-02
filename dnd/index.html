@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D&D Character Manager</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>D&D Character Manager</h1>
+  </header>
+  <main>
+  
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <nav>
+          <ul>
+            <li><a href="#SAVE-LOAD">SAVE / LOAD</a></li>
+            <li><a href="#character-info">Character Info</a></li>
+            <li><a href="#racial-details">Racial Details</a></li>
+            <li><a href="#ability-scores">Ability Scores</a></li>
+            <li><a href="#inspiration">Inspiration & Proficiency</a></li>
+            <li><a href="#saving-throws">Saving Throws</a></li>
+            <li><a href="#dice-roller">Dice Roller</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#other-proficiencies">Other Proficiencies</a></li>
+            <li><a href="#combat-stats">Combat Stats</a></li>
+            <li><a href="#attacks-spellcasting">Attacks & Spellcasting</a></li>
+            <li><a href="#spellcasting-details">Spellcasting Details</a></li>
+            <li><a href="#spell-management">Spell Management</a></li>
+            <li><a href="#equipment">Equipment</a></li>
+            <li><a href="#features-traits">Features & Traits</a></li>
+            <li><a href="#personality-backstory">Personality & Backstory</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <!-- Main Content Wrapper -->
+
+      <div class="main-content">
+        <div class="character-management" id="SAVE-LOAD">
+          <button onclick="saveCharacter()">Save Character</button>
+          <select id="loadCharacterSelect" onchange="loadCharacter(this.value)">
+            <option value="">-- Load Character --</option>
+          </select>
+          <button onclick="populateCharacterList()">Refresh Character List</button>
+        </div>
+       <form id="characterForm"> 
+        <section id="character-info">
+          <fieldset>
+            <legend>Character Info</legend>
+            <label for="characterName">Name:</label>
+            <input type="text" id="characterName" placeholder="Enter character name">
+            <label for="playerName">Player Name:</label>
+            <input type="text" id="playerName" placeholder="Enter player name">
+            
+            <label for="characterClass">Class:</label>
+            <select id="characterClass" onchange="updateClass()">
+              <option value="">-- Select Class --</option>
+              <option value="Barbarian">Barbarian</option>
+              <option value="Bard">Bard</option>
+              <option value="Cleric">Cleric</option>
+              <option value="Druid">Druid</option>
+              <option value="Fighter">Fighter</option>
+              <option value="Monk">Monk</option>
+              <option value="Paladin">Paladin</option>
+              <option value="Ranger">Ranger</option>
+              <option value="Rogue">Rogue</option>
+              <option value="Sorcerer">Sorcerer</option>
+              <option value="Warlock">Warlock</option>
+              <option value="Wizard">Wizard</option>
+            </select>
+            <label for="level">Level:</label>
+              <input type="number" id="level" placeholder="1" min="1">
+
+            <label for="race">Race:</label>
+            <select id="race" onchange="updateRace()">
+              <option value="Dragonborn">Dragonborn</option>
+              <option value="Drow">Drow</option>
+              <option value="Dwarf">Dwarf</option>
+              <option value="Duergar">Duergar</option>
+              <option value="Elf">Elf</option>
+              <option value="Eladrin">Eladrin</option>
+              <option value="Gnome">Gnome</option>
+              <option value="Svirfneblin">Svirfneblin</option>
+              <option value="Half-Elf">Half-Elf</option>
+              <option value="Half-Orc">Half-Orc</option>
+              <option value="Halfling">Halfling</option>
+              <option value="Ghostwise Halfling">Ghostwise Halfling</option>
+              <option value="Human">Human</option>
+              <option value="Tiefling">Tiefling</option>
+              <option value="Tiefling (Feral)">Tiefling (Feral)</option>
+              <option value="Aasimar">Aasimar</option>
+              <option value="Firbolg">Firbolg</option>
+              <option value="Goliath">Goliath</option>
+              <option value="Kenku">Kenku</option>
+              <option value="Lizardfolk">Lizardfolk</option>
+              <option value="Tabaxi">Tabaxi</option>
+              <option value="Triton">Triton</option>
+              <option value="Bugbear">Bugbear</option>
+              <option value="Goblin">Goblin</option>
+              <option value="Hobgoblin">Hobgoblin</option>
+              <option value="Kobold">Kobold</option>
+              <option value="Orc">Orc</option>
+              <option value="Yuan-Ti Pureblood">Yuan-Ti Pureblood</option>
+              <option value="Githyanki">Githyanki</option>
+              <option value="Githzerai">Githzerai</option>
+              <option value="Changeling">Changeling</option>
+              <option value="Kalashtar">Kalashtar</option>
+              <option value="Shifter">Shifter</option>
+              <option value="Warforged">Warforged</option>
+              <option value="Centaur">Centaur</option>
+              <option value="Loxodon">Loxodon</option>
+              <option value="Minotaur">Minotaur</option>
+              <option value="Simic Hybrid">Simic Hybrid</option>
+              <option value="Vedalken">Vedalken</option>
+              <option value="Leonin">Leonin</option>
+              <option value="Satyr">Satyr</option>
+              <option value="Tortle">Tortle</option>
+              <option value="Verdan">Verdan</option>
+            </select>
+            <label for="alignment">Alignment:</label>
+            <input type="text" id="alignment" placeholder="Enter alignment">
+            <label for="background">Background:</label>
+            <input type="text" id="background" placeholder="Enter background">
+            <label for="experience">Experience Points (XP):</label>
+            <input type="number" id="experience" placeholder="0" min="0">
+          </fieldset>
+        </section>
+        
+        <section id="racial-details">
+          <fieldset>
+            <legend>Racial Details</legend>
+            <div>
+              <label for="subraceSelect" id="subraceLabel" style="display:none;">Subrace:</label>
+              <select id="subraceSelect" style="display:none;" onchange="updateRace()"></select>
+            </div>
+            <div>
+              <strong>Ability Score Bonuses:</strong>
+              <span id="racialAbilityBonuses"></span>
+            </div>
+            <div>
+              <strong>Speed:</strong>
+              <span id="racialSpeed"></span>
+            </div>
+            <div>
+              <strong>Languages:</strong>
+              <span id="racialLanguages"></span>
+            </div>
+            <div>
+              <strong>Traits:</strong>
+              <span id="racialTraits"></span>
+            </div>
+            <div>
+              <strong>Proficiencies:</strong>
+              <span id="racialProficiencies"></span>
+            </div>
+          </fieldset>
+        </section>
+        
+        <section id="ability-scores">
+          <fieldset>
+            <legend>Ability Scores (Standard Array by Default)</legend>
+            <label for="scoreMethod">Score Generation Method:</label>
+            <select id="scoreMethod">
+              <option value="Standard Array">Standard Array</option>
+              <option value="Point Buy">Point Buy</option>
+              <option value="Roll Dice">Roll Dice</option>
+            </select>
+            <button id="rollDiceButton">Roll Abilities</button>
+            <div id="remainingPointsDisplay">Remaining Points: <span id="remainingPoints">27</span></div>
+            
+            <table>
+              <tr>
+                <th>Ability</th>
+                <th>Base Score</th>
+                <th>Racial Bonus</th>
+                <th>Total Modifier</th>
+              </tr>
+              <tr>
+                <td><label for="str">Strength (STR)</label></td>
+                <td>
+                  <input type="number" id="str" value="15" min="1" 
+                         onchange="recalc(); updatePointBuyRemaining()" 
+                         oninput="recalc(); updatePointBuyRemaining()">
+                </td>
+                <td><input type="text" id="strBonus" readonly></td>
+                <td><input type="text" id="strMod" readonly></td>
+              </tr>
+              <tr>
+                <td><label for="dex">Dexterity (DEX)</label></td>
+                <td>
+                  <input type="number" id="dex" value="14" min="1" 
+                         onchange="recalc(); updatePointBuyRemaining()" 
+                         oninput="recalc(); updatePointBuyRemaining()">
+                </td>
+                <td><input type="text" id="dexBonus" readonly></td>
+                <td><input type="text" id="dexMod" readonly></td>
+              </tr>
+              <tr>
+                <td><label for="con">Constitution (CON)</label></td>
+                <td>
+                  <input type="number" id="con" value="13" min="1" 
+                         onchange="recalc(); updatePointBuyRemaining()" 
+                         oninput="recalc(); updatePointBuyRemaining()">
+                </td>
+                <td><input type="text" id="conBonus" readonly></td>
+                <td><input type="text" id="conMod" readonly></td>
+              </tr>
+              <tr>
+                <td><label for="int">Intelligence (INT)</label></td>
+                <td>
+                  <input type="number" id="int" value="12" min="1" 
+                         onchange="recalc(); updatePointBuyRemaining()" 
+                         oninput="recalc(); updatePointBuyRemaining()">
+                </td>
+                <td><input type="text" id="intBonus" readonly></td>
+                <td><input type="text" id="intMod" readonly></td>
+              </tr>
+              <tr>
+                <td><label for="wis">Wisdom (WIS)</label></td>
+                <td>
+                  <input type="number" id="wis" value="10" min="1" 
+                         onchange="recalc(); updatePointBuyRemaining()" 
+                         oninput="recalc(); updatePointBuyRemaining()">
+                </td>
+                <td><input type="text" id="wisBonus" readonly></td>
+                <td><input type="text" id="wisMod" readonly></td>
+              </tr>
+              <tr>
+                <td><label for="cha">Charisma (CHA)</label></td>
+                <td>
+                  <input type="number" id="cha" value="8" min="1" 
+                         onchange="recalc(); updatePointBuyRemaining()" 
+                         oninput="recalc(); updatePointBuyRemaining()">
+                </td>
+                <td><input type="text" id="chaBonus" readonly></td>
+                <td><input type="text" id="chaMod" readonly></td>
+              </tr>
+            </table>
+          </fieldset>
+        </section>
+        
+        <!-- Inspiration & Proficiency Section -->
+        <section id="inspiration">
+          <fieldset>
+            <legend>Inspiration &amp; Proficiency</legend>
+            <label for="proficiencyBonus">Proficiency Bonus:</label>
+            <input type="number" id="proficiencyBonus" value="2" min="0">
+          </fieldset>
+        </section>
+        <!-- Saving Throws Section -->
+<section id="saving-throws">
+  <fieldset>
+    <legend>Saving Throws</legend>
+    <table>
+      <tr>
+        <th>Ability</th>
+        <th>Proficient?</th>
+        <th>Modifier</th>
+      </tr>
+      <tr>
+        <td>Strength (STR)</td>
+        <td><input type="checkbox" id="strSaveProf" onchange="recalc()"></td>
+        <td><input type="text" id="strSave" readonly></td>
+      </tr>
+      <tr>
+        <td>Dexterity (DEX)</td>
+        <td><input type="checkbox" id="dexSaveProf" onchange="recalc()"></td>
+        <td><input type="text" id="dexSave" readonly></td>
+      </tr>
+      <tr>
+        <td>Constitution (CON)</td>
+        <td><input type="checkbox" id="conSaveProf" onchange="recalc()"></td>
+        <td><input type="text" id="conSave" readonly></td>
+      </tr>
+      <tr>
+        <td>Intelligence (INT)</td>
+        <td><input type="checkbox" id="intSaveProf" onchange="recalc()"></td>
+        <td><input type="text" id="intSave" readonly></td>
+      </tr>
+      <tr>
+        <td>Wisdom (WIS)</td>
+        <td><input type="checkbox" id="wisSaveProf" onchange="recalc()"></td>
+        <td><input type="text" id="wisSave" readonly></td>
+      </tr>
+      <tr>
+        <td>Charisma (CHA)</td>
+        <td><input type="checkbox" id="chaSaveProf" onchange="recalc()"></td>
+        <td><input type="text" id="chaSave" readonly></td>
+      </tr>
+    </table>
+  </fieldset>
+</section>
+        <section id="dice-roller">
+          <fieldset>
+            <legend>Dice Roller</legend>
+            <input type="text" id="diceFormula" placeholder="e.g., 2d20+1d6">
+            <button onclick="rollDice(event)">Roll Dice</button>
+            <div id="diceResults"></div>
+          </fieldset>
+        </section>
+        
+        <section id="skills">
+          <fieldset>
+            <legend>Skills</legend>
+            <table>
+              <tr>
+                <th>Skill</th>
+                <th>Proficient?</th>
+                <th>Modifier</th>
+              </tr>
+              <tr>
+                <td>Acrobatics (DEX)</td>
+                <td><input type="checkbox" id="acrobaticsProf" onchange="recalc()"></td>
+                <td><input type="text" id="acrobatics" readonly></td>
+              </tr>
+              <tr>
+                <td>Animal Handling (WIS)</td>
+                <td><input type="checkbox" id="animalHandlingProf" onchange="recalc()"></td>
+                <td><input type="text" id="animalHandling" readonly></td>
+              </tr>
+              <tr>
+                <td>Arcana (INT)</td>
+                <td><input type="checkbox" id="arcanaProf" onchange="recalc()"></td>
+                <td><input type="text" id="arcana" readonly></td>
+              </tr>
+              <tr>
+                <td>Athletics (STR)</td>
+                <td><input type="checkbox" id="athleticsProf" onchange="recalc()"></td>
+                <td><input type="text" id="athletics" readonly></td>
+              </tr>
+              <tr>
+                <td>Deception (CHA)</td>
+                <td><input type="checkbox" id="deceptionProf" onchange="recalc()"></td>
+                <td><input type="text" id="deception" readonly></td>
+              </tr>
+              <tr>
+                <td>History (INT)</td>
+                <td><input type="checkbox" id="historyProf" onchange="recalc()"></td>
+                <td><input type="text" id="history" readonly></td>
+              </tr>
+              <tr>
+                <td>Insight (WIS)</td>
+                <td><input type="checkbox" id="insightProf" onchange="recalc()"></td>
+                <td><input type="text" id="insight" readonly></td>
+              </tr>
+              <tr>
+                <td>Intimidation (CHA)</td>
+                <td><input type="checkbox" id="intimidationProf" onchange="recalc()"></td>
+                <td><input type="text" id="intimidation" readonly></td>
+              </tr>
+              <tr>
+                <td>Investigation (INT)</td>
+                <td><input type="checkbox" id="investigationProf" onchange="recalc()"></td>
+                <td><input type="text" id="investigation" readonly></td>
+              </tr>
+              <tr>
+                <td>Medicine (WIS)</td>
+                <td><input type="checkbox" id="medicineProf" onchange="recalc()"></td>
+                <td><input type="text" id="medicine" readonly></td>
+              </tr>
+              <tr>
+                <td>Nature (INT)</td>
+                <td><input type="checkbox" id="natureProf" onchange="recalc()"></td>
+                <td><input type="text" id="nature" readonly></td>
+              </tr>
+              <tr>
+                <td>Perception (WIS)</td>
+                <td><input type="checkbox" id="perceptionProf" onchange="recalc()"></td>
+                <td><input type="text" id="perception" readonly></td>
+              </tr>
+              <tr>
+                <td>Performance (CHA)</td>
+                <td><input type="checkbox" id="performanceProf" onchange="recalc()"></td>
+                <td><input type="text" id="performance" readonly></td>
+              </tr>
+              <tr>
+                <td>Persuasion (CHA)</td>
+                <td><input type="checkbox" id="persuasionProf" onchange="recalc()"></td>
+                <td><input type="text" id="persuasion" readonly></td>
+              </tr>
+              <tr>
+                <td>Religion (INT)</td>
+                <td><input type="checkbox" id="religionProf" onchange="recalc()"></td>
+                <td><input type="text" id="religion" readonly></td>
+              </tr>
+              <tr>
+                <td>Sleight of Hand (DEX)</td>
+                <td><input type="checkbox" id="sleightOfHandProf" onchange="recalc()"></td>
+                <td><input type="text" id="sleightOfHand" readonly></td>
+              </tr>
+              <tr>
+                <td>Stealth (DEX)</td>
+                <td><input type="checkbox" id="stealthProf" onchange="recalc()"></td>
+                <td><input type="text" id="stealth" readonly></td>
+              </tr>
+              <tr>
+                <td>Survival (WIS)</td>
+                <td><input type="checkbox" id="survivalProf" onchange="recalc()"></td>
+                <td><input type="text" id="survival" readonly></td>
+              </tr>
+            </table>
+            <label for="passivePerception">Passive Perception (10 + Perception):</label>
+            <input type="text" id="passivePerception" readonly>
+          </fieldset>
+        </section>
+        
+        <section id="other-proficiencies">
+          <fieldset>
+            <legend>Other Proficiencies &amp; Languages</legend>
+            <textarea id="otherProficiencies" placeholder="List tools, languages, etc."></textarea>
+          </fieldset>
+        </section>
+        
+        <section id="combat-stats">
+          <fieldset>
+            <legend>Combat Stats</legend>
+            
+            <label for="armorSelection">Select Armor:</label>
+            <select id="armorSelection" onchange="updateArmorClass()">
+                <option value="None" data-ac="10">None</option> <!-- Default -->
+            </select>
+            <p>Armor Class (AC): <input type="text" id="armorClass" value="10" placeholder="Enter AC" readonly></p>
+            <label for="initiative">Initiative:</label>
+            <input type="text" id="initiative" placeholder="+0" readonly>
+            <label for="speed">Speed (ft):</label>
+            <input type="number" id="speed" placeholder="30">
+            <label for="hitPoints">Hit Points (HP):</label>
+            <input type="number" id="hitPoints" placeholder="Enter HP">
+            <label for="hitDice">Hit Dice:</label>
+            <input type="text" id="hitDice" placeholder="e.g., 1d10">
+
+            <div>
+              <strong>Death Saves:</strong>
+              <div>
+                <span>Successes:</span>
+                <input type="checkbox" id="deathSaveSuccess1">
+                <input type="checkbox" id="deathSaveSuccess2">
+                <input type="checkbox" id="deathSaveSuccess3">
+              </div>
+              <div>
+                <span>Failures:</span>
+                <input type="checkbox" id="deathSaveFailure1">
+                <input type="checkbox" id="deathSaveFailure2">
+                <input type="checkbox" id="deathSaveFailure3">
+              </div>
+            </div>
+          </fieldset>
+        </section>
+        
+        <section id="attacks-spellcasting">
+          <fieldset>
+            <legend>Attacks &amp; Spellcasting</legend>
+            <div>
+              <strong>Weapons:</strong>
+              <datalist id="weaponsList">
+                <!-- Options will be populated by JavaScript -->
+              </datalist>
+              <table id="weaponsTable">
+                <tr>
+                  <th>Weapon</th>
+                  <th>Attack Bonus</th>
+                  <th>Damage</th>
+                  <th>Action</th>
+                </tr>
+              </table>
+              <button type="button" onclick="addWeaponRow()">Add Weapon</button>
+            </div>
+            <div>
+              <label for="spellcastingAbility">Spellcasting Ability:</label>
+              <select id="spellcastingAbility" onchange="recalc()">
+                <option value="int">Intelligence (INT)</option>
+                <option value="wis">Wisdom (WIS)</option>
+                <option value="cha">Charisma (CHA)</option>
+              </select>
+              <label for="spellSaveDC">Spell Save DC:</label>
+              <input type="text" id="spellSaveDC" readonly>
+              <label for="spellAttackBonus">Spell Attack Bonus:</label>
+              <input type="text" id="spellAttackBonus" readonly>
+            </div>
+          </fieldset>
+        </section>
+        
+        <section id="spellcasting-details">
+          <fieldset>
+            <legend>Spellcasting Details</legend>
+            <label>Spell Slots:</label>
+            <div id="spellSlotsContainer" class="spell-slots-grid">
+              <!-- Dynamic slots will appear here -->
+            </div>
+          </fieldset>
+        
+        
+          <section id="spell-management" class="spell-management-container">
+            <fieldset class="spell-management-fieldset">
+              <legend>Spell Management</legend>
+              <div class="search-container">
+                <input type="text" id="spellSearchInput" placeholder="Search spells by name or description..." class="spell-search-input">
+                <button type="button" id="searchSpellsButton" class="search-button">Search</button>
+                
+              </div>
+              <div id="spellSearchResults" class="spell-search-results"></div>
+              <div class="spell-lists-container">
+                <div class="spell-list-section">
+                  <h4>Known Spells</h4>
+                  <ul id="knownSpellsList" class="spells-list"></ul>
+                </div>
+                <div class="spell-list-section">
+                  <h4>Prepared Spells</h4>
+                  <ul id="preparedSpellsList" class="spells-list"></ul>
+                </div>
+              </div>
+              <button type="button" class="accordion-button">All Spells</button>
+              <div class="spells-accordion">
+                <div class="accordion-content" style="display: none;">
+                  <section id="spell-section">
+                    <div id="spell-list">
+                      <p>Loading spells...</p>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </fieldset>
+          </section>
+          
+              
+            
+          </fieldset>
+        </section>
+        
+        <section id="equipment">
+          <fieldset>
+            <legend>Equipment</legend>
+            <div class="equipment-controls">
+              <button type="button" onclick="addEquipmentRow()">Add Equipment</button>
+              <button type="button" id="toggleHandbookBtn" onclick="toggleHandbook()" class="handbook-button">Open Equipment Handbook</button>
+            </div>
+            
+            <div class="equipment-layout">
+              <!-- Left side: Equipment table -->
+              <div class="equipment-table-container">
+                <table id="equipmentTable">
+                  <thead>
+                    <tr>
+                      <th>Item Name</th>
+                      <th>Cost</th>
+                      <th>Quantity</th>
+                      <th>Weight (lbs)</th>
+                      <th>Equipped?</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Equipment rows will be added here dynamically -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <!-- Right side: Equipment handbook (initially hidden) -->
+              <div id="equipmentHandbookContainer" class="equipment-handbook-container" style="display: none;">
+                <h3>Equipment Handbook</h3>
+                <div class="handbook-content">
+                  <iframe src="equipmentbook.html" class="handbook-iframe"></iframe>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Datalist for equipment suggestions -->
+            <datalist id="equipmentList">
+              <option value="Abacus | Cost: 2 gp | Weight: 2 lb.">
+              <option value="Acid (vial) | Cost: 25 gp | Weight: 1 lb.">
+              <option value="Alchemist’s fire (flask) | Cost: 50 gp | Weight: 1 lb.">
+              <option value="*Ammunition* | Cost:  | Weight: ">
+              <option value="Arrows (20) | Cost: 1 gp | Weight: 1 lb.">
+              <option value="Blowgun needles (50) | Cost: 1 gp | Weight: 1 lb.">
+              <option value="Crossbow bolts (20) | Cost: 1 gp | Weight: 1½ lb.">
+              <option value="Sling bullets (20) | Cost: 4 cp | Weight: 1½ lb.">
+              <option value="Antitoxin (vial) | Cost: 50 gp | Weight: —">
+              <option value="*Arcane focus* | Cost:  | Weight: ">
+              <option value="Crystal | Cost: 10 gp | Weight: 1 lb.">
+              <option value="Orb | Cost: 20 gp | Weight: 3 lb.">
+              <option value="Rod | Cost: 10 gp | Weight: 2 lb.">
+              <option value="Staff | Cost: 5 gp | Weight: 4 lb.">
+              <option value="Wand | Cost: 10 gp | Weight: 1 lb.">
+              <option value="Backpack | Cost: 2 gp | Weight: 5 lb.">
+              <option value="Ball bearings (bag of 1,000) | Cost: 1 gp | Weight: 2 lb.">
+              <option value="Barrel | Cost: 2 gp | Weight: 70 lb.">
+              <option value="Basket | Cost: 4 sp | Weight: 2 lb.">
+              <option value="Bedroll | Cost: 1 gp | Weight: 7 lb.">
+              <option value="Bell | Cost: 1 gp | Weight: —">
+              <option value="Blanket | Cost: 5 gp | Weight: 3 lb.">
+              <option value="Block and tackle | Cost: 1 gp | Weight: 5 lb.">
+              <option value="Book | Cost: 25 gp | Weight: 5 lb.">
+              <option value="Bottle, glass | Cost: 2 gp | Weight: 2 lb.">
+              <option value="Bucket | Cost: 5 cp | Weight: 2 lb.">
+              <option value="Caltrops (bag of 20) | Cost: 1 gp | Weight: 2 lb.">
+              <option value="Candle | Cost: 1 cp | Weight: —">
+              <option value="Case, crossbow bolt | Cost: 1 gp | Weight: 1 lb.">
+              <option value="Case, map or scroll | Cost: 1 gp | Weight: 1 lb.">
+              <option value="Chain (10 feet) | Cost: 5 gp | Weight: 10 lb.">
+              <option value="Chalk (1 piece) | Cost: 1 cp | Weight: —">
+              <option value="Chest | Cost: 5 gp | Weight: 25 lb.">
+              <option value="Climber’s kit | Cost: 25 gp | Weight: 12 lb.">
+              <option value="Clothes, common | Cost: 5 sp | Weight: 3 lb.">
+              <option value="Clothes, costume | Cost: 5 gp | Weight: 4 lb.">
+              <option value="Clothes, fine | Cost: 15 gp | Weight: 6 lb.">
+              <option value="Clothes, traveler’s | Cost: 2 gp | Weight: 4 lb.">
+              <option value="Component pouch | Cost: 25 gp | Weight: 2 lb.">
+              <option value="Crowbar | Cost: 2 gp | Weight: 5 lb.">
+              <option value="*Druidic focus* | Cost:  | Weight: ">
+              <option value="Sprig of mistletoe | Cost: 1 gp | Weight: —">
+              <option value="Totem | Cost: 1 gp | Weight: —">
+              <option value="Wooden staff | Cost: 5 gp | Weight: 10 lb.">
+              <option value="Yew wand | Cost: 5 gp | Weight: 3 lb.">
+              <option value="Fishing tackle | Cost: 1 gp | Weight: —">
+              <option value="Flask or tankard | Cost: 2 cp | Weight: 1 lb.">
+              <option value="Grappling hook | Cost: 2 gp | Weight: —">
+              <option value="Hammer | Cost: 1 gp | Weight: 25 lb.">
+              <option value="Hammer, sledge | Cost: 2 gp | Weight: 7 lb.">
+              <option value="Healer’s kit | Cost: 5 gp | Weight: 2 lb.">
+              <option value="*Holy symbol* | Cost:  | Weight: ">
+              <option value="Amulet | Cost: 1 sp | Weight: —">
+              <option value="Emblem | Cost: 5 sp | Weight: —">
+              <option value="Reliquary | Cost: 10 gp | Weight: —">
+              <option value="Holy water (flask) | Cost: 5 gp | Weight: —">
+              <option value="Hourglass | Cost: 5 gp | Weight: —">
+              <option value="Hunting trap | Cost: 5 gp | Weight: 25 lb.">
+              <option value="Ink (1 ounce bottle) | Cost: 2 gp | Weight: 1 lb.">
+              <option value="Ink pen | Cost: 5 cp | Weight: —">
+              <option value="Jug or pitcher | Cost: 100 gp | Weight: 1 lb.">
+              <option value="Ladder (10-foot) | Cost: 5 cp | Weight: 5 lb.">
+              <option value="Lamp | Cost: 2 gp | Weight: 2 lb.">
+              <option value="Lantern, bullseye | Cost: 5 sp | Weight: 5 lb.">
+              <option value="Lantern, hooded | Cost: 10 gp | Weight: 10 lb.">
+              <option value="Lock | Cost: 1 gp | Weight: 2 lb.">
+              <option value="Magnifying glass | Cost: 4 gp | Weight: —">
+              <option value="Manacles | Cost: 5 sp | Weight: —">
+              <option value="Mess kit | Cost: 10 gp | Weight: 4 lb.">
+              <option value="Mirror, steel | Cost: 1 cp | Weight: 1/4 lb.">
+              <option value="Oil (flask) | Cost: 5 gp | Weight: —">
+              <option value="Paper (one sheet) | Cost: 5 sp | Weight: —">
+              <option value="Parchment (one sheet) | Cost: 1 gp | Weight: —">
+              <option value="Perfume (vial) | Cost: 1 cp | Weight: —">
+              <option value="Pick, miner’s | Cost: 5 gp | Weight: —">
+              <option value="Piton | Cost: 5 sp | Weight: —">
+              <option value="Poison, basic (vial) | Cost: 10 gp | Weight: —">
+              <option value="Pole (10-foot) | Cost: 5 gp | Weight: —">
+              <option value="Pot, iron | Cost: 10 gp | Weight: —">
+              <option value="Potion of healing  | Cost: 50 gp | Weight: 1/4 lb.">
+              <option value="Pouch | Cost: 2 gp | Weight: —">
+              <option value="Quiver | Cost: 5 sp | Weight: —">
+              <option value="Ram, portable | Cost: 1 cp | Weight: —">
+              <option value="Rations (1 day) | Cost: 5 gp | Weight: —">
+              <option value="Robes | Cost: 5 sp | Weight: —">
+              <option value="Rope, hempen (50 feet) | Cost: 2 gp | Weight: —">
+              <option value="Rope, silk (50 feet) | Cost: 5 cp | Weight: —">
+              <option value="Sack | Cost: 2 gp | Weight: —">
+              <option value="Scale, merchant’s | Cost: 0 gp | Weight: 3">
+              <option value="Sealing wax | Cost: 5 sp | Weight: —">
+              <option value="Shovel | Cost: 1 gp | Weight: —">
+              <option value="Signal whistle | Cost: 4 gp | Weight: —">
+              <option value="Signet ring | Cost: 5 sp | Weight: —">
+              <option value="Soap | Cost: 1 gp | Weight: —">
+              <option value="Spellbook | Cost: 1 gp | Weight: —">
+              <option value="Spikes, iron (10) | Cost: 1 cp | Weight: —">
+              <option value="Spyglass | Cost: 5 gp | Weight: —">
+              <option value="Tent, two-person | Cost: 5 sp | Weight: —">
+              <option value="Tinderbox | Cost: 2 gp | Weight: —">
+              <option value="Torch | Cost: 5 cp | Weight: —">
+              <option value="Vial | Cost: 1 gp | Weight: —">
+              <option value="Waterskin | Cost: 2 sp | Weight: —">
+              <option value="Whetstone | Cost: 1 cp | Weight: —">
+            </datalist>
+          </fieldset>
+  
+          <!-- Inline context area -->
+          <div id="equipmentContext" class="context-modal" style="display: none; border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
+            <div class="context-content">
+              <span class="close-context" onclick="hideEquipmentContext()" style="cursor: pointer;">&times;</span>
+              <h3>Item Details</h3>
+              <div id="equipmentContextText"></div>
+            </div>
+          </div>
+        </section>
+        
+        
+        <section id="features-traits">
+          <fieldset>
+            <legend>Features &amp; Traits</legend>
+            <textarea id="featuresTraits" placeholder="List features, racial traits, class features, feats, etc."></textarea>
+          </fieldset>
+        </section>
+        
+        <section id="personality-backstory">
+          <fieldset>
+            <legend>Personality & Backstory</legend>
+            <label for="personalityTraits">Personality Traits, Ideals, Bonds, Flaws:</label>
+            <textarea id="personalityTraits" placeholder="Describe personality traits"></textarea>
+            <label for="backstory">Backstory & Allies/Organizations:</label>
+            <textarea id="backstory" placeholder="Describe your character's history and connections"></textarea>
+          </fieldset>
+        </section>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+  </main>
+   <footer>
+    <p>&copy; D&D Character Manager by BRENDEN DAVIS, 2025. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+  
+  <script>
+    
+    // Accordion for spell management
+    document.addEventListener("DOMContentLoaded", function() {
+  const allSpellsButton = document.querySelector(".accordion-button");
+  const spellPanel = document.querySelector(".accordion-content");
+
+  allSpellsButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    this.classList.toggle("active");
+    spellPanel.style.display = (spellPanel.style.display === "block") ? "none" : "block";
+  });
+});
+
+
+
+
+  </script>
+  <datalist id="weaponsList">
+    <!-- Options will be populated by JavaScript -->
+  </datalist>
+  <div>
+    <!-- Additional buttons for save/load character can be added here if desired -->
+  </div>
+  <script src="script.js"></script>
+
+  <script src="spellManagement.js"></script>
+  <script src="charsaves.js"></script>
+</body>
+</html>
