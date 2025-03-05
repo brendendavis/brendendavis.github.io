@@ -1,3 +1,4 @@
+
 // Check if subclasses is already defined in the global scope
 if (typeof window.subclasses === "undefined") {
     window.subclasses = {
@@ -113,36 +114,48 @@ function loadCharacter(characterName) {
             return;
         }
 
-        // Load all the saved values back into the form
+        console.log("🚀 Loading Character Data:", character); // Debugging log
+
         Object.keys(character).forEach(key => {
             const element = document.getElementById(key);
-            if (element && key !== 'lastSaved') {
-                element.value = character[key];
+
+            if (element) {
+                console.log(`Updating field: ${key} → ${character[key]}`); // Debugging log
+                if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
+                    element.value = character[key] || ""; // Ensure empty fields are handled
+                }
+            } else {
+                console.warn(`⚠️ Element with ID '${key}' not found in the HTML!`);
             }
         });
 
-        // Ensure subclass is updated when class is loaded
+        // Ensure subclasses update when a class is loaded
         updateClass();
         document.getElementById("characterSubclass").value = character.subclass || "";
 
-        // Trigger recalculations
+        // Debugging log to check if subclass was properly set
+        console.log(`Updated subclass to: ${character.subclass}`);
+
+        // Ensure Feats are reloaded properly
+        if (character.feats && Array.isArray(character.feats)) {
+            selectedFeats = character.feats.map(featName => {
+                return feats.find(f => f.name === featName);
+            }).filter(Boolean);
+            renderSelectedFeats();
+        }
+
+        // Ensure recalculations (e.g., ability modifiers)
         recalc();
-        alert('Character loaded successfully!');
+
+        alert('✅ Character loaded successfully!');
     } catch (error) {
-        alert('Error loading character: ' + error.message);
+        alert('❌ Error loading character: ' + error.message);
+        console.error("❌ Load Error:", error);
     }
 }
-function loadCharacter(characterData) {
-    // ...
-    if (characterData.feats) {
-      // Convert from the array of feat names back to objects
-      selectedFeats = characterData.feats.map(name => {
-        return feats.find(f => f.name === name);
-      }).filter(Boolean);
-      
-      renderSelectedFeats();
-    }
-  }
+
+
+
   
 
 // Function to list all saved characters
@@ -198,3 +211,13 @@ document.addEventListener('DOMContentLoaded', recalc);
 window.saveCharacter = saveCharacter;
 window.recalc = recalc;
 window.updateClass = updateClass;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('loadCharacterSelect');
+    if (select) {
+        select.addEventListener('change', function() {
+            console.log("📌 Dropdown Changed (Manual Fix):", this.value);
+            loadCharacter(this.value);
+        });
+    }
+});
