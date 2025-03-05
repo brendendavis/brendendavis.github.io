@@ -39,7 +39,7 @@
         <button onclick="saveCharacter()">Save Character</button>
         <select id="loadCharacterSelect" onchange="loadCharacter(this.value)">
           <option value="">-- Load Character --</option>
-        </select>
+      </select>      
         <button onclick="populateCharacterList()">Refresh Character List</button>
       </div>
        <form id="characterForm"> 
@@ -736,13 +736,13 @@
           <fieldset>
             <legend>Personality & Bio</legend>
             <label for="physicalTraits">Physical Features:</label>
-            <label for="featuresTraits">Features & Traits:</label>
-<textarea id="featuresTraits"></textarea>
             <textarea id="physicalTraits" placeholder="Describe physical traits"></textarea>
             <label for="personalityTraits">Personality Traits, Ideals, Bonds, Flaws:</label>
             <textarea id="personalityTraits" placeholder="Describe personality traits"></textarea>
             <label for="backstory">Backstory & Allies/Organizations:</label>
             <textarea id="backstory" placeholder="Describe your character's history and connections"></textarea>
+            <label for="featuresTraits">Notes:</label>
+            <textarea id="featuresTraits"></textarea>
           </fieldset>
         </section>
       </div>
