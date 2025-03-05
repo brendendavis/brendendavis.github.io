@@ -1,5 +1,5 @@
 /**********************************************************
- * Subclass Definitions (optional, unchanged)
+ * Subclass Definitions (unchanged)
  **********************************************************/
 if (typeof window.subclasses === "undefined") {
     window.subclasses = {
@@ -31,6 +31,7 @@ function updateClass() {
     subclassSelect.innerHTML = "";
 
     if (window.subclasses[selectedClass]) {
+        // Populate with new subclass options
         subclassSelect.innerHTML = `<option value="">-- Select Subclass --</option>`;
         window.subclasses[selectedClass].forEach(subclass => {
             let option = document.createElement("option");
@@ -38,9 +39,9 @@ function updateClass() {
             option.textContent = subclass;
             subclassSelect.appendChild(option);
         });
-        subclassSelect.style.display = "block"; 
+        subclassSelect.style.display = "block"; // Show dropdown when a class has subclasses
     } else {
-        subclassSelect.style.display = "none"; 
+        subclassSelect.style.display = "none"; // Hide dropdown if no subclass is available
     }
 }
 
@@ -53,50 +54,51 @@ function saveCharacter() {
     // -- 1) Gather basic fields from your form --
     const characterData = {
         // Basic Info
-        characterName: document.getElementById('characterName')?.value || "",
-        playerName: document.getElementById('playerName')?.value || "",
-        characterClass: document.getElementById('characterClass')?.value || "",
-        subclass: document.getElementById('characterSubclass')?.value || "",
-        level: document.getElementById('level')?.value || "",
-        race: document.getElementById('race')?.value || "",
-        alignment: document.getElementById('alignment')?.value || "",
-        background: document.getElementById('background')?.value || "",
-        experience: document.getElementById('experience')?.value || "",
+        characterName: document.getElementById('characterName').value,
+        playerName: document.getElementById('playerName').value,
+        characterClass: document.getElementById('characterClass').value,
+        subclass: document.getElementById('characterSubclass').value,
+        level: document.getElementById('level').value,
+        race: document.getElementById('race').value,
+        alignment: document.getElementById('alignment').value,
+        background: document.getElementById('background').value,
+        experience: document.getElementById('experience').value,
 
         // Ability Scores
-        str: document.getElementById('str')?.value || "",
-        dex: document.getElementById('dex')?.value || "",
-        con: document.getElementById('con')?.value || "",
-        int: document.getElementById('int')?.value || "",
-        wis: document.getElementById('wis')?.value || "",
-        cha: document.getElementById('cha')?.value || "",
+        str: document.getElementById('str').value,
+        dex: document.getElementById('dex').value,
+        con: document.getElementById('con').value,
+        int: document.getElementById('int').value,
+        wis: document.getElementById('wis').value,
+        cha: document.getElementById('cha').value,
 
         // Combat Stats
-        armorClass: document.getElementById('armorClass')?.value || "",
-        hitPoints: document.getElementById('hitPoints')?.value || "",
-        speed: document.getElementById('speed')?.value || "",
+        armorClass: document.getElementById('armorClass').value,
+        hitPoints: document.getElementById('hitPoints').value,
+        speed: document.getElementById('speed').value,
 
         // Other Fields
-        featuresTraits: document.getElementById('featuresTraits')?.value || "",
+        // NOTE: We remove "equipment: document.getElementById('equipment').value" 
+        // because that ID doesn't exist. Instead, we gather table data below.
+        featuresTraits: document.getElementById('featuresTraits').value,
         feats: (window.selectedFeats || []).map(f => f.name),
-        personalityTraits: document.getElementById('personalityTraits')?.value || "",
-        backstory: document.getElementById('backstory')?.value || "",
-        otherProficiencies: document.getElementById('otherProficiencies')?.value || "",
+        personalityTraits: document.getElementById('personalityTraits').value,
+        backstory: document.getElementById('backstory').value,
+        otherProficiencies: document.getElementById('otherProficiencies').value,
 
         lastSaved: new Date().toISOString()
     };
 
     // -- 2) Gather Equipment Table Rows --> characterData.equipmentData --
     const equipmentTableBody = document.querySelector('#equipmentTable tbody');
-    const equipmentRows = equipmentTableBody?.querySelectorAll('tr') || [];
+    const equipmentRows = equipmentTableBody.querySelectorAll('tr');
     const equipmentData = [];
 
-    console.log("Gathering equipment rows:", equipmentRows.length);
-
-    equipmentRows.forEach((row, idx) => {
+    equipmentRows.forEach((row) => {
         const cells = row.querySelectorAll('td');
-        // Indices: 
-        // 0: Item Name | 1: Cost | 2: Quantity | 3: Weight | 4: Check? | 5: Action
+        // Adjust indexes to match your columns:
+        //   0: Item Name   | 1: Cost    | 2: Quantity
+        //   3: Weight      | 4: Check?  | 5: Action btn
         const itemName  = cells[0].querySelector('input')?.value || "";
         const cost      = cells[1].querySelector('input')?.value || "";
         const quantity  = cells[2].querySelector('input')?.value || "";
@@ -104,38 +106,31 @@ function saveCharacter() {
         const equipped  = cells[4].querySelector('input[type="checkbox"]')?.checked || false;
 
         equipmentData.push({ itemName, cost, quantity, weight, equipped });
-        console.log("Equipment row #", idx, { itemName, cost, quantity, weight, equipped });
     });
     characterData.equipmentData = equipmentData;
-    console.log("Final equipmentData:", equipmentData);
 
     // -- 3) Gather Weapons Table Rows --> characterData.weaponsData --
     const weaponsTable = document.getElementById('weaponsTable');
     // skip the header row (the first row)
-    const weaponRows = weaponsTable?.querySelectorAll('tr:not(:first-child)') || [];
+    const weaponRows = weaponsTable.querySelectorAll('tr:not(:first-child)');
     const weaponsData = [];
 
-    console.log("Gathering weapon rows:", weaponRows.length);
-
-    weaponRows.forEach((row, idx) => {
+    weaponRows.forEach((row) => {
         const cells = row.querySelectorAll('td');
-        // 0: Weapon Name | 1: Attack Bonus | 2: Damage | 3: Action
+        // Indices:
+        //   0: Weapon Name | 1: Attack Bonus | 2: Damage | 3: Action
         const weaponName  = cells[0].querySelector('input')?.value || "";
         const attackBonus = cells[1].querySelector('input')?.value || "";
         const damage      = cells[2].querySelector('input')?.value || "";
 
         weaponsData.push({ weaponName, attackBonus, damage });
-        console.log("Weapon row #", idx, { weaponName, attackBonus, damage });
     });
     characterData.weaponsData = weaponsData;
-    console.log("Final weaponsData:", weaponsData);
 
     // -- 4) Save to localStorage --
     try {
         const savedCharacters = JSON.parse(localStorage.getItem('dndCharacters') || '[]');
-        const existingIndex = savedCharacters.findIndex(
-            char => char.characterName === characterData.characterName
-        );
+        const existingIndex = savedCharacters.findIndex(char => char.characterName === characterData.characterName);
 
         if (existingIndex >= 0) {
             savedCharacters[existingIndex] = characterData;
@@ -147,7 +142,6 @@ function saveCharacter() {
         alert('Character saved successfully!');
     } catch (error) {
         alert('Error saving character: ' + error.message);
-        console.error("Save Error:", error);
     }
 }
 
@@ -170,13 +164,10 @@ function loadCharacter(characterName) {
         // (A) Fill out basic fields
         Object.keys(character).forEach(key => {
             const element = document.getElementById(key);
+
             if (element) {
-                console.log(`Updating field: ${key} → ${character[key]}`);
-                if (
-                    element.tagName === "INPUT" ||
-                    element.tagName === "SELECT" ||
-                    element.tagName === "TEXTAREA"
-                ) {
+                console.log(`Updating field: ${key} → ${character[key]}`); 
+                if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
                     element.value = character[key] || ""; 
                 }
             } else {
@@ -185,65 +176,58 @@ function loadCharacter(characterName) {
             }
         });
 
-        // (B) Rebuild the equipment table
+        // (B) Rebuild the equipment table from character.equipmentData
         const equipmentTableBody = document.querySelector('#equipmentTable tbody');
-        if (equipmentTableBody) {
-            equipmentTableBody.innerHTML = ""; // Clear old rows
-            if (Array.isArray(character.equipmentData)) {
-                character.equipmentData.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                      <td><input type="text" value="${item.itemName || ''}"></td>
-                      <td><input type="text" value="${item.cost || ''}"></td>
-                      <td><input type="number" value="${item.quantity || ''}" min="1"></td>
-                      <td><input type="text" value="${item.weight || ''}"></td>
-                      <td><input type="checkbox" ${item.equipped ? 'checked' : ''}></td>
-                      <td><button type="button" onclick="removeEquipmentRow(this)">Remove</button></td>
-                    `;
-                    equipmentTableBody.appendChild(row);
-                });
-            }
+        equipmentTableBody.innerHTML = ""; // Clear old rows
+
+        if (Array.isArray(character.equipmentData)) {
+            character.equipmentData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                  <td><input type="text" value="${item.itemName || ''}"></td>
+                  <td><input type="text" value="${item.cost || ''}"></td>
+                  <td><input type="number" value="${item.quantity || ''}" min="1"></td>
+                  <td><input type="text" value="${item.weight || ''}"></td>
+                  <td><input type="checkbox" ${item.equipped ? 'checked' : ''}></td>
+                  <td><button type="button" onclick="removeEquipmentRow(this)">Remove</button></td>
+                `;
+                equipmentTableBody.appendChild(row);
+            });
         }
 
-        // (C) Rebuild the weapons table
+        // (C) Rebuild the weapons table from character.weaponsData
         const weaponsTable = document.getElementById('weaponsTable');
-        if (weaponsTable) {
-            // Remove any existing weapon rows except the header
-            weaponsTable.querySelectorAll('tr:not(:first-child)').forEach(row => row.remove());
+        // Remove any existing weapon rows except the header
+        weaponsTable.querySelectorAll('tr:not(:first-child)').forEach(row => row.remove());
 
-            if (Array.isArray(character.weaponsData)) {
-                character.weaponsData.forEach(weapon => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                      <td><input type="text" value="${weapon.weaponName || ''}"></td>
-                      <td><input type="text" value="${weapon.attackBonus || ''}"></td>
-                      <td><input type="text" value="${weapon.damage || ''}"></td>
-                      <td><button type="button" onclick="removeWeaponRow(this)">Remove</button></td>
-                    `;
-                    weaponsTable.appendChild(row);
-                });
-            }
+        if (Array.isArray(character.weaponsData)) {
+            character.weaponsData.forEach(weapon => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                  <td><input type="text" value="${weapon.weaponName || ''}"></td>
+                  <td><input type="text" value="${weapon.attackBonus || ''}"></td>
+                  <td><input type="text" value="${weapon.damage || ''}"></td>
+                  <td><button type="button" onclick="removeWeaponRow(this)">Remove</button></td>
+                `;
+                weaponsTable.appendChild(row);
+            });
         }
 
         // (D) Additional logic
-        // - updateClass() so the subclass field is correct
+        // - We re-run updateClass() so that the subclass field shows properly
         updateClass();
         document.getElementById("characterSubclass").value = character.subclass || "";
 
         // - If feats exist, load them
         if (character.feats && Array.isArray(character.feats)) {
             window.selectedFeats = character.feats.map(featName => {
-                return window.feats?.find(f => f.name === featName);
+                return window.feats.find(f => f.name === featName);
             }).filter(Boolean);
-            if (typeof renderSelectedFeats === "function") {
-                renderSelectedFeats();
-            }
+            renderSelectedFeats();
         }
 
         // - Recalculate stats
-        if (typeof recalc === "function") {
-            recalc();
-        }
+        recalc();
 
         alert('✅ Character loaded successfully!');
     } catch (error) {
@@ -253,8 +237,7 @@ function loadCharacter(characterName) {
 }
 
 /**********************************************************
- * listCharacters()
- * Returns an array of { name, class, level, lastSaved }
+ * Utility for listing characters in localStorage
  **********************************************************/
 function listCharacters() {
     try {
@@ -272,12 +255,75 @@ function listCharacters() {
 }
 
 /**********************************************************
- * Additional Helper Functions
+ * deleteCharacter()
+ * Removes a character by name from localStorage
+ **********************************************************/
+function deleteCharacter(characterName) {
+    try {
+        const savedCharacters = JSON.parse(localStorage.getItem('dndCharacters') || '[]');
+        const filteredCharacters = savedCharacters.filter(char => char.characterName !== characterName);
+        localStorage.setItem('dndCharacters', JSON.stringify(filteredCharacters));
+        alert('Character deleted successfully!');
+    } catch (error) {
+        alert('Error deleting character: ' + error.message);
+    }
+}
+
+/**********************************************************
+ * populateCharacterList()
+ * Refreshes the dropdown with names from localStorage
+ **********************************************************/
+function populateCharacterList() {
+    const select = document.getElementById('loadCharacterSelect');
+    const characters = listCharacters();
+
+    // Clear existing options except the first one
+    while (select.options.length > 1) {
+        select.remove(1);
+    }
+
+    // Add character options
+    characters.forEach(char => {
+        const option = document.createElement('option');
+        option.value = char.name;
+        option.text = `${char.name} (Level ${char.level} ${char.class})`;
+        select.add(option);
+    });
+}
+
+/**********************************************************
+ * DOMContentLoaded
+ * - populate dropdown
+ * - attach recalc
+ * - attach events
+ **********************************************************/
+document.addEventListener('DOMContentLoaded', populateCharacterList);
+document.addEventListener('DOMContentLoaded', recalc);
+
+// Expose needed functions in global scope
+window.saveCharacter = saveCharacter;
+window.loadCharacter = loadCharacter;
+window.recalc = recalc;
+window.updateClass = updateClass;
+
+/**********************************************************
+ *  Manual Fix for dropdown changing
+ **********************************************************/
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('loadCharacterSelect');
+    if (select) {
+        select.addEventListener('change', function() {
+            console.log("📌 Dropdown Changed (Manual Fix):", this.value);
+            loadCharacter(this.value);
+        });
+    }
+});
+
+/**********************************************************
+ *  Helper functions for adding/removing rows
  **********************************************************/
 function addEquipmentRow() {
     const equipmentTableBody = document.querySelector('#equipmentTable tbody');
-    if (!equipmentTableBody) return;
-
     const row = document.createElement('tr');
     row.innerHTML = `
         <td><input type="text" placeholder="Item name"></td>
@@ -291,13 +337,11 @@ function addEquipmentRow() {
 }
 
 function removeEquipmentRow(button) {
-    button.closest('tr')?.remove();
+    button.closest('tr').remove();
 }
 
 function addWeaponRow() {
     const weaponsTable = document.getElementById('weaponsTable');
-    if (!weaponsTable) return;
-
     const row = document.createElement('tr');
     row.innerHTML = `
         <td><input type="text" placeholder="Weapon name"></td>
@@ -309,38 +353,5 @@ function addWeaponRow() {
 }
 
 function removeWeaponRow(button) {
-    button.closest('tr')?.remove();
+    button.closest('tr').remove();
 }
-
-/**********************************************************
- * On Page Load
- **********************************************************/
-document.addEventListener('DOMContentLoaded', () => {
-    // Populate the load dropdown if you have one
-    if (typeof populateCharacterList === "function") {
-        populateCharacterList();
-    }
-    // Recalc if needed
-    if (typeof recalc === "function") {
-        recalc();
-    }
-
-    // If you have a <select id="loadCharacterSelect">, attach event:
-    const select = document.getElementById('loadCharacterSelect');
-    if (select) {
-        select.addEventListener('change', function() {
-            console.log("📌 Dropdown Changed (Manual Fix):", this.value);
-            loadCharacter(this.value);
-        });
-    }
-});
-
-// Expose to window if needed
-window.saveCharacter = saveCharacter;
-window.loadCharacter = loadCharacter;
-window.listCharacters = listCharacters;
-window.addEquipmentRow = addEquipmentRow;
-window.addWeaponRow = addWeaponRow;
-window.removeEquipmentRow = removeEquipmentRow;
-window.removeWeaponRow = removeWeaponRow;
-window.updateClass = updateClass;
