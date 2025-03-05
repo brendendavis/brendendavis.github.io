@@ -1287,15 +1287,13 @@ function searchSpells() {
         <p>${spell.description.substring(0, 100)}...</p>
       </div>
     `;
-    // Add to known spells
+   // Add to known spells
     li.querySelector(".add-known").addEventListener("click", (e) => {
-      e.preventDefault();
-      addSpellToList(spell, "known");
+      addSpellToList(spell, "known", e);
     });
     // Add to prepared spells
     li.querySelector(".add-prepared").addEventListener("click", (e) => {
-      e.preventDefault();
-      addSpellToList(spell, "prepared");
+      addSpellToList(spell, "prepared", e);
     });
 
     list.appendChild(li);
