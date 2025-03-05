@@ -1,0 +1,571 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #6B4C3B;   /* Warm, rich brown for a cozy feel */
+  --accent-color:  #B44A3D;    /* Muted terracotta accent */
+  --body-bg:       #F6F1E1;    /* Soft parchment background */
+  --font-color:    #3E3E3E;    /* Warm dark grey for text */
+  --header-bg:     #8D6748;    /* Earthy header background */
+  --input-border:  #A67C52;    /* Warm, muted border color */
+  --hover-color:   #C56B64;    /* Slightly brighter accent for hover states */
+  --btn-bg:        #B44A3D;    /* Buttons adopt the accent color */
+  --btn-hover:     #C56B64;    /* Brighter variant for hover states */
+  --btn-text:      #fff;
+  --btn-padding:   12px 20px;
+  --btn-border-radius: 8px;
+  --btn-shadow:    0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Print styles */
+@media print {
+  button, .no-print { display: none !important; }
+  .print-section { break-inside: avoid; }
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--body-bg);
+  color: var(--font-color);
+  padding: 20px;
+  margin: 0;
+  position: relative;
+}
+
+/* Organic paper-like background texture */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/paper.png');
+  opacity: 0.15;
+  z-index: -1;
+}
+
+/* Container styles may need adjustment */
+.container {
+  position: relative;
+}
+
+/* Fixed sidebar with a softer, rounded look */
+.sidebar {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 250px;
+  background: var(--primary-color);
+  padding: 20px;
+  border-radius: 12px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar menu items styled like organic buttons */
+.sidebar a {
+  display: block;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  text-decoration: none;
+  font-weight: 600;
+  padding: var(--btn-padding);
+  border-radius: var(--btn-border-radius);
+  margin-bottom: 10px;
+  box-shadow: var(--btn-shadow);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sidebar a:hover {
+  background: var(--btn-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.highlighted-tag {
+  background-color: #fff3cd; /* A soft, buttery yellow */
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Headings with a storybook serif */
+h1 {
+  text-align: center;
+  color: var(--header-bg);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Card-like fieldset styling */
+fieldset {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+  background-color: #fff;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
+}
+
+fieldset:hover {
+  transform: scale(1.02);
+}
+
+/* Legend styled as a header for each card */
+legend {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Form controls with a clean, cozy look */
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  background-color: #fff;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+/* Buttons and interactive elements */
+button, .btn {
+  background: var(--accent-color);
+  color: var(--btn-text);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  background: var(--hover-color);
+}
+
+/* Tables with a gentle, warm hover effect */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table tr:hover {
+  background-color: #f0e9e0;
+}
+
+/* Accordion styles */
+.accordion-button {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Ability Scores Section Styles */
+#ability-scores fieldset {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+#ability-scores table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#ability-scores th,
+#ability-scores td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+/* Updated dice button in a warm earthy green */
+#rollDiceButton {
+  margin: 10px 0;
+  padding: 5px 10px;
+  background-color: #7BA05B;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: none; /* Hidden by default */
+}
+
+#rollDiceButton:hover {
+  background-color: #679B50;
+}
+
+#remainingPointsDisplay {
+  margin: 10px 0;
+  font-weight: bold;
+  display: none; /* Hidden by default */
+}
+
+#ability-scores input[type="number"] {
+  width: 60px;
+  padding: 4px;
+}
+
+#ability-scores input[type="text"] {
+  width: 60px;
+  padding: 4px;
+  background-color: #f5f5f5;
+}
+
+#scoreMethod {
+  margin-bottom: 10px;
+  padding: 4px;
+}
+
+/* Character management with updated warm accents */
+.character-management {
+  margin: 20px 0 40px 0;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.character-management button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px 15px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.character-management button:hover {
+  background-color: var(--hover-color);
+}
+
+.character-management select {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.character-management select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+/* Saving Throws Section */
+#saving-throws table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#saving-throws th, #saving-throws td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#saving-throws th {
+  background-color: #f9f4ee;
+}
+
+#saving-throws input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Spell search results */
+#spellSearchResults {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  width: 100%;
+}
+
+/* Spell slots grid */
+.spell-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.spell-slot-card {
+  background-color: #fff8f0;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.spell-slot-card h4 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #6B4C3B;
+}
+
+.spell-slot-input {
+  width: 50px;
+  text-align: center;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.spell-slot-progress {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  height: 8px;
+  width: 100%;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #7BA05B;
+  transition: width 0.3s ease;
+}
+
+/* Footer with a cozy finish */
+footer {
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-radius: 8px;
+  box-shadow: var(--btn-shadow);
+  position: relative;
+  border-top: 2px solid var(--accent-color);
+  margin-left: 290px;
+  width: calc(100% - 330px);
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/paper.png');
+  opacity: 0.15;
+  z-index: 0;
+}
+
+footer p {
+  position: relative;
+  margin: 0;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
+
+footer a {
+  color: var(--btn-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
+}
+
+footer a:visited {
+  color: #fff;
+}
+
+/* Handbook button with earthy green */
+.handbook-button {
+  background-color: #7BA05B;
+  color: white;
+  margin-left: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.handbook-button:hover {
+  background-color: #679B50;
+}
+
+.context-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.context-content {
+  position: relative;
+}
+
+.close-context {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Equipment layout */
+.equipment-layout {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.equipment-table-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.equipment-handbook-container {
+  border: 1px solid #ccc;
+}
+
+#equipmentHandbookContainer {
+  resize: both;
+  overflow: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  min-height: 200px;
+  background-color: #fff8f0;
+  position: relative;
+  clear: both;
+  margin-top: 10px;
+  box-sizing: border-box;
+  display: block;
+}
+
+.handbook-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+.handbook-iframe {
+  width: 100%;
+  height: 550px;
+  border: none;
+  overflow-y: auto;
+}
+
+.equipment-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Responsive adjustments for equipment layout */
+@media (max-width: 900px) {
+  .equipment-layout {
+    flex-direction: column;
+  }
+  
+  .equipment-handbook-container {
+    margin-top: 20px;
+    max-height: 400px;
+  }
+  
+  .handbook-iframe {
+    height: 350px;
+  }
+}
+
+#equipmentContext {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  display: none;
+  position: absolute;
+  z-index: 10;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  padding: 10px;
+  max-width: 300px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-button,
+.accordion-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.search-button:hover,
+.accordion-button:hover {
+  background: var(--btn-hover);
+}
+
+#characterSubclass {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  background-color: #fff;
+  width: 100%;
+}
+
+/* Main content area remains spacious */
+.main-content {
+  margin-left: 290px;
+  padding: 20px;
+  box-sizing: border-box;
+  width: calc(100% - 290px);
+}

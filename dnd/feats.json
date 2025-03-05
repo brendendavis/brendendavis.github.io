@@ -1,0 +1,837 @@
+[
+  {
+    "name": "Actor",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Charisma score by 1, to a maximum of 20.",
+      "You have an advantage on Charisma (Deception) and Charisma (Performance) checks when trying to pass yourself off as a different person.",
+      "You can mimic the speech of another person or the sounds made by other creatures. You must have heard the person speaking, or heard the creature make the sound, for at least 1 minute. A successful Wisdom (Insight) check contested by your Charisma (Deception) check allows a listener to determine that the effect is faked."
+    ],
+    "description": "Skilled at mimicry and dramatics, you gain the following benefits:"
+  },
+  {
+    "name": "Alert",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "You gain a +5 bonus to initiative.",
+      "You can't be surprised while you are conscious.",
+      "Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you."
+    ],
+    "description": "Always on the lookout for danger, you gain the following benefits:"
+  },
+  {
+    "name": "Artificer Initiate",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "",
+    "benefits": [
+      "You learn one cantrip and one 1st-level artificer spell (cast without slot), proficiency with one type of artisan's tools."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Athlete",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Strength or Dexterity score by 1, to a maximum of 20.",
+      "When you are prone, standing up uses only 5 feet of your movement.",
+      "Climbing doesn't cost you extra movement.",
+      "You can make a running long jump or a running high jump after moving only 5 feet on foot, rather than 10 feet."
+    ],
+    "description": "You have undergone extensive physical training to gain the following benefits:"
+  },
+  {
+    "name": "Bountiful Luck",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Halfling",
+    "benefits": [
+      "You can let an ally within 30 ft of you to reroll a 1 on a d20."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Charger",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "When you use your action to Dash, you can use a bonus action to make one melee weapon attack or to shove a creature.",
+      "If you move at least 10 feet in a straight line immediately before taking this bonus action, you either gain a +5 bonus to the attack's damage roll (if you chose to make a melee attack and hit) or push the target up to 10 feet away from you (if you chose to shove and you succeed)."
+    ],
+    "description": "When you use your action to Dash, you can use a bonus action to make one melee weapon attack or to shove a creature. If you move at least 10 feet in a straight line immediately before taking this bonus action, you either gain a +5 bonus to the attack's damage roll (if you chose to make a melee attack and hit) or push the target up to 10 feet away from you (if you chose to shove and you succeed)."
+  },
+  {
+    "name": "Chef",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "",
+    "benefits": [
+      "+1 in Con. or Wis., proficiency with cook's utensils and cook special food to regain hp."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Crossbow Expert",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "You ignore the loading quality of crossbows with which you are proficient.",
+      "Being within 5 feet of a hostile creature doesn't impose disadvantage on your ranged attack rolls.",
+      "When you use the Attack action and attack with a one handed weapon, you can use a bonus action to attack with a hand crossbow you are holding."
+    ],
+    "description": "Thanks to extensive practice with the crossbow, you gain the following benefits:"
+  },
+  {
+    "name": "Crusher",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Strength or Constitution by 1, to a maximum of 20.",
+      "Once per turn, when you hit a creature with an attack that deals bludgeoning damage, you can move it 5 feet to an unoccupied space, provided the target is no more than one size larger than you.",
+      "When you score a critical hit that deals bludgeoning damage to a creature, attack rolls against that creature are made with advantage until the start of your next turn."
+    ],
+    "description": "You are practiced in the art of crushing your enemies, granting you the following benefits:"
+  },
+  {
+    "name": "Defensive Duelist",
+    "source": "Player's Handbook",
+    "prerequisite": "Dexterity 13 or higher",
+    "benefits": [
+      "When you are wielding a finesse weapon with which you are proficient and another creature hits you with a melee attack, you can use your reaction to add your proficiency bonus to your AC for that attack, potentially causing the attack to miss you."
+    ],
+    "description": "When you are wielding a finesse weapon with which you are proficient and another creature hits you with a melee attack, you can use your reaction to add your proficiency bonus to your AC for that attack, potentially causing the attack to miss you."
+  },
+  {
+    "name": "Dragon Fear",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Dragonborn",
+    "benefits": [
+      "+1 in Str., Con., or Cha. and your Breath Weapon can frighten instead of inflicting damages."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Dragon Hide",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Dragonborn",
+    "benefits": [
+      "+1 in Str., Con., or Cha., your AC becomes 13+Dex. modifier and your retractable claws deal 1d4+Str. modifier slashing damage."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Drow High Magic",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Elf (drow)",
+    "benefits": [
+      "You can cast the detect magic spell (at will) and the levitate and dispel magic spells (1/long rest)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Dual Wielder",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "You gain a +1 bonus to AC while you are wielding a separate melee weapon in each hand.",
+      "You can use two-weapon fighting even when the one handed melee weapons you are wielding aren't light.",
+      "You can draw or stow two one-handed weapons when you would normally be able to draw or stow only one."
+    ],
+    "description": "You master fighting with two weapons, gaining the following benefits:"
+  },
+  {
+    "name": "Dungeon Delver",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "You have advantage on Wisdom (Perception) and Intelligence (Investigation) checks made to detect the presence of secret doors.",
+      "You have advantage on saving throws made to avoid or resist traps.",
+      "You have resistance to the damage dealt by traps.",
+      "Traveling at a fast pace doesn't impose the normal −5 penalty on your passive Wisdom (Perception) score."
+    ],
+    "description": "Alert to the hidden traps and secret doors found in many dungeons, you gain the following benefits:"
+  },
+  {
+    "name": "Durable",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Constitution score by 1, to a maximum of 20.",
+      "When you roll a Hit Die to regain hit points, the minimum number of hit points you regain from the roll equals twice your Constitution modifier (minimum of 2)."
+    ],
+    "description": "Hardy and resilient, you gain the following benefits:"
+  },
+  {
+    "name": "Dwarf Fortitude",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Dwarf",
+    "benefits": [
+      "+1 in Con., and you can spend one Hit Die to heal yourself taking the Dodge action."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Eldritch Adept",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "Spellcasting or Pact Magic feature",
+    "benefits": [
+      "Studying occult lore, you have unlocked eldritch power within yourself: you learn one Eldritch Invocation option of your choice from the warlock class. If the invocation has a prerequisite of any kind, you can choose that invocation only if you're a warlock who meets the prerequisite.",
+      "Whenever you gain a level, you can replace the invocation with another one from the warlock class."
+    ],
+    "description": "Studying occult lore, you have unlocked eldritch power within yourself: you learn one Eldritch Invocation option of your choice from the warlock class. If the invocation has a prerequisite of any kind, you can choose that invocation only if you're a warlock who meets the prerequisite. Whenever you gain a level, you can replace the invocation with another one from the warlock class."
+  },
+  {
+    "name": "Elemental Adept",
+    "source": "Player's Handbook",
+    "prerequisite": "The ability to cast at least one spell",
+    "benefits": [
+      "When you gain this feat, choose one of the following damage types: acid, cold, fire, lightning, or thunder.",
+      "Spells you cast ignore resistance to damage of the chosen type. In addition, when you roll damage for a spell you cast that deals damage of that type, you can treat any 1 on a damage die as a 2.",
+      "You can select this feat multiple times. Each time you do so, you must choose a different damage type."
+    ],
+    "description": "When you gain this feat, choose one of the following damage types: acid, cold, fire, lightning, or thunder. Spells you cast ignore resistance to damage of the chosen type. In addition, when you roll damage for a spell you cast that deals damage of that type, you can treat any 1 on a damage die as a 2. You can select this feat multiple times. Each time you do so, you must choose a different damage type."
+  },
+  {
+    "name": "Elven Accuracy",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Elf or half-elf",
+    "benefits": [
+      "Increase your Dexterity, Intelligence, Wisdom, or Charisma score by 1, to a maximum of 20.",
+      "Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once."
+    ],
+    "description": "The accuracy of elves is legendary, especially that of elf archers and spellcasters. You have uncanny aim with attacks that rely on precision rather than brute force. You gain the following benefits:"
+  },
+  {
+    "name": "Ember of the Fire Giant",
+    "source": "Glory of the Giants",
+    "prerequisite": "4th Level, Strike of the Giants (Fire Strike) feat",
+    "benefits": [
+      "+1 in Str., Con., or Wis. ; resistance to fire damage ; 1d8+PB fire damage + blinded (15-ft-radius ; PB/day)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Fade Away",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Gnome",
+    "benefits": [
+      "+1 in Dex. or Int., and you can use your reaction to become invisible if you take damage."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Fey Teleportation",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Elf (high)",
+    "benefits": [
+      "+1 in Int. or Cha., you speak Sylvan, and you can cast the misty step spell (1/short rest)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Fey Touched",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Intelligence, Wisdom, or Charisma score by 1, to a maximum of 20.",
+      "You learn the misty step spell and one 1st-level spell of your choice. The 1st-level spell must be from the divination or enchantment school of magic. You can cast each of these spells without expending a spell slot. Once you cast either of these spells in this way, you can't cast that spell in this way again until you finish a long rest. You can also cast these spells using spell slots you have of the appropriate level. The spells' spellcasting ability is the ability increased by this feat."
+    ],
+    "description": "Your exposure to the Feywild's magic has changed you, granting you the following benefits:"
+  },
+
+[
+  {
+    "name": "Fighting Initiate",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "Proficiency with a martial weapon",
+    "benefits": [
+      "Your martial training has helped you develop a particular style of fighting. As a result, you learn one Fighting Style option of your choice from the fighter class. If you already have a style, the one you choose must be different.",
+      "Whenever you reach a level that grants the Ability Score Improvement feature, you can replace this feat's fighting style with another one from the fighter class that you don't have."
+    ],
+    "description": "Your martial training has helped you develop a particular style of fighting. As a result, you learn one Fighting Style option of your choice from the fighter class. If you already have a style, the one you choose must be different. Whenever you reach a level that grants the Ability Score Improvement feature, you can replace this feat's fighting style with another one from the fighter class that you don't have."
+  },
+  {
+    "name": "Flames of Phlegethos",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Tiefling",
+    "benefits": [
+      "+1 in Int. or Cha., reroll any 1 on fire spell damage, and cause flames to wreathe you if you cast a fire spell."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Fury of the Frost Giant",
+    "source": "Glory of the Giants",
+    "prerequisite": "4th Level, Strike of the Giants (Frost Strike) feat",
+    "benefits": [
+      "+1 in Str., Con., or Wis. ; resistance to cold damage ; 1d8+PB cold damage + speed reduced to 0 (PB/day)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Gift of the Chromatic Dragon",
+    "source": "Fizban's Treasury of Dragons",
+    "prerequisite": "",
+    "benefits": [
+      "Chromatic Infusion. As a bonus action, you can touch a simple or martial weapon and infuse it with one of the following damage types: acid, cold, fire, lightning, or poison. For the next minute, the weapon deals an extra 1d4 damage of the chosen type when it hits. After you use this bonus action, you can't do so again until you finish a long rest.",
+      "Reactive Resistance. When you take acid, cold, fire, lightning, or poison damage, you can use your reaction to give yourself resistance to that instance of damage. You can use this reaction a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest."
+    ],
+    "description": "You've manifested some of the power of chromatic dragons, granting you the following benefits:"
+  },
+  {
+    "name": "Gift of the Gem Dragon",
+    "source": "Fizban's Treasury of Dragons",
+    "prerequisite": "",
+    "benefits": [
+      "+1 in Int., Wis., or Cha., Strength saving throw or 2d8 force damage and pushed away 10 ft in reaction to an attack (PB/day)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Gift of the Metallic Dragon",
+    "source": "Fizban's Treasury of Dragons",
+    "prerequisite": "",
+    "benefits": [
+      "You can cast cure wounds (1/long rest). As a reaction to an attack, can manifest wings to get +PB to your AC (PB/day)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Grappler",
+    "source": "Player's Handbook (SRD)",
+    "prerequisite": "Strength 13 or higher",
+    "benefits": [
+      "You have advantage on attack rolls against a creature you are grappling.",
+      "You can use your action to try to pin a creature grappled by you. To do so, make another grapple check. If you succeed, you and the creature are both restrained until the grapple ends."
+    ],
+    "description": "You've developed the skills necessary to hold your own in close-quarters grappling. You gain the following benefits:"
+  },
+  {
+    "name": "Great Weapon Master",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "On your turn, when you score a critical hit with a melee weapon or reduce a creature to 0 hit points with one, you can make one melee weapon attack as a bonus action.",
+      "Before you make a melee attack with a heavy weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If the attack hits, you add +10 to the attack's damage."
+    ],
+    "description": "You've learned to put the weight of a weapon to your advantage, letting its momentum empower your strikes. You gain the following benefits:"
+  },
+  {
+    "name": "Guile of the Cloud Giant",
+    "source": "Glory of the Giants",
+    "prerequisite": "4th Level, Strike of the Giants (Cloud Strike) feat",
+    "benefits": [
+      "+1 in Str., Con., or Wis. ; resistance to attack's damage ; teleport within 30 ft (PB/day)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Gunner",
+    "source": "Tasha's Cauldron of Everything",
+    "prerequisite": "",
+    "benefits": [
+      "+1 in Dex., proficiency with firearms, ignore loading property of firearms and no disadvantage to attacks within 5 ft."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Healer",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "When you use a healer's kit to stabilize a dying creature, that creature also regains 1 hit point.",
+      "As an action, you can spend one use of a healer's kit to tend to a creature and restore 1d6 + 4 hit points to it, plus additional hit points equal to the creature's maximum number of Hit Dice. The creature can't regain hit points from this feat again until it finishes a short or long rest."
+    ],
+    "description": "You are an able physician, allowing you to mend wounds quickly and get your allies back in the fight. You gain the following benefits:"
+  },
+  {
+    "name": "Heavily Armored",
+    "source": "Player's Handbook",
+    "prerequisite": "Proficiency with medium armor",
+    "benefits": [
+      "Increase your Strength score by 1, to a maximum of 20.",
+      "You gain proficiency with heavy armor."
+    ],
+    "description": "You have trained to master the use of heavy armor, gaining the following benefits:"
+  },
+  {
+    "name": "Heavy Armor Master",
+    "source": "Player's Handbook",
+    "prerequisite": "Proficiency with heavy armor",
+    "benefits": [
+      "Increase your Strength score by 1, to a maximum of 20.",
+      "While you are wearing heavy armor, bludgeoning, piercing, and slashing damage that you take from nonmagical attacks is reduced by 3."
+    ],
+    "description": "You can use your armor to deflect strikes that would kill others. You gain the following benefits:"
+  },
+  {
+    "name": "Infernal Constitution",
+    "source": "Xanathar's Guide to Everything",
+    "prerequisite": "Tiefling",
+    "benefits": [
+      "+1 in Con., resistance to cold and poison damage, and you have advantage on saving throws against being poisoned."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Inspiring Leader",
+    "source": "Player's Handbook",
+    "prerequisite": "Charisma 13 or higher",
+    "benefits": [
+      "You can spend 10 minutes inspiring your companions, shoring up their resolve to fight. When you do so, choose up to six friendly creatures (which can include yourself) within 30 feet of you who can see or hear you and who can understand you. Each creature can gain temporary hit points equal to your level + your Charisma modifier. A creature can't gain temporary hit points from this feat again until it has finished a short or long rest."
+    ],
+    "description": "You can spend 10 minutes inspiring your companions, shoring up their resolve to fight. When you do so, choose up to six friendly creatures (which can include yourself) within 30 feet of you who can see or hear you and who can understand you. Each creature can gain temporary hit points equal to your level + your Charisma modifier. A creature can't gain temporary hit points from this feat again until it has finished a short or long rest."
+  }
+],
+[
+  {
+    "name": "Keen Mind",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Intelligence score by 1, to a maximum of 20.",
+      "You always know which way is north.",
+      "You always know the number of hours left before the next sunrise or sunset.",
+      "You can accurately recall anything you have seen or heard within the past month."
+    ],
+    "description": "You have a mind that can track time, direction, and detail with uncanny precision. You gain the following benefits:"
+  },
+  {
+    "name": "Keenness of the Stone Giant",
+    "source": "Glory of the Giants",
+    "prerequisite": "4th Level, Strike of the Giants (Stone Strike) feat",
+    "benefits": [
+      "+1 in Str., Con., or Wis. ; darkvision 60 ft ; 1d10 force damage with a range of 60 ft + prone (PB/day)."
+    ],
+    "description": "Description not available (not OGL). But here is a summary:"
+  },
+  {
+    "name": "Lightly Armored",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Strength or Dexterity score by 1, to a maximum of 20.",
+      "You gain proficiency with light armor."
+    ],
+    "description": "You have trained to master the use of light armor, gaining the following benefits."
+  },
+  {
+    "name": "Linguist",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Increase your Intelligence score by 1, to a maximum of 20.",
+      "You learn three languages of your choice.",
+      "You can ably create written ciphers. Others can't decipher a code you create unless you teach them, they succeed on an Intelligence check (DC equal to your Intelligence score + your proficiency bonus), or they use magic to decipher it."
+    ],
+    "description": "You have studied languages and codes, gaining the following benefits:"
+  },
+  {
+    "name": "Lucky",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "You have 3 luck points. Whenever you make an attack roll, an ability check, or a saving throw, you can spend one luck point to roll an additional d20. You can choose to spend one of your luck points after you roll the die, but before the outcome is determined. You choose which of the d20s is used for the attack roll, ability check, or saving throw.",
+      "You can also spend one luck point when an attack roll is made against you. Roll a d20 and then choose whether the attack uses the attacker's roll or yours.",
+      "If more than one creature spends a luck point to influence the outcome of a roll, the points cancel each other out; no additional dice are rolled.",
+      "You regain your expended luck points when you finish a long rest."
+    ],
+    "description": "You have inexplicable luck that seems to kick in at just the right moment. You have 3 luck points. Whenever you make an attack roll, an ability check, or a saving throw, you can spend one luck point to roll an additional d20. You can choose to spend one of your luck points after you roll the die, but before the outcome is determined. You choose which of the d20s is used for the attack roll, ability check, or saving throw. You can also spend one luck point when an attack roll is made against you. Roll a d20 and then choose whether the attack uses the attacker's roll or yours. If more than one creature spends a luck point to influence the outcome of a roll, the points cancel each other out; no additional dice are rolled. You regain your expended luck points when you finish a long rest."
+  },
+  {
+    "name": "Mage Slayer",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "When a creature within 5 feet of you casts a spell, you can use your reaction to make a melee weapon attack against that creature.",
+      "When you damage a creature that is concentrating on a spell, that creature has disadvantage on the saving throw it makes to maintain its concentration.",
+      "You have advantage on saving throws against spells cast by creatures within 5 feet of you."
+    ],
+    "description": "You have practiced techniques in melee combat against spellcasters, gaining the following benefits."
+  },
+  {
+    "name": "Magic Initiate",
+    "source": "Player's Handbook",
+    "prerequisite": "",
+    "benefits": [
+      "Choose a class: bard, cleric, druid, sorcerer, warlock, or wizard. You learn two cantrips of your choice from that class's spell list.",
+      "In addition, choose one 1st-level spell to learn from that same list. Using this feat, you can cast the spell once at its lowest level, and you must finish a long rest before you can cast it in this way again.",
+      "Your spellcasting ability for these spells depends on the class you chose: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard."
+    ],
+    "description": "Choose a class: bard, cleric, druid, sorcerer, warlock, or wizard. You learn two cantrips of your choice from that class's spell list. In addition, choose one 1st-level spell to learn from that same list. Using this feat, you can cast the spell once at its lowest level, and you must finish a long rest before you can cast it in this way again. Your spellcasting ability for these spells depends on the class you chose: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard."
+  }
+],
+[
+    {
+      "name": "Martial Adept",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "You learn two maneuvers of your choice from among those available to the Battle Master archetype in the fighter class. If a maneuver you use requires your target to make a saving throw to resist the maneuver's effects, the saving throw DC equals 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice).",
+        "You gain one superiority die, which is a d6 (this die is added to any superiority dice you have from another source). This die is used to fuel your maneuvers. A superiority die is expended when you use it. You regain your expended superiority dice when you finish a short or long rest."
+      ],
+      "description": "You have martial training that allows you to perform special combat maneuvers. You gain the following benefits:"
+    },
+    {
+      "name": "Medium Armor Master",
+      "source": "Player's Handbook",
+      "prerequisite": "Proficiency with medium armor",
+      "benefits": [
+        "Wearing medium armor doesn't impose disadvantage on your Dexterity (Stealth) checks.",
+        "When you wear medium armor, you can add 3, rather than 2, to your AC if you have a Dexterity of 16 or higher."
+      ],
+      "description": "You have practiced moving in medium armor to gain the following benefits:"
+    },
+    {
+      "name": "Metamagic Adept",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "Spellcasting or Pact Magic feature",
+      "benefits": [
+        "You learn two metamagic options and gain 2 sorcery points."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    },
+    {
+      "name": "Mobile",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Your speed increases by 10 feet.",
+        "When you use the Dash action, difficult terrain doesn't cost you extra movement on that turn.",
+        "When you make a melee attack against a creature, you don't provoke opportunity attacks from that creature for the rest of the turn, whether you hit or not."
+      ],
+      "description": "You are exceptionally speedy and agile. You gain the following benefits:"
+    },
+    {
+      "name": "Moderately Armored",
+      "source": "Player's Handbook",
+      "prerequisite": "Proficiency with light armor",
+      "benefits": [
+        "Increase your Strength or Dexterity score by 1, to a maximum of 20.",
+        "You gain proficiency with medium armor and shields."
+      ],
+      "description": "You have trained to master the use of medium armor and shields, gaining the following benefits:"
+    },
+    {
+      "name": "Mounted Combatant",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "You have advantage on melee attack rolls against any unmounted creature that is smaller than your mount.",
+        "You can force an attack targeted at your mount to target you instead.",
+        "If your mount is subjected to an effect that allows it to make Dexterity saving throw to take only half damage, it instead takes no damage if it succeeds on the saving throw, and only half damage if it fails."
+      ],
+      "description": "You are a dangerous foe to face while mounted. While you are mounted and aren't incapacitated, you gain the following benefits:"
+    },
+    {
+      "name": "Observant",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Increase your Intelligence or Wisdom score by 1, to a maximum of 20.",
+        "If you can see a creature's mouth while it is speaking a language you understand, you can interpret what it's saying by reading its lips.",
+        "You have a +5 bonus to your passive Wisdom (Perception) and passive Intelligence (Investigation) scores."
+      ],
+      "description": "Quick to notice details of your environment, you gain the following benefits:"
+    },
+    {
+      "name": "Orcish Fury",
+      "source": "Xanathar's Guide to Everything",
+      "prerequisite": "Half-orc",
+      "benefits": [
+        "+1 in Str. or Con., add one of the weapon's damage dice, and use a reaction to attack after using Relentless Endurance."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    },
+    {
+      "name": "Piercer",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "",
+      "benefits": [
+        "Increase your Strength or Dexterity by 1, to a maximum of 20.",
+        "Once per turn, when you hit a creature with an attack that deals piercing damage, you can re-roll one of the attack's damage dice, and you must use the new roll.",
+        "When you score a critical hit that deals piercing damage to a creature, you can roll one additional damage die when determining the extra piercing damage the target takes."
+      ],
+      "description": "You have achieved a penetrating precision in combat, granting you the following benefits:"
+    }
+  ],
+  [
+    {
+      "name": "Poisoner",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "",
+      "benefits": [
+        "Proficiency with poisoner's kit, apply as a bonus action and your attacks ignore resistance to poison damage."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    },
+    {
+      "name": "Polearm Master",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "When you take the Attack action and attack with only a glaive, halberd, quarterstaff, or spear, you can use a bonus action to make a melee attack with the opposite end of the weapon. This attack uses the same ability modifier as the primary attack. The weapon's damage die for this attack is a d4, and it deals bludgeoning damage.",
+        "While you are wielding a glaive, halberd, pike, quarterstaff, or spear, other creatures provoke an opportunity attack from you when they enter the reach you have with that weapon."
+      ],
+      "description": "You gain the following benefits:"
+    },
+    {
+      "name": "Prodigy",
+      "source": "Xanathar's Guide to Everything",
+      "prerequisite": "Half-elf, half-orc, or human",
+      "benefits": [
+        "You gain one skill proficiency of your choice, one tool proficiency of your choice, and fluency in one language of your choice.",
+        "Choose one skill in which you have proficiency. You gain expertise with that skill, which means your proficiency bonus is doubled for any ability check you make with it. The skill you choose must be one that isn't already benefiting from a feature, such as Expertise, that doubles your proficiency bonus."
+      ],
+      "description": "You have a knack for learning new things. You gain the following benefits:"
+    },
+    {
+      "name": "Resilient",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Choose one ability score. You gain the following benefits:",
+        "Increase the chosen ability score by 1, to a maximum of 20.",
+        "You gain proficiency in saving throws using the chosen ability."
+      ],
+      "description": "Choose one ability score. You gain the following benefits:"
+    },
+    {
+      "name": "Ritual Caster",
+      "source": "Player's Handbook",
+      "prerequisite": "Intelligence or Wisdom 13 or higher",
+      "benefits": [
+        "You have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.",
+        "When you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class's spell list, and the spells you choose must have the ritual tag. The class you choose also must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard.",
+        "If you come across a spell in written form, such as a magical spell scroll or a wizard's spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell's level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents the material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it."
+      ],
+      "description": "You have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them. When you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class's spell list, and the spells you choose must have the ritual tag. The class you choose also must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard. If you come across a spell in written form, such as a magical spell scroll or a wizard's spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell's level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents the material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it."
+    },
+    {
+      "name": "Rune Shaper",
+      "source": "Glory of the Giants",
+      "prerequisite": "Spellcasting feature or Rune Carver background",
+      "benefits": [
+        "You learn comprehend languages and 1/2 PB 1st-level spells (cast with rune or spell slot)."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    },
+    {
+      "name": "Savage Attacker",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon's damage dice and use either total."
+      ],
+      "description": "Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon's damage dice and use either total."
+    },
+    {
+      "name": "Second Chance",
+      "source": "Xanathar's Guide to Everything",
+      "prerequisite": "Halfling",
+      "benefits": [
+        "+1 in Dex., Con., or Cha., and you can force a creature to reroll its attack roll if it hits you."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    }
+  ],
+  [
+    {
+      "name": "Sentinel",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "When you hit a creature with an opportunity attack, the creature's speed becomes 0 for the rest of the turn.",
+        "Creatures provoke an opportunity attack from you when they enter your reach.",
+        "When a creature within 5 feet of you makes an attack against a target other than you (and that target doesn't have this feat), you can use your reaction to make a melee weapon attack against the attacking creature."
+      ],
+      "description": "You have mastered techniques to take advantage of every drop in any enemy's guard, gaining the following benefits:"
+    },
+    {
+      "name": "Sharpshooter",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.",
+        "Your ranged weapon attacks ignore half cover and three-quarters cover.",
+        "Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If the attack hits, you add +10 to the attack's damage."
+      ],
+      "description": "You have mastered ranged weapons and can make shots that others find impossible. You gain the following benefits:"
+    },
+    {
+      "name": "Shield Master",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "You gain the following benefits while you are wielding a shield:",
+        "If you take the Attack action on your turn, you can use a bonus action to try to shove a creature within 5 feet of you with your shield.",
+        "If you aren't incapacitated, you can add your shield's AC bonus to any Dexterity saving throw you make against a spell or other harmful effect that targets only you.",
+        "If you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you can use your reaction to take no damage if you succeed on the saving throw, interposing your shield between yourself and the source of the effect."
+      ],
+      "description": "You use shields not just for protection but also for offense. You gain the following benefits while you are wielding a shield:"
+    },
+    {
+      "name": "Skill Expert",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "",
+      "benefits": [
+        "You gain proficiency in one skill of your choice.",
+        "You gain expertise in one skill in which you are already proficient, which means your proficiency bonus is doubled for any ability check you make with that skill.",
+        "Increase one ability score of your choice by 1, to a maximum of 20."
+      ],
+      "description": "You have honed your proficiency with particular skills, granting you the following benefits:"
+    },
+    {
+      "name": "Skilled",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "You gain proficiency in any combination of three skills or tools of your choice."
+      ],
+      "description": "You gain proficiency in any combination of three skills or tools of your choice."
+    },
+    {
+      "name": "Skulker",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "You can try to hide when you are only lightly obscured from the creature from which you are hiding.",
+        "When you are hidden from a creature and miss it with a ranged weapon attack, making the attack doesn't reveal your position.",
+        "Dim light doesn't impose disadvantage on your Wisdom (Perception) checks relying on sight."
+      ],
+      "description": "You are expert at slinking through shadows. You gain the following benefits:"
+    },
+    {
+      "name": "Slasher",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "",
+      "benefits": [
+        "Increase your Strength or Dexterity by 1, to a maximum of 20.",
+        "Once per turn when you hit a creature with an attack that deals slashing damage, you can reduce the speed of the target by 10 feet until the start of your next turn.",
+        "When you score a critical hit that deals slashing damage to a creature, you can cause that creature to begin bleeding, losing hit points at the start of each of its turns equal to your proficiency bonus. The bleeding lasts until the creature receives any healing or finishes a short or long rest."
+      ],
+      "description": "You've learned where to cut to have the greatest results, granting you the following benefits:"
+    },
+    {
+      "name": "Spell Sniper",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "You learn one cantrip that requires an attack roll.",
+        "Choose a class: bard, cleric, druid, sorcerer, warlock, or wizard. You learn one cantrip of your choice from that class's spell list.",
+        "Your ranged spell attacks ignore half cover and three-quarters cover."
+      ],
+      "description": "You have learned techniques to enhance your attacks with certain kinds of spells, gaining the following benefits:"
+    },
+    {
+      "name": "Squat Nimbleness",
+      "source": "Xanathar's Guide to Everything",
+      "prerequisite": "Dwarf or a Small race",
+      "benefits": [
+        "+1 in Str. or Dex., increase your speed by 5 ft, advantage on escape a grapple and proficiency in Acrobatics or Athletics."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    },
+    {
+      "name": "Strike of the Giants",
+      "source": "Glory of the Giants",
+      "prerequisite": "",
+      "benefits": [
+        "Choose a type of giant: cloud, fire, frost, hill, or stone. You gain the following benefits when you take this feat:",
+        "When you take the Attack action on your turn, you can make one unarmed strike as a bonus action. If you hit with it, you deal bludgeoning damage equal to 1d6 + your Strength modifier, and you can choose to knock the target prone if it is no more than one size larger than you and it fails a Strength saving throw (DC equals 8 + your proficiency bonus + your Strength modifier).",
+        "Once per turn, when you hit a creature with a weapon attack, you can deal extra damage to the target based on the type of giant you chose:",
+        "Cloud Strike: 1d4 force damage",
+        "Fire Strike: 1d4 fire damage",
+        "Frost Strike: 1d4 cold damage",
+        "Hill Strike: 1d4 bludgeoning damage",
+        "Stone Strike: 1d4 force damage",
+        "You can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest."
+      ],
+      "description": "You've learned to channel the might of giants into your attacks. Choose a type of giant: cloud, fire, frost, hill, or stone. You gain the following benefits when you take this feat:"
+    }
+  ],
+  [
+    {
+      "name": "Tavern Brawler",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Increase your Strength or Constitution score by 1, to a maximum of 20.",
+        "You are proficient with improvised weapons and unarmed strikes.",
+        "Your unarmed strike uses a d4 for damage.",
+        "When you hit a creature with an unarmed strike or an improvised weapon on your turn, you can use a bonus action to attempt to grapple the target."
+      ],
+      "description": "Accustomed to rough-and-tumble fighting using whatever weapons happen to be at hand, you gain the following benefits:"
+    },
+    {
+      "name": "Telekinetic",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "",
+      "benefits": [
+        "You learn the mage hand cantrip. That cantrip's range becomes 30 feet, and you can make the spectral hand invisible.",
+        "As a bonus action, you can try to telekinetically shove one creature you can see within 30 feet of you. When you do so, the target must succeed on a Strength saving throw (DC 8 + your proficiency bonus + the ability modifier of the score increased by this feat) or be moved 5 feet toward or away from you. A creature can willingly fail this save."
+      ],
+      "description": "You learn to move things with your mind, granting you the following benefits:"
+    },
+    {
+      "name": "Telepathic",
+      "source": "Tasha's Cauldron of Everything",
+      "prerequisite": "",
+      "benefits": [
+        "You learn the detect thoughts spell and can cast it without expending a spell slot. You must finish a long rest before you can cast it in this way again.",
+        "You can telepathically speak to any creature you can see within 60 feet of you. You don't need to share a language with the creature for it to understand your telepathic messages, but the creature must be able to understand at least one language."
+      ],
+      "description": "You awaken the ability to communicate telepathically, granting you the following benefits:"
+    },
+    {
+      "name": "Tough",
+      "source": "Xanathar's Guide to Everything",
+      "prerequisite": "",
+      "benefits": [
+        "Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points."
+      ],
+      "description": "Your hit point maximum increases by an amount equal to twice your level when you gain this feat. Whenever you gain a level thereafter, your hit point maximum increases by an additional 2 hit points."
+    },
+    {
+      "name": "Vigor of the Hill Giant",
+      "source": "Glory of the Giants",
+      "prerequisite": "4th Level, Strike of the Giants (Hill Strike) feat",
+      "benefits": [
+        "+1 in Str., Con., or Wis. ; advantage on Con. saves ; regain 1d12 + PB hit points (PB/day)."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    },
+    {
+      "name": "War Caster",
+      "source": "Player's Handbook",
+      "prerequisite": "The ability to cast at least one spell",
+      "benefits": [
+        "You have advantage on Constitution saving throws that you make to maintain your concentration on a spell when you take damage.",
+        "You can perform the somatic components of spells even when you have weapons or a shield in one or both hands.",
+        "When a hostile creature's movement provokes an opportunity attack from you, you can use your reaction to cast a spell at the creature, rather than making an opportunity attack. The spell must have a casting time of 1 action and must target only that creature."
+      ],
+      "description": "You have practiced casting spells in the midst of combat, learning techniques that grant you the following benefits:"
+    },
+    {
+      "name": "Weapon Master",
+      "source": "Player's Handbook",
+      "prerequisite": "",
+      "benefits": [
+        "Increase your Strength or Dexterity score by 1, to a maximum of 20.",
+        "You gain proficiency with four simple or martial weapons of your choice."
+      ],
+      "description": "You have practiced extensively with a variety of weapons, gaining the following benefits:"
+    }
+  ],
+   {
+      "name": "Wood Elf Magic",
+      "source": "Unearthed Arcana: Feats for Races",
+      "prerequisite": "Wood elf",
+      "benefits": [
+        "You learn the longstrider and pass without trace spells, each of which you can cast once without expending a spell slot. You regain the ability to cast these spells in this way when you finish a long rest. Wisdom is your spellcasting ability for these spells."
+      ],
+      "description": "Description not available (not OGL). But here is a summary:"
+    }
+  ]
+  
+
