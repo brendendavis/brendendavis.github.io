@@ -457,11 +457,10 @@ function listCharacters() {
  */
 /// Normalize equipment names (trim and lowercase)
 function normalizeEquipmentName(name) {
-  return name.trim().toLowerCase();
-}
+    return name.replace(/\(.*\)/, "").replace(/[^a-zA-Z0-9\s]/g, "").trim().toLowerCase();
+  }
 
-// Global data store for equipment data
-var equipmentDataStore = {};
+
 
 /**
  * loadEquipmentData()
@@ -567,21 +566,20 @@ function addEquipmentRow() {
     const costInput = row.cells[1].querySelector("input");
     const weightInput = row.cells[3].querySelector("input");
 
-    nameInput.addEventListener("input", function() {
-        const searchValue = this.value.trim().toLowerCase();
-        console.log("Input value:", searchValue);
-        const equipmentItem = equipmentData.find(item =>
-            item.name && item.name.toLowerCase() === searchValue
-        );
-        console.log("Found item:", equipmentItem);
-        if (equipmentItem) {
-            costInput.value = equipmentItem.cost || "";
-            weightInput.value = equipmentItem.weight || "";
-        } else {
-            costInput.value = "";
-            weightInput.value = "";
-        }
-    });
+// Replace the input event listener in addEquipmentRow() with:
+nameInput.addEventListener("input", function() {
+    const searchValue = this.value.trim();
+    const normalizedName = normalizeEquipmentName(searchValue);
+    const equipmentItem = equipmentDataStore[normalizedName];
+    console.log("Equipment lookup:", normalizedName, equipmentItem);
+    if (equipmentItem) {
+        costInput.value = equipmentItem.cost || "";
+        weightInput.value = equipmentItem.weight || "";
+    } else {
+        costInput.value = "";
+        weightInput.value = "";
+    }
+});
 }
 
 /**
@@ -686,4 +684,5 @@ window.addEquipmentRow = addEquipmentRow;
 window.addWeaponRow = addWeaponRow;
 window.removeEquipmentRow = removeEquipmentRow;
 window.removeWeaponRow = removeWeaponRow;
-window.updateClass = updateClass;
+window.updateClass = updateClass; 
+
