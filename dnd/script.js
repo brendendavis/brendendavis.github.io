@@ -1,3 +1,10 @@
+// TOP OF FILE (only declare once)
+let equipmentData = [
+  
+]; // Global declaration
+
+// Remove ALL other 'let equipmentData' declarations
+// in functions, event handlers, or other files
 /*****************************
  *  GLOBAL VARIABLES / SETUP  *
  *****************************/
@@ -11,6 +18,8 @@ const formatMod = mod => (mod >= 0 ? `+${mod}` : mod);
 let lastClickedItem = null;
 
 // Expose certain functions to global scope
+// Declare once on the global scope—if it’s not already defined
+window.equipmentDataStore = window.equipmentDataStore || {};
 window.rollAllAbilities = rollAllAbilities;
 window.addWeaponRow = addWeaponRow;
 window.removeEquipmentRow = removeEquipmentRow;
@@ -224,10 +233,6 @@ function loadSpellsData() {
     });
 }
 
-/**
- * loadWeaponsData()
- * Loads weapons from weapons.json.
- */
 function loadWeaponsData() {
   fetch("weapons.json")
     .then(response => {
@@ -236,7 +241,7 @@ function loadWeaponsData() {
     })
     .then(data => {
       weaponsData = data;
-      // Populate the <datalist> for weapons
+      // Populate the <datalist> with options for each weapon
       const datalist = document.getElementById("weaponsList");
       datalist.innerHTML = weaponsData
         .map(w => `<option value="${w.name}" data-damage="${w.damage}" data-properties="${w.properties}"></option>`)
@@ -254,18 +259,22 @@ function addWeaponRow() {
   const row = table.insertRow(-1);
   row.className = "weapon-row";
 
+  // 1) Weapon name cell with autocomplete
   const nameCell = row.insertCell(0);
   const nameInput = document.createElement("input");
   nameInput.setAttribute("list", "weaponsList");
   nameInput.setAttribute("placeholder", "Search weapons...");
   nameCell.appendChild(nameInput);
 
+  // 2) Attack bonus cell
   const attackCell = row.insertCell(1);
   attackCell.innerHTML = '<input type="text" placeholder="+MOD">';
 
+  // 3) Damage cell (read-only)
   const damageCell = row.insertCell(2);
   damageCell.innerHTML = '<input type="text" readonly>';
 
+  // 4) Properties cell with auto-filled value and a delete button
   const propCell = row.insertCell(3);
   const propInput = document.createElement("input");
   propInput.readOnly = true;
@@ -277,7 +286,7 @@ function addWeaponRow() {
   deleteButton.addEventListener("click", () => deleteWeaponRow(deleteButton));
   propCell.appendChild(deleteButton);
 
-  // On name input, fill in damage & properties
+  // Event: When a weapon is selected, automatically fill in its damage and properties.
   nameInput.addEventListener("input", function () {
     const weapon = weaponsData.find(w => w.name.toLowerCase() === this.value.toLowerCase());
     if (weapon) {
@@ -295,6 +304,9 @@ function deleteWeaponRow(btn) {
   const row = btn.closest("tr");
   if (row) row.remove();
 }
+
+// Ensure that the weapons data is loaded once the DOM is fully ready.
+document.addEventListener("DOMContentLoaded", loadWeaponsData);
 
 /****************************************************
  *   RACE / CLASS / SPELL SLOTS / POINT BUY LOGIC   *
@@ -934,7 +946,6 @@ function pointBuyCost(score) {
  *   EQUIPMENT / HANDBOOK / TABLES  *
  ************************************/
 
-let equipmentData = [];
 let equipmentContextMap = {};
 let equipmentDataStore = {};
 
@@ -1287,7 +1298,7 @@ function searchSpells() {
         <p>${spell.description.substring(0, 100)}...</p>
       </div>
     `;
-   // Add to known spells
+    // Add to known spells
     li.querySelector(".add-known").addEventListener("click", (e) => {
       addSpellToList(spell, "known", e);
     });
