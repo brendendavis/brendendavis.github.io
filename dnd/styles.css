@@ -569,3 +569,8 @@ footer a:visited {
   box-sizing: border-box;
   width: calc(100% - 290px);
 }
+/* Add to your CSS */
+.highlighted-term {
+    background-color: yellow;
+    font-weight: bold;
+}
