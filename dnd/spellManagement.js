@@ -71,14 +71,31 @@ function searchSpells() {
         )
     );
 
+    // Split search terms by space and filter out empty strings
+    const searchTerms = searchTerm.split(/\s+/).filter(t => t);
+
     const matches = spellsData.filter(spell => {
-        const nameMatch = spell.name.toLowerCase().includes(searchTerm);
-        const descMatch = spell.description.toLowerCase().includes(searchTerm);
-        const tagsMatch = spell.tags && spell.tags.some(tag => tag.toLowerCase().includes(searchTerm));
-        const componentsMatch = spell.components.raw.toLowerCase().includes(searchTerm);
-        
-        return (nameMatch || descMatch || tagsMatch || componentsMatch) && !existingSpells.has(spell.name.toLowerCase());
+        // Check if spell matches ALL terms
+        const matchesAll = searchTerms.every(term => {
+            // Handle level search (e.g., "level1")
+            if (term.startsWith("level")) {
+                const level = term.replace("level", "");
+                return spell.level.toLowerCase() === level;
+            }
+
+            // Check other fields
+            return [
+                spell.name.toLowerCase(),
+                spell.description.toLowerCase(),
+                spell.components.raw.toLowerCase(),
+                spell.classes.join(" ").toLowerCase(),
+                spell.tags?.join(" ").toLowerCase() || ""
+            ].some(field => field.includes(term));
+        });
+
+        return matchesAll && !existingSpells.has(spell.name.toLowerCase());
     });
+
 
     if (matches.length === 0) {
         resultsDiv.textContent = "...";
@@ -102,8 +119,8 @@ function searchSpells() {
             '<div class="spell-result">' +
             '<strong>' + spell.name + '</strong> ' +
             '<em>(' + (spell.level === "cantrip" ? "Cantrip" : "Level " + spell.level) + ')</em> ' +
-            '<button class="add-known">+ Known</button> ' +
-            '<button class="add-prepared">+ Prepared</button>' +
+            '<button type="button" class="add-known">+ Known</button> ' +
+            '<button type="button" class="add-prepared">+ Prepared</button>' +
             '</div>' +
             '<div class="spell-details">' +
             '<small>' + spell.school + ' • ' + spell.range + '</small>' +
@@ -163,3 +180,4 @@ document.getElementById('spellSearchInput').addEventListener('keydown', function
         searchSpells();         // Call your search function
     }
 });
+ 
