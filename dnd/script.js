@@ -1,6 +1,108 @@
 // TOP OF FILE (only declare once)
 let equipmentData = [
-  
+  { name: "Abacus", cost: "2 gp", weight: "2 lb." },
+  { name: "Acid (vial)", cost: "25 gp", weight: "1 lb." },
+  { name: "Alchemist’s fire (flask)", cost: "50 gp", weight: "1 lb." },
+  { name: "*Ammunition*", cost: "", weight: "" },
+  { name: "Arrows (20)", cost: "1 gp", weight: "1 lb." },
+  { name: "Blowgun needles (50)", cost: "1 gp", weight: "1 lb." },
+  { name: "Crossbow bolts (20)", cost: "1 gp", weight: "1½ lb." },
+  { name: "Sling bullets (20)", cost: "4 cp", weight: "1½ lb." },
+  { name: "Antitoxin (vial)", cost: "50 gp", weight: "—" },
+  { name: "*Arcane focus*", cost: "", weight: "" },
+  { name: "Crystal", cost: "10 gp", weight: "1 lb." },
+  { name: "Orb", cost: "20 gp", weight: "3 lb." },
+  { name: "Rod", cost: "10 gp", weight: "2 lb." },
+  { name: "Staff", cost: "5 gp", weight: "4 lb." },
+  { name: "Wand", cost: "10 gp", weight: "1 lb." },
+  { name: "Backpack", cost: "2 gp", weight: "5 lb." },
+  { name: "Ball bearings (bag of 1,000)", cost: "1 gp", weight: "2 lb." },
+  { name: "Barrel", cost: "2 gp", weight: "70 lb." },
+  { name: "Basket", cost: "4 sp", weight: "2 lb." },
+  { name: "Bedroll", cost: "1 gp", weight: "7 lb." },
+  { name: "Bell", cost: "1 gp", weight: "—" },
+  { name: "Blanket", cost: "5 gp", weight: "3 lb." },
+  { name: "Block and tackle", cost: "1 gp", weight: "5 lb." },
+  { name: "Book", cost: "25 gp", weight: "5 lb." },
+  { name: "Bottle, glass", cost: "2 gp", weight: "2 lb." },
+  { name: "Bucket", cost: "5 cp", weight: "2 lb." },
+  { name: "Caltrops (bag of 20)", cost: "1 gp", weight: "2 lb." },
+  { name: "Candle", cost: "1 cp", weight: "—" },
+  { name: "Case, crossbow bolt", cost: "1 gp", weight: "1 lb." },
+  { name: "Case, map or scroll", cost: "1 gp", weight: "1 lb." },
+  { name: "Chain (10 feet)", cost: "5 gp", weight: "10 lb." },
+  { name: "Chalk (1 piece)", cost: "1 cp", weight: "—" },
+  { name: "Chest", cost: "5 gp", weight: "25 lb." },
+  { name: "Climber’s kit", cost: "25 gp", weight: "12 lb." },
+  { name: "Clothes, common", cost: "5 sp", weight: "3 lb." },
+  { name: "Clothes, costume", cost: "5 gp", weight: "4 lb." },
+  { name: "Clothes, fine", cost: "15 gp", weight: "6 lb." },
+  { name: "Clothes, traveler’s", cost: "2 gp", weight: "4 lb." },
+  { name: "Component pouch", cost: "25 gp", weight: "2 lb." },
+  { name: "Crowbar", cost: "2 gp", weight: "5 lb." },
+  { name: "*Druidic focus*", cost: "", weight: "" },
+  { name: "Sprig of mistletoe", cost: "1 gp", weight: "—" },
+  { name: "Totem", cost: "1 gp", weight: "—" },
+  { name: "Wooden staff", cost: "5 gp", weight: "10 lb." },
+  { name: "Yew wand", cost: "5 gp", weight: "3 lb." },
+  { name: "Fishing tackle", cost: "1 gp", weight: "—" },
+  { name: "Flask or tankard", cost: "2 cp", weight: "1 lb." },
+  { name: "Grappling hook", cost: "2 gp", weight: "—" },
+  { name: "Hammer", cost: "1 gp", weight: "25 lb." },
+  { name: "Hammer, sledge", cost: "2 gp", weight: "7 lb." },
+  { name: "Healer’s kit", cost: "5 gp", weight: "2 lb." },
+  { name: "*Holy symbol*", cost: "", weight: "" },
+  { name: "Amulet", cost: "1 sp", weight: "—" },
+  { name: "Emblem", cost: "5 sp", weight: "—" },
+  { name: "Reliquary", cost: "10 gp", weight: "—" },
+  { name: "Holy water (flask)", cost: "5 gp", weight: "—" },
+  { name: "Hourglass", cost: "5 gp", weight: "—" },
+  { name: "Hunting trap", cost: "5 gp", weight: "25 lb." },
+  { name: "Ink (1 ounce bottle)", cost: "2 gp", weight: "1 lb." },
+  { name: "Ink pen", cost: "5 cp", weight: "—" },
+  { name: "Jug or pitcher", cost: "100 gp", weight: "1 lb." },
+  { name: "Ladder (10-foot)", cost: "5 cp", weight: "5 lb." },
+  { name: "Lamp", cost: "2 gp", weight: "2 lb." },
+  { name: "Lantern, bullseye", cost: "5 sp", weight: "5 lb." },
+  { name: "Lantern, hooded", cost: "10 gp", weight: "10 lb." },
+  { name: "Lock", cost: "1 gp", weight: "2 lb." },
+  { name: "Magnifying glass", cost: "4 gp", weight: "—" },
+  { name: "Manacles", cost: "5 sp", weight: "—" },
+  { name: "Mess kit", cost: "10 gp", weight: "4 lb." },
+  { name: "Mirror, steel", cost: "1 cp", weight: "1/4 lb." },
+  { name: "Oil (flask)", cost: "5 gp", weight: "—" },
+  { name: "Paper (one sheet)", cost: "5 sp", weight: "—" },
+  { name: "Parchment (one sheet)", cost: "1 gp", weight: "—" },
+  { name: "Perfume (vial)", cost: "1 cp", weight: "—" },
+  { name: "Pick, miner’s", cost: "5 gp", weight: "—" },
+  { name: "Piton", cost: "5 sp", weight: "—" },
+  { name: "Poison, basic (vial)", cost: "10 gp", weight: "—" },
+  { name: "Pole (10-foot)", cost: "5 gp", weight: "—" },
+  { name: "Pot, iron", cost: "10 gp", weight: "—" },
+  { name: "Potion of healing", cost: "50 gp", weight: "1/4 lb." },
+  { name: "Pouch", cost: "2 gp", weight: "—" },
+  { name: "Quiver", cost: "5 sp", weight: "—" },
+  { name: "Ram, portable", cost: "1 cp", weight: "—" },
+  { name: "Rations (1 day)", cost: "5 gp", weight: "—" },
+  { name: "Robes", cost: "5 sp", weight: "—" },
+  { name: "Rope, hempen (50 feet)", cost: "2 gp", weight: "—" },
+  { name: "Rope, silk (50 feet)", cost: "5 cp", weight: "—" },
+  { name: "Sack", cost: "2 gp", weight: "—" },
+  { name: "Scale, merchant’s", cost: "0 gp", weight: "3" },
+  { name: "Sealing wax", cost: "5 sp", weight: "—" },
+  { name: "Shovel", cost: "1 gp", weight: "—" },
+  { name: "Signal whistle", cost: "4 gp", weight: "—" },
+  { name: "Signet ring", cost: "5 sp", weight: "—" },
+  { name: "Soap", cost: "1 gp", weight: "—" },
+  { name: "Spellbook", cost: "1 gp", weight: "—" },
+  { name: "Spikes, iron (10)", cost: "1 cp", weight: "—" },
+  { name: "Spyglass", cost: "5 gp", weight: "—" },
+  { name: "Tent, two-person", cost: "5 sp", weight: "—" },
+  { name: "Tinderbox", cost: "2 gp", weight: "—" },
+  { name: "Torch", cost: "5 cp", weight: "—" },
+  { name: "Vial", cost: "1 gp", weight: "—" },
+  { name: "Waterskin", cost: "2 sp", weight: "—" },
+  { name: "Whetstone", cost: "1 cp", weight: "—" }
 ]; // Global declaration
 
 // Remove ALL other 'let equipmentData' declarations
@@ -15,8 +117,19 @@ let currentRacialBonus = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
 // Define formatMod globally since it's used in recalc
 const formatMod = mod => (mod >= 0 ? `+${mod}` : mod);
 
+let contextDiv; // Declare globally
+let contextText;
 let lastClickedItem = null;
 
+// Initialize after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  contextDiv = document.getElementById("equipmentContext");
+  contextText = document.getElementById("equipmentContextText");
+  
+  if (!contextDiv || !contextText) {
+    console.error("Context elements missing from DOM!");
+  }
+});
 // Expose certain functions to global scope
 // Declare once on the global scope—if it’s not already defined
 window.equipmentDataStore = window.equipmentDataStore || {};
@@ -1050,7 +1163,7 @@ function initializeEquipmentData(adventuringGear) {
  */
 function processEquipmentContext(contentArray) {
   const map = {};
-  const regex = /\*\*\*(.+?)\.\*\*\*(.*?)(?=\*\*\*|$)/gs;
+  const regex = /\*\*\*(.+?)\*\*\*(.*?)(?=\*\*\*|$)/gs; // Removed the \. after .+?
   contentArray.forEach(text => {
     let match;
     while ((match = regex.exec(text)) !== null) {
@@ -1151,14 +1264,18 @@ function removeEquipmentRow(button) {
  ******************************/
 
 // Event delegation for itemName -> show context
+// Updated Equipment Table Click Handler
 document.getElementById('equipmentTable').addEventListener('click', function(event) {
-  if (event.target.classList.contains('equipment-name')) {
-    const itemName = normalizeEquipmentName(event.target.value);
-    if (equipmentContextMap[itemName]) {
-      showEquipmentContext(equipmentContextMap[itemName], event.target);
-    } else {
-      hideEquipmentContext();
-    }
+  const target = event.target.closest('input.equipment-name');
+  if (!target) return;
+  
+  const itemName = normalizeEquipmentName(target.value);
+  if (!itemName) return;
+
+  if (equipmentContextMap[itemName]) {
+    showEquipmentContext(equipmentContextMap[itemName], target);
+  } else {
+    hideEquipmentContext();
   }
 });
 
@@ -1193,41 +1310,34 @@ document.getElementById('equipmentTable').addEventListener('input', function(eve
 
 
 function showEquipmentContext(details, targetElement) {
-  const contextDiv = document.getElementById("equipmentContext");
-  const contextText = document.getElementById("equipmentContextText");
+  if (!contextDiv || !contextText) return; // Safety check
+
+  console.log("Showing context for:", targetElement.value);
   
-  if (lastClickedItem === targetElement) {
-    if (contextDiv.style.display === "block") {
-      hideEquipmentContext(false);
-    } else {
-      contextText.innerHTML = details;
-      contextDiv.style.display = "block";
-      contextDiv.style.opacity = 1;
-    }
-  } else {
-    hideEquipmentContext(false);
-    contextText.innerHTML = details;
-    contextDiv.style.display = "block";
-    contextDiv.style.opacity = 1;
-    lastClickedItem = targetElement;
-  }
-  
+  // Position calculations
   const rect = targetElement.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const maxLeft = viewportWidth - contextDiv.offsetWidth - 20;
+
   contextDiv.style.top = `${rect.top + window.scrollY + targetElement.offsetHeight}px`;
-  contextDiv.style.left = `${rect.left + window.scrollX}px`;
+  contextDiv.style.left = `${Math.min(rect.left + window.scrollX, maxLeft)}px`;
+
+  // Content update
+  contextText.innerHTML = details;
+  contextDiv.style.display = "block";
+  contextDiv.style.opacity = 1;
+  lastClickedItem = targetElement;
 }
 
 function hideEquipmentContext(resetClickedItem = true) {
-  const contextDiv = document.getElementById("equipmentContext");
-  contextDiv.style.opacity = 0;
+  if (!contextDiv) return; // Safety check
   
-  if (resetClickedItem) {
-    lastClickedItem = null;
-  }
+  contextDiv.style.opacity = 0;
+  if (resetClickedItem) lastClickedItem = null;
   
   setTimeout(() => {
     contextDiv.style.display = "none";
-  }, 10000); // Adjust the delay as needed
+  }, 300);
 }
 
 document.addEventListener('click', function(event) {
@@ -1236,6 +1346,7 @@ document.addEventListener('click', function(event) {
     hideEquipmentContext();
   }
 });
+
 
 /*******************************
  *  SEARCH SPELLS (DEBOUNCED)  *
@@ -1298,14 +1409,17 @@ function searchSpells() {
         <p>${spell.description.substring(0, 100)}...</p>
       </div>
     `;
-    // Add to known spells
-    li.querySelector(".add-known").addEventListener("click", (e) => {
-      addSpellToList(spell, "known", e);
-    });
-    // Add to prepared spells
-    li.querySelector(".add-prepared").addEventListener("click", (e) => {
-      addSpellToList(spell, "prepared", e);
-    });
+   // Add to known spells
+li.querySelector(".add-known").addEventListener("click", (e) => {
+  e.preventDefault(); // Prevent default action
+  addSpellToList(spell, "known");
+});
+
+// Add to prepared spells
+li.querySelector(".add-prepared").addEventListener("click", (e) => {
+  e.preventDefault(); // Prevent default action
+  addSpellToList(spell, "prepared");
+});
 
     list.appendChild(li);
   });
