@@ -674,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Populate the equipment datalist on DOM ready
     loadEquipmentData();
-});
+}); 
 
 // Expose functions to window if needed
 window.saveCharacter = saveCharacter;
@@ -684,5 +684,5 @@ window.addEquipmentRow = addEquipmentRow;
 window.addWeaponRow = addWeaponRow;
 window.removeEquipmentRow = removeEquipmentRow;
 window.removeWeaponRow = removeWeaponRow;
-window.updateClass = updateClass; 
+window.updateClass = updateClass;
 
