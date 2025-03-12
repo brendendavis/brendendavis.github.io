@@ -54,6 +54,7 @@ if (typeof window.equipmentData === "undefined" || !window.equipmentData.length)
         { name: "Acid (vial)", cost: "25 gp", weight: "1 lb." },
         { name: "Alchemist’s fire (flask)", cost: "50 gp", weight: "1 lb." },
         { name: "*Ammunition*", cost: "", weight: "" },
+        { name: "Amber (gemstone)", cost: "100 gp", weight: "—" },
         { name: "Arrows (20)", cost: "1 gp", weight: "1 lb." },
         { name: "Blowgun needles (50)", cost: "1 gp", weight: "1 lb." },
         { name: "Crossbow bolts (20)", cost: "1 gp", weight: "1½ lb." },
