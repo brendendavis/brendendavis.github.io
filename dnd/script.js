@@ -3,6 +3,7 @@ let equipmentData = [
   { name: "Abacus", cost: "2 gp", weight: "2 lb." },
   { name: "Acid (vial)", cost: "25 gp", weight: "1 lb." },
   { name: "Alchemist's fire (flask)", cost: "50 gp", weight: "1 lb." },
+  { name: "Amber (gemstone)", cost: "100 gp", weight: "—" },
   { name: "*Ammunition*", cost: "", weight: "" },
   { name: "Arrows (20)", cost: "1 gp", weight: "1 lb." },
   { name: "Blowgun needles (50)", cost: "1 gp", weight: "1 lb." },
@@ -180,7 +181,7 @@ window.updatePointBuyRemaining = updatePointBuyRemaining;
 window.hideEquipmentContext = hideEquipmentContext;
 window.toggleHandbook = toggleHandbook;
 window.updateProgress = updateProgress;
-
+ 
 // Add this near other global function declarations
 window.exportCharacterSheet = exportCharacterSheet;
 
@@ -508,6 +509,106 @@ function exportCharacterSheet() {
         break-inside: avoid;
         margin-bottom: 8px;
         padding: 5px 0;
+      }
+      
+      .spell-handbook {
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .class-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 4px solid #3498db;
+      }
+
+      .class-section h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #bdc3c7;
+      }
+
+      .class-section h4 {
+        color: #34495e;
+        margin: 15px 0 8px;
+        font-size: 1.1em;
+      }
+
+      .spell-progression-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        background: #fff;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .spell-progression-table th,
+      .spell-progression-table td {
+        padding: 8px 12px;
+        text-align: center;
+        border: 1px solid #e1e1e1;
+      }
+
+      .spell-progression-table th {
+        background: #3498db;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .spell-progression-table tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+
+      .spell-progression-table tr:hover {
+        background: #edf2f7;
+      }
+
+      .spells-known,
+      .cantrips-known,
+      .spells-prepared {
+        background: #fff;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      }
+
+      .spells-known h4,
+      .cantrips-known h4,
+      .spells-prepared h4 {
+        color: #2980b9;
+        margin-bottom: 5px;
+      }
+
+      #spellHandbookContainer {
+        display: none;
+        margin: 20px 0;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      #toggleSpellHandbookBtn {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+        margin: 10px 0;
+        transition: background 0.3s ease;
+      }
+
+      #toggleSpellHandbookBtn:hover {
+        background: #2980b9;
       }
     </style>
     ${basicInfo}
@@ -1944,7 +2045,7 @@ function updateArmorClass() {
 
   // Light armor => full Dex mod
   if (selectedArmor.value.includes("Leather") || selectedArmor.value.includes("Padded")) {
-    dexModifier = getDexModifier();
+      dexModifier = getDexModifier();
   }
   // Heavy armor => no Dex mod
   else if (selectedArmor.value.includes("Chain Mail") || selectedArmor.value.includes("Splint") || 
@@ -2023,6 +2124,12 @@ document.addEventListener("DOMContentLoaded", function () {
   if (backgroundSelect) {
     backgroundSelect.addEventListener("change", showBackgroundContext);
   }
+
+  // Add event listener for spell handbook button
+  const spellHandbookBtn = document.getElementById('toggleSpellHandbookBtn');
+  if (spellHandbookBtn) {
+    spellHandbookBtn.addEventListener('click', toggleSpellHandbook);
+  }
 });
 
 // Add these functions to handle context display
@@ -2058,4 +2165,319 @@ function showContext(details, targetElement) {
   contextDiv.style.display = "block";
   contextDiv.style.opacity = 1;
   lastClickedItem = targetElement;
+}
+
+// Add this near other global declarations
+const spellcastingData = {
+  "Wizard": {
+    spellcastingAbility: "Intelligence",
+    spellsKnown: "Spellbook based - can learn unlimited spells",
+    cantripsKnown: {
+      1: 3, 4: 4, 10: 5
+    },
+    spellsPrepared: "Intelligence modifier + Wizard level",
+    spellProgression: {
+      1: { slots: [2], cantrips: 3 },
+      2: { slots: [3], cantrips: 3 },
+      3: { slots: [4, 2], cantrips: 3 },
+      4: { slots: [4, 3], cantrips: 4 },
+      5: { slots: [4, 3, 2], cantrips: 4 },
+      6: { slots: [4, 3, 3], cantrips: 4 },
+      7: { slots: [4, 3, 3, 1], cantrips: 4 },
+      8: { slots: [4, 3, 3, 2], cantrips: 4 },
+      9: { slots: [4, 3, 3, 3, 1], cantrips: 4 },
+      10: { slots: [4, 3, 3, 3, 2], cantrips: 5 }
+    }
+  },
+  "Sorcerer": {
+    spellcastingAbility: "Charisma",
+    spellsKnown: {
+      1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: 9, 9: 10, 10: 11
+    },
+    cantripsKnown: {
+      1: 4, 4: 5, 10: 6
+    },
+    spellProgression: {
+      1: { slots: [2], cantrips: 4 },
+      2: { slots: [3], cantrips: 4 },
+      3: { slots: [4, 2], cantrips: 4 },
+      4: { slots: [4, 3], cantrips: 5 },
+      5: { slots: [4, 3, 2], cantrips: 5 },
+      6: { slots: [4, 3, 3], cantrips: 5 },
+      7: { slots: [4, 3, 3, 1], cantrips: 5 },
+      8: { slots: [4, 3, 3, 2], cantrips: 5 },
+      9: { slots: [4, 3, 3, 3, 1], cantrips: 5 },
+      10: { slots: [4, 3, 3, 3, 2], cantrips: 6 }
+    }
+  },
+  "Cleric": {
+    spellcastingAbility: "Wisdom",
+    spellsKnown: "Access to full spell list",
+    cantripsKnown: {
+      1: 3, 4: 4, 10: 5
+    },
+    spellsPrepared: "Wisdom modifier + Cleric level",
+    spellProgression: {
+      1: { slots: [2], cantrips: 3 },
+      2: { slots: [3], cantrips: 3 },
+      3: { slots: [4, 2], cantrips: 3 },
+      4: { slots: [4, 3], cantrips: 4 },
+      5: { slots: [4, 3, 2], cantrips: 4 },
+      6: { slots: [4, 3, 3], cantrips: 4 },
+      7: { slots: [4, 3, 3, 1], cantrips: 4 },
+      8: { slots: [4, 3, 3, 2], cantrips: 4 },
+      9: { slots: [4, 3, 3, 3, 1], cantrips: 4 },
+      10: { slots: [4, 3, 3, 3, 2], cantrips: 5 }
+    }
+  },
+  "Druid": {
+    spellcastingAbility: "Wisdom",
+    spellsKnown: "Access to full spell list",
+    cantripsKnown: {
+      1: 2, 4: 3, 10: 4
+    },
+    spellsPrepared: "Wisdom modifier + Druid level",
+    spellProgression: {
+      1: { slots: [2], cantrips: 2 },
+      2: { slots: [3], cantrips: 2 },
+      3: { slots: [4, 2], cantrips: 2 },
+      4: { slots: [4, 3], cantrips: 3 },
+      5: { slots: [4, 3, 2], cantrips: 3 },
+      6: { slots: [4, 3, 3], cantrips: 3 },
+      7: { slots: [4, 3, 3, 1], cantrips: 3 },
+      8: { slots: [4, 3, 3, 2], cantrips: 3 },
+      9: { slots: [4, 3, 3, 3, 1], cantrips: 3 },
+      10: { slots: [4, 3, 3, 3, 2], cantrips: 4 }
+    }
+  },
+  "Bard": {
+    spellcastingAbility: "Charisma",
+    spellsKnown: {
+      1: 4, 2: 5, 3: 6, 4: 7, 5: 8, 6: 9, 7: 10, 8: 11, 9: 12, 10: 14
+    },
+    cantripsKnown: {
+      1: 2, 4: 3, 10: 4
+    },
+    spellProgression: {
+      1: { slots: [2], cantrips: 2 },
+      2: { slots: [3], cantrips: 2 },
+      3: { slots: [4, 2], cantrips: 2 },
+      4: { slots: [4, 3], cantrips: 3 },
+      5: { slots: [4, 3, 2], cantrips: 3 },
+      6: { slots: [4, 3, 3], cantrips: 3 },
+      7: { slots: [4, 3, 3, 1], cantrips: 3 },
+      8: { slots: [4, 3, 3, 2], cantrips: 3 },
+      9: { slots: [4, 3, 3, 3, 1], cantrips: 3 },
+      10: { slots: [4, 3, 3, 3, 2], cantrips: 4 }
+    }
+  },
+  "Warlock": {
+    spellcastingAbility: "Charisma",
+    spellsKnown: {
+      1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: 9, 9: 10, 10: 10
+    },
+    cantripsKnown: {
+      1: 2, 4: 3, 10: 4
+    },
+    spellProgression: {
+      1: { slots: 1, slotLevel: 1, cantrips: 2 },
+      2: { slots: 2, slotLevel: 1, cantrips: 2 },
+      3: { slots: 2, slotLevel: 2, cantrips: 2 },
+      4: { slots: 2, slotLevel: 2, cantrips: 3 },
+      5: { slots: 2, slotLevel: 3, cantrips: 3 },
+      6: { slots: 2, slotLevel: 3, cantrips: 3 },
+      7: { slots: 2, slotLevel: 4, cantrips: 3 },
+      8: { slots: 2, slotLevel: 4, cantrips: 3 },
+      9: { slots: 2, slotLevel: 5, cantrips: 3 },
+      10: { slots: 2, slotLevel: 5, cantrips: 4 }
+    }
+  },
+  "Paladin": {
+    spellcastingAbility: "Charisma",
+    spellsKnown: "Access to full spell list",
+    spellsPrepared: "Charisma modifier + ½ Paladin level",
+    spellProgression: {
+      2: { slots: [2] },
+      3: { slots: [3] },
+      4: { slots: [3] },
+      5: { slots: [4, 2] },
+      6: { slots: [4, 2] },
+      7: { slots: [4, 3] },
+      8: { slots: [4, 3] },
+      9: { slots: [4, 3, 2] },
+      10: { slots: [4, 3, 2] }
+    }
+  },
+  "Ranger": {
+    spellcastingAbility: "Wisdom",
+    spellsKnown: {
+      2: 2, 3: 3, 4: 3, 5: 4, 6: 4, 7: 5, 8: 5, 9: 6, 10: 6
+    },
+    spellProgression: {
+      2: { slots: [2] },
+      3: { slots: [3] },
+      4: { slots: [3] },
+      5: { slots: [4, 2] },
+      6: { slots: [4, 2] },
+      7: { slots: [4, 3] },
+      8: { slots: [4, 3] },
+      9: { slots: [4, 3, 2] },
+      10: { slots: [4, 3, 2] }
+    }
+  }
+};
+
+function toggleSpellHandbook(event) {
+  if (event) {
+    event.preventDefault();
+  }
+  
+  const handbookContainer = document.getElementById('spellHandbookContainer');
+  const toggleBtn = document.getElementById('toggleSpellHandbookBtn');
+  
+  if (handbookContainer.style.display === "none" || handbookContainer.style.display === "") {
+    handbookContainer.style.display = "block";
+    toggleBtn.textContent = "Close Spellcasting Handbook";
+    
+    // Generate handbook content
+    let content = `
+      <div class="spell-handbook">
+        <div class="general-spellcasting">
+          <h2>General Spellcasting Rules</h2>
+          
+          <div class="spell-components">
+            <h3>Spell Components</h3>
+            <ul>
+              <li><strong>Verbal (V):</strong> Most spells require the chanting of mystic words</li>
+              <li><strong>Somatic (S):</strong> Spellcasting gestures and movements</li>
+              <li><strong>Material (M):</strong> Specific items needed to cast the spell</li>
+            </ul>
+          </div>
+
+          <div class="schools-of-magic">
+            <h3>Schools of Magic</h3>
+            <ul>
+              <li><strong>Abjuration:</strong> Protective spells, wards, and barriers</li>
+              <li><strong>Conjuration:</strong> Transportation and summoning</li>
+              <li><strong>Divination:</strong> Knowledge and information gathering</li>
+              <li><strong>Enchantment:</strong> Mind affecting and charm spells</li>
+              <li><strong>Evocation:</strong> Elemental and energy manipulation</li>
+              <li><strong>Illusion:</strong> Deception and phantasms</li>
+              <li><strong>Necromancy:</strong> Death and undeath related magic</li>
+              <li><strong>Transmutation:</strong> Object and creature transformation</li>
+            </ul>
+          </div>
+
+          <div class="ritual-casting">
+            <h3>Ritual Casting</h3>
+            <p>Spells with the ritual tag can be cast without using a spell slot, but take 10 minutes longer to cast. Classes with ritual casting:</p>
+            <ul>
+              <li><strong>Wizard:</strong> Can ritual cast any ritual spell in their spellbook</li>
+              <li><strong>Cleric & Druid:</strong> Can ritual cast any prepared ritual spell</li>
+              <li><strong>Bard:</strong> Can ritual cast any known ritual spell</li>
+              <li><strong>Warlock (Book of Ancient Secrets):</strong> Can ritual cast any ritual spell in their Book of Shadows</li>
+            </ul>
+          </div>
+
+          <div class="concentration">
+            <h3>Concentration</h3>
+            <p>Key rules for concentration spells:</p>
+            <ul>
+              <li>Can only concentrate on one spell at a time</li>
+              <li>Concentration check required when taking damage (DC 10 or half damage, whichever is higher)</li>
+              <li>Automatically ends if incapacitated or killed</li>
+              <li>Can choose to end concentration at any time (no action required)</li>
+            </ul>
+          </div>
+
+          <div class="multiclassing">
+            <h3>Multiclass Spellcasting</h3>
+            <p>Spell Slots: Add together all your levels in the following classes:</p>
+            <ul>
+              <li>Full casters (Bard, Cleric, Druid, Sorcerer, Wizard): Full level</li>
+              <li>Half casters (Paladin, Ranger): Half level (rounded down)</li>
+              <li>Third casters (Arcane Trickster, Eldritch Knight): Third of level (rounded down)</li>
+              <li>Warlock levels are separate and don't combine with other classes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="class-specific-spellcasting">
+          <h2>Class-Specific Spellcasting</h2>`;
+
+    // Add class-specific spellcasting information
+    for (const [className, data] of Object.entries(spellcastingData)) {
+      content += `
+        <div class="class-section">
+          <h3>${className}</h3>
+          <p><strong>Spellcasting Ability:</strong> ${data.spellcastingAbility}</p>
+          
+          <div class="spells-known">
+            <h4>Spells Known</h4>
+            <p>${typeof data.spellsKnown === 'string' ? data.spellsKnown : 
+              Object.entries(data.spellsKnown).map(([level, count]) => 
+                `Level ${level}: ${count}`).join(', ')
+            }</p>
+          </div>
+          
+          ${data.cantripsKnown ? `
+            <div class="cantrips-known">
+              <h4>Cantrips Known</h4>
+              <p>${Object.entries(data.cantripsKnown).map(([level, count]) =>
+                `Level ${level}: ${count}`).join(', ')}</p>
+            </div>
+          ` : ''}
+          
+          ${data.spellsPrepared ? `
+            <div class="spells-prepared">
+              <h4>Spells Prepared</h4>
+              <p>${data.spellsPrepared}</p>
+            </div>
+          ` : ''}
+          
+          <div class="spell-slots">
+            <h4>Spell Slots by Level</h4>
+            <table class="spell-progression-table">
+              <tr>
+                <th>Class Level</th>
+                ${className === 'Warlock' ? '<th>Slot Level</th><th>Slots</th>' :
+                  '<th>1st</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th>'}
+              </tr>
+              ${Object.entries(data.spellProgression).map(([level, info]) => `
+                <tr>
+                  <td>${level}</td>
+                  ${className === 'Warlock' ?
+                    `<td>${info.slotLevel}</td><td>${info.slots}</td>` :
+                    Array(5).fill(0).map((_, i) => 
+                      `<td>${info.slots[i] || '-'}</td>`
+                    ).join('')
+                  }
+                </tr>
+              `).join('')}
+            </table>
+          </div>
+
+          ${className === 'Warlock' ? `
+            <div class="pact-magic">
+              <h4>Pact Magic Special Rules</h4>
+              <ul>
+                <li>All spell slots are of the same level</li>
+                <li>Spell slots recharge on a short rest</li>
+                <li>Can cast spells using spell slots of any level</li>
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+    
+    content += `
+        </div>
+      </div>`;
+    
+    handbookContainer.innerHTML = content;
+  } else {
+    handbookContainer.style.display = "none";
+    toggleBtn.textContent = "Open Spellcasting Handbook";
+  }
 }
