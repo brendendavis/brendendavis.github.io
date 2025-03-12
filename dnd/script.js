@@ -2,7 +2,7 @@
 let equipmentData = [
   { name: "Abacus", cost: "2 gp", weight: "2 lb." },
   { name: "Acid (vial)", cost: "25 gp", weight: "1 lb." },
-  { name: "Alchemist’s fire (flask)", cost: "50 gp", weight: "1 lb." },
+  { name: "Alchemist's fire (flask)", cost: "50 gp", weight: "1 lb." },
   { name: "*Ammunition*", cost: "", weight: "" },
   { name: "Arrows (20)", cost: "1 gp", weight: "1 lb." },
   { name: "Blowgun needles (50)", cost: "1 gp", weight: "1 lb." },
@@ -33,11 +33,11 @@ let equipmentData = [
   { name: "Chain (10 feet)", cost: "5 gp", weight: "10 lb." },
   { name: "Chalk (1 piece)", cost: "1 cp", weight: "—" },
   { name: "Chest", cost: "5 gp", weight: "25 lb." },
-  { name: "Climber’s kit", cost: "25 gp", weight: "12 lb." },
+  { name: "Climber's kit", cost: "25 gp", weight: "12 lb." },
   { name: "Clothes, common", cost: "5 sp", weight: "3 lb." },
   { name: "Clothes, costume", cost: "5 gp", weight: "4 lb." },
   { name: "Clothes, fine", cost: "15 gp", weight: "6 lb." },
-  { name: "Clothes, traveler’s", cost: "2 gp", weight: "4 lb." },
+  { name: "Clothes, traveler's", cost: "2 gp", weight: "4 lb." },
   { name: "Component pouch", cost: "25 gp", weight: "2 lb." },
   { name: "Crowbar", cost: "2 gp", weight: "5 lb." },
   { name: "*Druidic focus*", cost: "", weight: "" },
@@ -50,7 +50,7 @@ let equipmentData = [
   { name: "Grappling hook", cost: "2 gp", weight: "—" },
   { name: "Hammer", cost: "1 gp", weight: "25 lb." },
   { name: "Hammer, sledge", cost: "2 gp", weight: "7 lb." },
-  { name: "Healer’s kit", cost: "5 gp", weight: "2 lb." },
+  { name: "Healer's kit", cost: "5 gp", weight: "2 lb." },
   { name: "*Holy symbol*", cost: "", weight: "" },
   { name: "Amulet", cost: "1 sp", weight: "—" },
   { name: "Emblem", cost: "5 sp", weight: "—" },
@@ -74,7 +74,7 @@ let equipmentData = [
   { name: "Paper (one sheet)", cost: "5 sp", weight: "—" },
   { name: "Parchment (one sheet)", cost: "1 gp", weight: "—" },
   { name: "Perfume (vial)", cost: "1 cp", weight: "—" },
-  { name: "Pick, miner’s", cost: "5 gp", weight: "—" },
+  { name: "Pick, miner's", cost: "5 gp", weight: "—" },
   { name: "Piton", cost: "5 sp", weight: "—" },
   { name: "Poison, basic (vial)", cost: "10 gp", weight: "—" },
   { name: "Pole (10-foot)", cost: "5 gp", weight: "—" },
@@ -88,7 +88,7 @@ let equipmentData = [
   { name: "Rope, hempen (50 feet)", cost: "2 gp", weight: "—" },
   { name: "Rope, silk (50 feet)", cost: "5 cp", weight: "—" },
   { name: "Sack", cost: "2 gp", weight: "—" },
-  { name: "Scale, merchant’s", cost: "0 gp", weight: "3" },
+  { name: "Scale, merchant's", cost: "0 gp", weight: "3" },
   { name: "Sealing wax", cost: "5 sp", weight: "—" },
   { name: "Shovel", cost: "1 gp", weight: "—" },
   { name: "Signal whistle", cost: "4 gp", weight: "—" },
@@ -105,11 +105,46 @@ let equipmentData = [
   { name: "Whetstone", cost: "1 cp", weight: "—" }
 ]; // Global declaration
 
-// Remove ALL other 'let equipmentData' declarations
-// in functions, event handlers, or other files
-/*****************************
- *  GLOBAL VARIABLES / SETUP  *
- *****************************/
+// Define alignment and background data globally
+const alignmentData = {
+  "Lawful Good": "Lawful Good characters believe in honor, truth, and justice. They follow rules, keep their word, and fight against evil. Examples: Paladins, honorable knights, and righteous judges.",
+  "Neutral Good": "Neutral Good characters do what's best for others without bias for or against order. They help others according to their needs. Examples: Many healers, benevolent rulers, and helpful commoners.",
+  "Chaotic Good": "Chaotic Good characters follow their conscience and help others freely. They believe in goodness but hate restrictions. Examples: Robin Hood-like heroes and free-spirited champions.",
+  "Lawful Neutral": "Lawful Neutral characters believe in order above all. They follow rules without concern for good or evil. Examples: Judges who follow the law exactly, organized guild members.",
+  "True Neutral": "True Neutral characters seek balance and avoid extremes. They act naturally without prejudice. Examples: Druids, many animals, and those who prefer not to take sides.",
+  "Chaotic Neutral": "Chaotic Neutral characters follow their whims and value their own freedom above all else. Examples: Many rogues, free spirits, and unpredictable wanderers.",
+  "Lawful Evil": "Lawful Evil characters use structure and rules to get what they want, without care for others' welfare. Examples: Tyrants, disciplined evil commanders, and corrupt officials.",
+  "Neutral Evil": "Neutral Evil characters do whatever they can get away with to serve their own interests. Examples: Many evil creatures, mercenaries without scruples.",
+  "Chaotic Evil": "Chaotic Evil characters act with arbitrary violence and destructive impulses. They do what they want with no regard for others. Examples: Demons, violent criminals, and destructive monsters."
+};
+
+const backgroundData = {
+  "Acolyte": "You have spent your life in service to a temple, learning sacred rites and providing sacrifices to the gods. Features: Shelter of the Faithful, proficiency in Insight and Religion.",
+  "Charlatan": "You're an expert in manipulation, with a talent for deception and creating false identities. Features: False Identity, proficiency in Deception and Sleight of Hand.",
+  "Criminal": "Your criminal past and connections help you survive in the underworld. Features: Criminal Contact, proficiency in Deception and Stealth.",
+  "Entertainer": "You thrive in front of an audience, telling stories, music, or drama. Features: By Popular Demand, proficiency in Acrobatics and Performance.",
+  "Folk Hero": "You come from a humble background but are destined for greatness. Features: Rustic Hospitality, proficiency in Animal Handling and Survival.",
+  "Guild Artisan": "You are a skilled craftsperson, with both talent and trade connections. Features: Guild Membership, proficiency in Insight and Persuasion.",
+  "Hermit": "You lived in seclusion, either in a sheltered community or entirely alone. Features: Discovery, proficiency in Medicine and Religion.",
+  "Noble": "You understand wealth, power, and privilege from your upper-class upbringing. Features: Position of Privilege, proficiency in History and Persuasion.",
+  "Outlander": "You grew up in the wilds, learning to survive far from civilization. Features: Wanderer, proficiency in Athletics and Survival.",
+  "Sage": "You spent years learning the lore of the multiverse. Features: Researcher, proficiency in Arcana and History.",
+  "Sailor": "You sailed on a seagoing vessel for years, navigating the seas. Features: Ship's Passage, proficiency in Athletics and Perception.",
+  "Soldier": "You trained as a soldier, learning warfare and military tactics. Features: Military Rank, proficiency in Athletics and Intimidation.",
+  "Urchin": "You grew up on the streets, orphaned and alone. Features: City Secrets, proficiency in Sleight of Hand and Stealth.",
+  "City Watch": "You served in the city's guard or police force. Features: Watcher's Eye, proficiency in Athletics and Insight.",
+  "Clan Crafter": "You are a member of a dwarf clan known for skilled artisans. Features: Respect of the Stout Folk, proficiency in History and Insight.",
+  "Cloistered Scholar": "You lived in a library or university, studying. Features: Library Access, proficiency in History and your choice of Arcana, Nature, or Religion.",
+  "Courtier": "You navigated the intrigues of noble society. Features: Court Functionary, proficiency in Insight and Persuasion.",
+  "Faction Agent": "You are part of a powerful political organization. Features: Safe Haven, proficiency in Insight and one Intelligence, Wisdom, or Charisma skill.",
+  "Far Traveler": "You come from a distant land, making you exotic and unusual. Features: All Eyes on You, proficiency in Insight and Perception.",
+  "Gladiator": "You fought in arenas for the entertainment of others. Features: By Popular Demand, proficiency in Acrobatics and Performance.",
+  "Guild Merchant": "You are a member of a merchant guild, trading goods. Features: Guild Membership, proficiency in Insight and Persuasion.",
+  "Knight": "You are a noble warrior sworn to a code of chivalry. Features: Retainers, proficiency in History and Persuasion.",
+  "Mercenary Veteran": "You fought in armies for pay rather than loyalty. Features: Mercenary Life, proficiency in Athletics and Persuasion.",
+  "Pirate": "You were a seafaring outlaw with a reputation for danger. Features: Bad Reputation, proficiency in Athletics and Perception.",
+  "Spy": "You gathered information through stealth and subterfuge. Features: Spy Contact, proficiency in Deception and Stealth."
+};
 
 // Define currentRacialBonus in a broader scope
 let currentRacialBonus = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
@@ -131,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 // Expose certain functions to global scope
-// Declare once on the global scope—if it’s not already defined
+// Declare once on the global scope—if it's not already defined
 window.equipmentDataStore = window.equipmentDataStore || {};
 window.rollAllAbilities = rollAllAbilities;
 window.addWeaponRow = addWeaponRow;
@@ -145,7 +180,371 @@ window.updatePointBuyRemaining = updatePointBuyRemaining;
 window.hideEquipmentContext = hideEquipmentContext;
 window.toggleHandbook = toggleHandbook;
 window.updateProgress = updateProgress;
- 
+
+// Add this near other global function declarations
+window.exportCharacterSheet = exportCharacterSheet;
+
+function exportCharacterSheet() {
+  // Create a temporary div for the export content
+  const exportDiv = document.createElement('div');
+  exportDiv.className = 'export-sheet';
+  
+  // Character Header
+  const characterName = document.getElementById('characterName').value || 'Unnamed Character';
+  const playerName = document.getElementById('playerName').value || 'Unknown Player';
+  const characterClass = document.getElementById('characterClass').value;
+  const level = document.getElementById('level').value || '1';
+  const race = document.getElementById('race').value;
+  const alignment = document.getElementById('alignment').value;
+  const background = document.getElementById('background').value;
+
+  // Basic Info Section
+  const basicInfo = `
+    <div class="export-section">
+      <div class="character-header">
+        <h1>${characterName}</h1>
+        <p>Level ${level} ${race} ${characterClass}</p>
+        <p>Player: ${playerName}</p>
+        <p>Background: ${background} • Alignment: ${alignment}</p>
+      </div>
+    </div>
+  `;
+
+  // Ability Scores Section
+  const abilities = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+  const abilityScores = abilities.map(ability => {
+    const score = document.getElementById(ability).value;
+    const mod = document.getElementById(ability + 'Mod').value;
+    return `<div class="ability-score">
+      <strong>${ability.toUpperCase()}</strong>: ${score} (${mod})
+    </div>`;
+  }).join('');
+
+  // Combat Stats
+  const ac = document.getElementById('armorClass').value;
+  const hp = document.getElementById('hitPoints').value;
+  const initiative = document.getElementById('initiative').value;
+  const speed = document.getElementById('speed').value;
+
+  const combatStats = `
+    <div class="export-section">
+      <h2>Combat Statistics</h2>
+      <div class="combat-stats">
+        <div class="combat-stat">
+          <strong>${ac}</strong>
+          <span>Armor Class</span>
+        </div>
+        <div class="combat-stat">
+          <strong>${hp}</strong>
+          <span>Hit Points</span>
+        </div>
+        <div class="combat-stat">
+          <strong>${initiative}</strong>
+          <span>Initiative</span>
+        </div>
+        <div class="combat-stat">
+          <strong>${speed}</strong>
+          <span>Speed (ft)</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Weapons Section
+  const weaponsTable = document.getElementById('weaponsTable');
+  const weapons = Array.from(weaponsTable.querySelectorAll('tr')).slice(1).map(row => {
+    const cells = row.querySelectorAll('td');
+    if (cells.length >= 3) {
+      const name = cells[0].querySelector('input')?.value || '';
+      const bonus = cells[1].querySelector('input')?.value || '';
+      const damage = cells[2].querySelector('input')?.value || '';
+      return `<div class="weapon-entry">
+        <strong>${name}</strong> | Attack: ${bonus} | Damage: ${damage}
+      </div>`;
+    }
+    return '';
+  }).join('');
+
+  const weaponsSection = `
+    <div class="export-section">
+      <h2>Weapons</h2>
+      ${weapons || '<p>No weapons equipped</p>'}
+    </div>
+  `;
+
+  // Spells Section
+  const knownSpellsList = document.getElementById('knownSpellsList');
+  const preparedSpellsList = document.getElementById('preparedSpellsList');
+  
+  const knownSpells = Array.from(knownSpellsList?.querySelectorAll('li') || [])
+    .map(li => li.textContent.replace('Remove', '').trim())
+    .join(', ');
+  
+  const preparedSpells = Array.from(preparedSpellsList?.querySelectorAll('li') || [])
+    .map(li => li.textContent.replace('Remove', '').trim())
+    .join(', ');
+
+  // Get spell slots
+  const spellSlotsContainer = document.getElementById('spellSlotsContainer');
+  const spellSlots = Array.from(spellSlotsContainer?.querySelectorAll('.spell-slot-level') || [])
+    .map(level => {
+      const levelNum = level.querySelector('span')?.textContent;
+      const total = level.querySelector('input[type="number"]')?.value || '0';
+      return `Level ${levelNum}: ${total}`;
+    }).join(', ');
+
+  const spellsSection = `
+    <div class="export-section">
+      <h2>Spellcasting</h2>
+      <div class="spells-section">
+        <h3>Spell Slots</h3>
+        <div class="spell-slots">
+          ${spellSlots ? spellSlots.split(', ').map(slot => 
+            `<div class="spell-slot-item">${slot}</div>`
+          ).join('') : 'No spell slots available'}
+        </div>
+        <h3>Known Spells</h3>
+        <p>${knownSpells || 'None'}</p>
+        <h3>Prepared Spells</h3>
+        <p>${preparedSpells || 'None'}</p>
+      </div>
+    </div>
+  `;
+
+  // Skills Section
+  const skills = {
+    acrobatics: 'DEX', animalHandling: 'WIS', arcana: 'INT',
+    athletics: 'STR', deception: 'CHA', history: 'INT',
+    insight: 'WIS', intimidation: 'CHA', investigation: 'INT',
+    medicine: 'WIS', nature: 'INT', perception: 'WIS',
+    performance: 'CHA', persuasion: 'CHA', religion: 'INT',
+    sleightOfHand: 'DEX', stealth: 'DEX', survival: 'WIS'
+  };
+
+  const skillsList = Object.entries(skills).map(([skill, ability]) => {
+    const value = document.getElementById(skill)?.value || '+0';
+    const isProficient = document.getElementById(skill + 'Prof')?.checked;
+    return `<div class="skill">
+      <span>${skill.replace(/([A-Z])/g, ' $1').trim()}</span>: ${value} ${isProficient ? '(P)' : ''}
+    </div>`;
+  }).join('');
+
+  // Equipment Section
+  const equipmentTable = document.getElementById('equipmentTable');
+  const equipment = Array.from(equipmentTable.querySelectorAll('tbody tr')).map(row => {
+    const name = row.querySelector('.equipment-name')?.value || '';
+    const quantity = row.querySelector('input[type="number"]')?.value || '';
+    return `${quantity}x ${name}`;
+  }).join(', ');
+
+  // Personality and Bio Section
+  const physicalTraits = document.getElementById('physicalTraits')?.value || '';
+  const personalityTraits = document.getElementById('personalityTraits')?.value || '';
+  const backstory = document.getElementById('backstory')?.value || '';
+  const notes = document.getElementById('featuresTraits')?.value || '';
+
+  const personalitySection = `
+    <div class="export-section">
+      <h2>Personality & Biography</h2>
+      <div class="bio-section">
+        <h3>Physical Features</h3>
+        <p>${physicalTraits || 'None recorded'}</p>
+      </div>
+      <div class="bio-section">
+        <h3>Personality Traits, Ideals, Bonds, Flaws</h3>
+        <p>${personalityTraits || 'None recorded'}</p>
+      </div>
+      <div class="bio-section">
+        <h3>Backstory & Allies/Organizations</h3>
+        <p>${backstory || 'None recorded'}</p>
+      </div>
+      <div class="bio-section">
+        <h3>Notes</h3>
+        <p>${notes || 'None recorded'}</p>
+      </div>
+    </div>
+  `;
+
+  // Combine all sections
+  exportDiv.innerHTML = `
+    <style>
+      .export-sheet {
+        font-family: 'Helvetica', Arial, sans-serif;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 30px;
+        background: #fff;
+        color: #2c3e50;
+      }
+      .export-section {
+        margin-bottom: 25px;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 20px;
+      }
+      .export-section h1 {
+        color: #2c3e50;
+        font-size: 32px;
+        margin-bottom: 10px;
+        text-align: center;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+      }
+      .export-section h2 {
+        color: #34495e;
+        font-size: 24px;
+        margin: 20px 0 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #bdc3c7;
+      }
+      .export-section h3 {
+        color: #7f8c8d;
+        font-size: 18px;
+        margin: 15px 0 10px;
+      }
+      .ability-score {
+        display: inline-block;
+        margin: 10px 20px 10px 0;
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        min-width: 100px;
+        text-align: center;
+      }
+      .ability-score strong {
+        display: block;
+        color: #2980b9;
+        font-size: 18px;
+      }
+      .skill {
+        display: inline-block;
+        width: 45%;
+        margin-bottom: 8px;
+        padding: 5px 10px;
+        background: #f8f9fa;
+        border-radius: 3px;
+      }
+      .weapon-entry {
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        background: #f8f9fa;
+        border-left: 4px solid #3498db;
+        border-radius: 0 4px 4px 0;
+      }
+      .bio-section {
+        margin-bottom: 20px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+      }
+      .bio-section h3 {
+        color: #2980b9;
+        margin-bottom: 10px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .bio-section p {
+        white-space: pre-wrap;
+        margin: 0;
+        padding: 10px;
+        background: #fff;
+        border-radius: 3px;
+        line-height: 1.6;
+      }
+      .character-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .character-header p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #7f8c8d;
+      }
+      .combat-stats {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+      .combat-stat {
+        text-align: center;
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        min-width: 100px;
+        margin: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .combat-stat strong {
+        display: block;
+        color: #e74c3c;
+        font-size: 20px;
+      }
+      .spells-section {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+      .spell-slots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      .spell-slot-item {
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      .equipment-list {
+        columns: 2;
+        column-gap: 20px;
+        margin: 10px 0;
+      }
+      .equipment-item {
+        break-inside: avoid;
+        margin-bottom: 8px;
+        padding: 5px 0;
+      }
+    </style>
+    ${basicInfo}
+    <div class="export-section">
+      <h2>Ability Scores</h2>
+      ${abilityScores}
+    </div>
+    ${combatStats}
+    ${weaponsSection}
+    ${spellsSection}
+    <div class="export-section">
+      <h2>Skills</h2>
+      ${skillsList}
+    </div>
+    <div class="export-section">
+      <h2>Equipment</h2>
+      <div class="equipment-list">
+        ${equipment.split(', ').map(item => 
+          `<div class="equipment-item">• ${item}</div>`
+        ).join('')}
+      </div>
+    </div>
+    ${personalitySection}
+  `;
+
+  // PDF Generation options
+  const opt = {
+    margin: 1,
+    filename: `${characterName.replace(/\s+/g, '_')}_character_sheet.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  // Generate PDF
+  html2pdf().set(opt).from(exportDiv).save();
+}
 
 /*************************
  *   CORE FUNCTIONALITY  *
@@ -1480,9 +1879,11 @@ async function loadArmorOptions() {
       throw new Error("Armor data not found in JSON.");
     }
 
-    // Clear existing options for both dropdown and datalist
+    // Clear existing options for armor dropdown
     const armorSelection = document.getElementById("armorSelection");
+    const shieldSelection = document.getElementById("shieldSelection");
     armorSelection.innerHTML = `<option value="None" data-ac="10">None</option>`;
+    shieldSelection.innerHTML = `<option value="None" data-ac="0">None</option>`;
     
     const armorDatalist = document.getElementById("armorList");
     if (armorDatalist) armorDatalist.innerHTML = "";
@@ -1494,7 +1895,6 @@ async function loadArmorOptions() {
     for (const category of ["Light Armor", "Medium Armor", "Heavy Armor"]) {
       if (armorData[category]) {
         const armorTable = armorData[category].table;
-        // Use armorTable.Item instead of armorTable.Armor
         armorTable.Item.forEach((armor, index) => {
           if (!addedArmor.has(armor)) {
             const acText = armorTable.properties["Armor Class (AC)"][index];
@@ -1504,10 +1904,8 @@ async function loadArmorOptions() {
             option.dataset.ac = acMatch ? parseInt(acMatch[0]) : 10;
             option.textContent = `${armor} (AC: ${acText})`;
             
-            // Add option to the dropdown
             armorSelection.appendChild(option);
             
-            // Also clone and add to the datalist if it exists
             if (armorDatalist) {
               const datalistOption = option.cloneNode(true);
               armorDatalist.appendChild(datalistOption);
@@ -1520,49 +1918,41 @@ async function loadArmorOptions() {
     }
 
     // Process Shield separately
-    if (armorData["Shield"] && !addedArmor.has("Shield")) {
+    if (armorData["Shield"]) {
       const shieldData = armorData["Shield"].table;
       const shieldOption = document.createElement("option");
       shieldOption.value = shieldData.Item[0];
-      shieldOption.dataset.ac = "+2";
-      shieldOption.textContent = `${shieldData.Item[0]} (AC: ${shieldData.properties["Armor Class (AC)"][0]})`;
+      shieldOption.dataset.ac = 2; // Shields provide +2 AC
+      shieldOption.textContent = `${shieldData.Item[0]} (AC: +2)`;
       
-      armorSelection.appendChild(shieldOption);
-      if (armorDatalist) {
-        const datalistOption = shieldOption.cloneNode(true);
-        armorDatalist.appendChild(datalistOption);
-      }
-      addedArmor.add("Shield");
+      shieldSelection.appendChild(shieldOption);
     }
   } catch (error) {
     console.error("Error loading armor data:", error);
   }
 }
 
-
-
-/**
- * updateArmorClass()
- * Calculates final AC based on selected armor + Dex.
- */
 function updateArmorClass() {
   const armorSelection = document.getElementById("armorSelection");
+  const shieldSelection = document.getElementById("shieldSelection");
   const selectedArmor = armorSelection.options[armorSelection.selectedIndex];
+  const selectedShield = shieldSelection.options[shieldSelection.selectedIndex];
 
   let baseAC = parseInt(selectedArmor.dataset.ac) || 10; // default if no armor
   let dexModifier = Math.min(2, getDexModifier()); // max +2 for Medium
+  let shieldBonus = parseInt(selectedShield.dataset.ac) || 0;
 
   // Light armor => full Dex mod
   if (selectedArmor.value.includes("Leather") || selectedArmor.value.includes("Padded")) {
-      dexModifier = getDexModifier();
+    dexModifier = getDexModifier();
+  }
+  // Heavy armor => no Dex mod
+  else if (selectedArmor.value.includes("Chain Mail") || selectedArmor.value.includes("Splint") || 
+           selectedArmor.value.includes("Plate") || selectedArmor.value.includes("Ring Mail")) {
+    dexModifier = 0;
   }
 
-  // Shield => +2 AC
-  if (selectedArmor.value === "Shield") {
-      baseAC += 2;
-  }
-
-  document.getElementById("armorClass").value = baseAC + dexModifier;
+  document.getElementById("armorClass").value = baseAC + dexModifier + shieldBonus;
 }
 
 /**
@@ -1573,36 +1963,6 @@ function getDexModifier() {
   let dexScore = parseInt(document.getElementById("dex").value) || 10;
   return Math.floor((dexScore - 10) / 2);
 }
-function updateArmorClassFromSearch(selectedArmor) {
-  // Look for an option in the armor datalist matching the input
-  const armorOption = document.querySelector(`#armorList option[value="${selectedArmor}"]`);
-  let baseAC = armorOption ? parseInt(armorOption.dataset.ac) : 10;
-  
-  // Determine which armor category is selected based on its name.
-  // You can refine this logic as needed.
-  let dexModifier = getDexModifier();
-  const lowerArmor = selectedArmor.toLowerCase();
-
-  // Assume heavy armor items do not allow adding Dex modifier.
-  if (lowerArmor.includes("chain mail") || lowerArmor.includes("splint") || lowerArmor.includes("plate") || lowerArmor.includes("ring mail")) {
-    dexModifier = 0;
-  }
-  // For medium armor, cap the Dex modifier to +2.
-  else if (lowerArmor.includes("hide") || lowerArmor.includes("scale") || lowerArmor.includes("breastplate") || lowerArmor.includes("half plate")) {
-    dexModifier = Math.min(2, getDexModifier());
-  }
-  // Light armor gets the full Dex modifier (e.g., Leather, Padded).
-
-  // If a shield is selected, add +2 to the base AC.
-  if (lowerArmor.includes("shield")) {
-    baseAC += 2;
-  }
-  
-  document.getElementById("armorClass").value = baseAC + dexModifier;
-}
-
-;
-
 
 /****************************************
  *   CONSOLIDATED DOMContentLoaded INIT *
@@ -1651,4 +2011,51 @@ document.addEventListener("DOMContentLoaded", function () {
   if (armorSel) {
     armorSel.addEventListener("change", updateArmorClass);
   }
+
+  // Add event listeners for alignment and background dropdowns
+  const alignmentSelect = document.getElementById("alignment");
+  const backgroundSelect = document.getElementById("background");
+
+  if (alignmentSelect) {
+    alignmentSelect.addEventListener("change", showAlignmentContext);
+  }
+
+  if (backgroundSelect) {
+    backgroundSelect.addEventListener("change", showBackgroundContext);
+  }
 });
+
+// Add these functions to handle context display
+function showAlignmentContext(event) {
+  const alignment = event.target.value;
+  if (alignment && alignmentData[alignment]) {
+    showContext(alignmentData[alignment], event.target);
+  } else {
+    hideEquipmentContext();
+  }
+}
+
+function showBackgroundContext(event) {
+  const background = event.target.value;
+  if (background && backgroundData[background]) {
+    showContext(backgroundData[background], event.target);
+  } else {
+    hideEquipmentContext();
+  }
+}
+
+function showContext(details, targetElement) {
+  if (!contextDiv || !contextText) return;
+
+  const rect = targetElement.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const maxLeft = viewportWidth - contextDiv.offsetWidth - 20;
+
+  contextDiv.style.top = `${rect.top + window.scrollY + targetElement.offsetHeight}px`;
+  contextDiv.style.left = `${Math.min(rect.left + window.scrollX, maxLeft)}px`;
+
+  contextText.innerHTML = details;
+  contextDiv.style.display = "block";
+  contextDiv.style.opacity = 1;
+  lastClickedItem = targetElement;
+}
