@@ -1,7 +1,7 @@
 /**********************************************************
  * Fallback Weapons Data (if not loaded from weapons.json)
  **********************************************************/
-if (!weaponsData || !weaponsData.length) {
+if (typeof window.weaponsData === "undefined" || !window.weaponsData.length) {
     weaponsData = [
         { name: "Club", damage: "1d4 bludgeoning", properties: "Light" },
         { name: "Dagger", damage: "1d4 piercing", properties: "Finesse, light, thrown (range 20/60)" },
@@ -48,7 +48,7 @@ if (!weaponsData || !weaponsData.length) {
  * Uncomment and edit the following if you want to use fallback
  * data when equipment.json isn’t available.
  **********************************************************/
-if (!equipmentData || !equipmentData.length) {
+if (typeof window.equipmentData === "undefined" || !window.equipmentData.length) {
     equipmentData = [
         { name: "Abacus", cost: "2 gp", weight: "2 lb." },
         { name: "Acid (vial)", cost: "25 gp", weight: "1 lb." },
@@ -674,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Populate the equipment datalist on DOM ready
     loadEquipmentData();
-}); 
+});
 
 // Expose functions to window if needed
 window.saveCharacter = saveCharacter;
