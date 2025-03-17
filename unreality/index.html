@@ -326,6 +326,19 @@
         console.log('XR reference space acquired');
         // Disable orbit controls in VR mode
         controls.enabled = false;
+        
+        // Log available input sources
+        console.log('Available input sources:', session.inputSources);
+        session.inputSources.forEach((source, index) => {
+          console.log(`Input source ${index}:`, {
+            handedness: source.handedness,
+            targetRayMode: source.targetRayMode,
+            gamepad: source.gamepad ? {
+              axes: source.gamepad.axes.length,
+              buttons: source.gamepad.buttons.length
+            } : 'none'
+          });
+        });
       } catch (error) {
         console.error('Error requesting reference space:', error);
         xrReferenceSpace = await session.requestReferenceSpace('local');
@@ -702,12 +715,17 @@
     // VR Controls
     const moveSpeed = 0.1;
     const rotateSpeed = 0.02;
+    let lastFrameTime = 0;
 
     function updateVRControls() {
       if (!renderer.xr.isPresenting || !session || !xrReferenceSpace) return;
       
       const frame = renderer.xr.getFrame();
       if (!frame) return;
+      
+      const currentTime = frame.getTime();
+      const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+      lastFrameTime = currentTime;
       
       session.inputSources.forEach((inputSource, index) => {
         if (!inputSource.gamepad) return;
@@ -718,6 +736,16 @@
         // Get controller pose in reference space
         const pose = frame.getPose(inputSource.targetRaySpace, xrReferenceSpace);
         if (!pose) return;
+        
+        // Debug log for controller state
+        if (Math.random() < 0.01) { // Limit logging to avoid console spam
+          console.log(`Controller ${index} state:`, {
+            axes: gamepad.axes.map(a => a.toFixed(2)),
+            buttons: gamepad.buttons.map(b => b.pressed),
+            position: pose.transform.position,
+            orientation: pose.transform.orientation
+          });
+        }
         
         // Quest 2 specific: thumbstick axes are typically 2 and 3
         // Check if we have enough axes
@@ -730,26 +758,38 @@
           if (Math.abs(thumbstickX) > 0.1 || Math.abs(thumbstickY) > 0.1) {
             // Create movement vector based on thumbstick input
             const moveVector = new THREE.Vector3(
-              thumbstickX * moveSpeed,
+              thumbstickX * moveSpeed * deltaTime,
               0, // No vertical movement with thumbstick
-              -thumbstickY * moveSpeed // Negative because forward is -Z
+              -thumbstickY * moveSpeed * deltaTime // Negative because forward is -Z
             );
             
-            // Apply controller orientation to movement vector
-            moveVector.applyQuaternion(pose.transform.orientation);
-            
-            // Create a transform from the movement vector
-            const moveTransform = new XRRigidTransform(
-              {x: moveVector.x, y: moveVector.y, z: moveVector.z},
-              {x: 0, y: 0, z: 0, w: 1}
-            );
-            
-            // Apply the transform to the reference space
-            xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(moveTransform);
-            
-            // Debug output for movement
-            if (Math.random() < 0.01) { // Limit logging to avoid console spam
-              console.log(`Moving: X:${thumbstickX.toFixed(2)} Y:${thumbstickY.toFixed(2)}`);
+            // Get the headset's orientation
+            const headPose = frame.getPose(renderer.xr.getCamera().matrixWorld, xrReferenceSpace);
+            if (headPose) {
+              // Create a quaternion from the headset's orientation
+              const headQuaternion = new THREE.Quaternion(
+                headPose.transform.orientation.x,
+                headPose.transform.orientation.y,
+                headPose.transform.orientation.z,
+                headPose.transform.orientation.w
+              );
+              
+              // Apply headset orientation to movement vector
+              moveVector.applyQuaternion(headQuaternion);
+              
+              // Create a transform from the movement vector
+              const moveTransform = new XRRigidTransform(
+                {x: moveVector.x, y: moveVector.y, z: moveVector.z},
+                {x: 0, y: 0, z: 0, w: 1}
+              );
+              
+              // Apply the transform to the reference space
+              xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(moveTransform);
+              
+              // Debug output for movement
+              if (Math.random() < 0.01) {
+                console.log(`Moving: X:${thumbstickX.toFixed(2)} Y:${thumbstickY.toFixed(2)} Delta:${deltaTime.toFixed(3)}`);
+              }
             }
           }
         }
