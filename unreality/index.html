@@ -304,6 +304,13 @@
     let session = null;
     const controllerModelFactory = new XRControllerModelFactory();
     
+    // Hand tracking variables
+    let handTrackingSupported = false;
+    const handJoints = {
+      left: new Map(),
+      right: new Map()
+    };
+    
     // Set up VR controllers for interaction
     const controller1 = renderer.xr.getController(0);
     const controller2 = renderer.xr.getController(1);
@@ -317,6 +324,13 @@
     controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
     scene.add(controllerGrip1);
     scene.add(controllerGrip2);
+    
+    // Create hand tracking visualization
+    function createHandMesh() {
+      const geometry = new THREE.SphereGeometry(0.01, 8, 8);
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      return new THREE.Mesh(geometry, material);
+    }
     
     // Handle XR session start
     renderer.xr.addEventListener('sessionstart', async function() {
@@ -336,6 +350,23 @@
       controller2.addEventListener('squeezestart', onSqueeze);
       
       try {
+        // Request hand tracking support
+        if (session.inputSources.length > 0) {
+          const inputSource = session.inputSources[0];
+          if (inputSource.hand) {
+            handTrackingSupported = true;
+            console.log('Hand tracking is supported');
+            
+            // Create hand tracking visualization
+            for (let i = 0; i < 25; i++) {
+              handJoints.left.set(i, createHandMesh());
+              handJoints.right.set(i, createHandMesh());
+              scene.add(handJoints.left.get(i));
+              scene.add(handJoints.right.get(i));
+            }
+          }
+        }
+        
         xrReferenceSpace = await session.requestReferenceSpace('local-floor');
         console.log('XR reference space acquired');
         // Disable orbit controls in VR mode
@@ -350,7 +381,8 @@
             gamepad: source.gamepad ? {
               axes: source.gamepad.axes.length,
               buttons: source.gamepad.buttons.length
-            } : 'none'
+            } : 'none',
+            hand: source.hand ? 'supported' : 'not supported'
           });
         });
         
@@ -370,6 +402,12 @@
       console.log('VR session ending...');
       session = null;
       xrReferenceSpace = null;
+      handTrackingSupported = false;
+      // Remove hand tracking visualization
+      handJoints.left.forEach(mesh => scene.remove(mesh));
+      handJoints.right.forEach(mesh => scene.remove(mesh));
+      handJoints.left.clear();
+      handJoints.right.clear();
       // Re-enable orbit controls when exiting VR
       controls.enabled = true;
     });
@@ -473,7 +511,7 @@
         uniforms: {
           tDiffuse: { value: null },
           offset: { value: 1.0 },
-          darkness: { value: 1.2 }
+          darkness: { value: 1.1 }
         },
         vertexShader: `
           varying vec2 vUv;
@@ -502,20 +540,20 @@
     } else {
       const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
-        1.5,
-        0.4,
-        0.85
+        0.8,
+        0.2,
+        0.9
       );
       composer.addPass(bloomPass);
       composer.addPass(blurPass);
       const halftonePass = new HalftonePass(scene, camera, sun, {
         resolutionScale: 1.0,
-        density: 0.96,
-        decay: 0.93,
-        weight: 0.4,
-        exposure: 0.6,
+        density: 0.8,
+        decay: 0.95,
+        weight: 0.2,
+        exposure: 0.8,
         clampMax: 1.0,
-        samples: 60
+        samples: 30
       });
       composer.addPass(halftonePass);
     }
@@ -524,12 +562,12 @@
     if (!isLowPerformance && composer) {
       const halftonePass = new HalftonePass(scene, camera, sun, {
         resolutionScale: 1.0,
-        density: 0.96,
-        decay: 0.93,
-        weight: 0.4,
-        exposure: 0.6,
+        density: 0.8,
+        decay: 0.95,
+        weight: 0.2,
+        exposure: 0.8,
         clampMax: 1.0,
-        samples: 60
+        samples: 30
       });
       composer.addPass(halftonePass);
     }
@@ -723,9 +761,9 @@
     const gui = new GUI();
     const params = {
       cameraTravelSpeed: 0.05,
-      bloomStrength: 1.5,
-      bloomRadius: 0.4,
-      bloomThreshold: 0.85
+      bloomStrength: 0.8,
+      bloomRadius: 0.2,
+      bloomThreshold: 0.9
     };
     gui.add(params, 'cameraTravelSpeed', 0.01, 0.2).name('Camera Speed');
     gui.add(params, 'bloomStrength', 0, 3).name('Bloom Strength').onChange(value => {
@@ -765,6 +803,59 @@
         headPose.transform.position.z
       );
       
+      // Update hand tracking if supported
+      if (handTrackingSupported) {
+        session.inputSources.forEach((inputSource) => {
+          if (!inputSource.hand) return;
+          
+          const hand = inputSource.hand;
+          const handJointsMap = inputSource.handedness === 'left' ? handJoints.left : handJoints.right;
+          
+          // Update each joint position
+          for (let i = 0; i < hand.values.length; i++) {
+            const joint = hand.values[i];
+            if (!joint) continue;
+            
+            const jointMesh = handJointsMap.get(i);
+            if (!jointMesh) continue;
+            
+            // Get joint pose in reference space
+            const jointPose = frame.getPose(joint.space, xrReferenceSpace);
+            if (!jointPose) continue;
+            
+            // Update joint mesh position and rotation
+            jointMesh.position.set(
+              jointPose.transform.position.x,
+              jointPose.transform.position.y,
+              jointPose.transform.position.z
+            );
+            
+            // Check for pinch gesture
+            if (i === 4) { // Index finger tip
+              const thumbTip = hand.values[0];
+              if (thumbTip) {
+                const thumbPose = frame.getPose(thumbTip.space, xrReferenceSpace);
+                if (thumbPose) {
+                  const distance = jointPose.transform.position.distanceTo(thumbPose.transform.position);
+                  if (distance < 0.05) { // Pinch threshold
+                    // Trigger interaction
+                    const ray = new THREE.Ray();
+                    ray.setFromCamera(jointPose.transform.position, jointPose.transform.orientation);
+                    const intersects = raycaster.intersectObjects(galleryGroup.children);
+                    if (intersects.length > 0) {
+                      focusedPanel = intersects[0].object;
+                      controls.target.copy(focusedPanel.position);
+                      triggerHapticFeedback(renderer.xr.getController(inputSource.handedness === 'left' ? 0 : 1));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // Update controller-based movement
       session.inputSources.forEach((inputSource, index) => {
         if (!inputSource.gamepad) return;
         
