@@ -320,7 +320,21 @@
     
     // Handle XR session start
     renderer.xr.addEventListener('sessionstart', async function() {
+      console.log('VR session starting...');
       session = renderer.xr.getSession();
+      
+      // Remove any existing event listeners to prevent duplicates
+      controller1.removeEventListener('select', onSelect);
+      controller1.removeEventListener('squeezestart', onSqueeze);
+      controller2.removeEventListener('select', onSelect);
+      controller2.removeEventListener('squeezestart', onSqueeze);
+      
+      // Re-add event listeners
+      controller1.addEventListener('select', onSelect);
+      controller1.addEventListener('squeezestart', onSqueeze);
+      controller2.addEventListener('select', onSelect);
+      controller2.addEventListener('squeezestart', onSqueeze);
+      
       try {
         xrReferenceSpace = await session.requestReferenceSpace('local-floor');
         console.log('XR reference space acquired');
@@ -339,6 +353,12 @@
             } : 'none'
           });
         });
+        
+        // Reset VR camera position
+        if (xrReferenceSpace) {
+          const resetTransform = new XRRigidTransform({x: 0, y: 1.6, z: 0});
+          xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(resetTransform);
+        }
       } catch (error) {
         console.error('Error requesting reference space:', error);
         xrReferenceSpace = await session.requestReferenceSpace('local');
@@ -347,10 +367,16 @@
     
     // Handle XR session end
     renderer.xr.addEventListener('sessionend', function() {
+      console.log('VR session ending...');
       session = null;
       xrReferenceSpace = null;
       // Re-enable orbit controls when exiting VR
       controls.enabled = true;
+    });
+    
+    // Handle XR session error
+    renderer.xr.addEventListener('sessionerror', function(event) {
+      console.error('VR session error:', event);
     });
     
     const tempMatrix = new THREE.Matrix4();
@@ -401,7 +427,7 @@
       }
     }
     
-    // Add event listeners to controllers
+    // Add initial event listeners to controllers
     controller1.addEventListener('select', onSelect);
     controller1.addEventListener('squeezestart', onSqueeze);
     controller2.addEventListener('select', onSelect);
@@ -716,6 +742,7 @@
     const moveSpeed = 0.1;
     const rotateSpeed = 0.02;
     let lastFrameTime = 0;
+    let lastPosition = new THREE.Vector3();
 
     function updateVRControls() {
       if (!renderer.xr.isPresenting || !session || !xrReferenceSpace) return;
@@ -726,6 +753,17 @@
       const currentTime = frame.getTime();
       const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
       lastFrameTime = currentTime;
+      
+      // Get the headset's pose
+      const headPose = frame.getPose(renderer.xr.getCamera().matrixWorld, xrReferenceSpace);
+      if (!headPose) return;
+      
+      // Update last position for movement calculations
+      const currentPosition = new THREE.Vector3(
+        headPose.transform.position.x,
+        headPose.transform.position.y,
+        headPose.transform.position.z
+      );
       
       session.inputSources.forEach((inputSource, index) => {
         if (!inputSource.gamepad) return;
@@ -764,32 +802,30 @@
             );
             
             // Get the headset's orientation
-            const headPose = frame.getPose(renderer.xr.getCamera().matrixWorld, xrReferenceSpace);
-            if (headPose) {
-              // Create a quaternion from the headset's orientation
-              const headQuaternion = new THREE.Quaternion(
-                headPose.transform.orientation.x,
-                headPose.transform.orientation.y,
-                headPose.transform.orientation.z,
-                headPose.transform.orientation.w
-              );
-              
-              // Apply headset orientation to movement vector
-              moveVector.applyQuaternion(headQuaternion);
-              
-              // Create a transform from the movement vector
-              const moveTransform = new XRRigidTransform(
-                {x: moveVector.x, y: moveVector.y, z: moveVector.z},
-                {x: 0, y: 0, z: 0, w: 1}
-              );
-              
-              // Apply the transform to the reference space
-              xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(moveTransform);
-              
-              // Debug output for movement
-              if (Math.random() < 0.01) {
-                console.log(`Moving: X:${thumbstickX.toFixed(2)} Y:${thumbstickY.toFixed(2)} Delta:${deltaTime.toFixed(3)}`);
-              }
+            const headQuaternion = new THREE.Quaternion(
+              headPose.transform.orientation.x,
+              headPose.transform.orientation.y,
+              headPose.transform.orientation.z,
+              headPose.transform.orientation.w
+            );
+            
+            // Apply headset orientation to movement vector
+            moveVector.applyQuaternion(headQuaternion);
+            
+            // Create a transform from the movement vector
+            const moveTransform = new XRRigidTransform(
+              {x: moveVector.x, y: moveVector.y, z: moveVector.z},
+              {x: 0, y: 0, z: 0, w: 1}
+            );
+            
+            // Apply the transform to the reference space
+            xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(moveTransform);
+            
+            // Debug output for movement
+            if (Math.random() < 0.01) {
+              console.log(`Moving: X:${thumbstickX.toFixed(2)} Y:${thumbstickY.toFixed(2)} Delta:${deltaTime.toFixed(3)}`);
+              console.log('Current position:', currentPosition);
+              console.log('Movement vector:', moveVector);
             }
           }
         }
@@ -803,6 +839,9 @@
           }
         }
       });
+      
+      // Update last position
+      lastPosition.copy(currentPosition);
     }
 
     // Check if WebXR is supported
