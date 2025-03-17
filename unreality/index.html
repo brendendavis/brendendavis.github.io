@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surreal Astral Art Gallery</title>
+  <style>
+    body { margin: 0; overflow: hidden; background-color: black; }
+    canvas { display: block; }
+    /* Start Screen Styles */
+    #start-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    #start-screen h1 {
+      font-size: 4em;
+      color: white;
+      text-shadow: 2px 2px 8px #00ffff, -2px -2px 8px #ff00ff;
+      margin: 0;
+      /* Apply combined 3D perspective, rotation, and floating effect */
+      animation: floatRotate 5s ease-in-out infinite;
+    }
+
+    @keyframes floatRotate {
+      0% {
+        transform: perspective(600px) rotateX(15deg) rotateY(0deg) translateY(0);
+      }
+      50% {
+        transform: perspective(600px) rotateX(15deg) rotateY(20deg) translateY(-20px);
+      }
+      100% {
+        transform: perspective(600px) rotateX(15deg) rotateY(0deg) translateY(0);
+      }
+    }
+
+    #start-screen button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.5em;
+      cursor: pointer;
+      background-color: #222;
+      color: white;
+      border: 2px solid white;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    #start-screen button:hover {
+      background-color: #444;
+    }
+    /* Stage Mask and Dialogue Styles */
+    #mask-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #mask-container img {
+      width: 150px;
+      animation: maskMouth 3s ease-in-out infinite;
+    }
+    @keyframes maskMouth {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    /* Updated Dialogue Box Style */
+    .dialogue-box {
+      background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(50,50,50,0.8));
+      padding: 15px 25px;
+      border-radius: 15px;
+      color: #00ffff;
+      font-size: 1.2em;
+      margin-top: 10px;
+      font-family: 'Courier New', monospace;
+      border: 2px solid #00ffff;
+      box-shadow: 0 0 10px rgba(0,255,255,0.5);
+      position: relative;
+      overflow: hidden;
+      /* Allow text wrapping */
+      white-space: normal;
+      max-width: 80vw;
+      max-height: 30vh;
+    }
+    /* Blinking Cursor Style */
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #00ffff;
+      margin-left: 5px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Updated Start Screen HTML -->
+  <div id="start-screen">
+    <h1>unReality Gallery</h1>
+    <div id="mask-container">
+      <img src="./mask.gif" alt="Stage Mask" id="mask-image">
+      <div class="dialogue-box">Hello. This is unReality Gallery — where the familiar unravels into a dreamscape of abstraction and raw emotion. This space was manifested by Brenden Davis, whose art redefines identity and the intricacies of the subjective experience, every piece here challenges the boundaries of perception. Would you like to enter?</div>
+    </div>
+    <button id="enter-button">Enter?</button>
+  </div>
+  <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/",
+        "dat.gui": "https://unpkg.com/dat.gui@0.7.9/build/dat.gui.module.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { GUI } from 'dat.gui';
+    
+    import { HalftonePass } from 'three/addons/postprocessing/HalftonePass.js';
+    import { Reflector } from 'three/addons/objects/Reflector.js';
+    import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+    import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+    import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+    import { VRButton } from 'three/addons/webxr/VRButton.js';
+    
+    const BlurShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+        resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        blurAmount: { value: 0.0 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform vec2 resolution;
+        uniform float blurAmount;
+        varying vec2 vUv;
+        
+        void main() {
+          vec4 sum = vec4(0.0);
+          float offset = blurAmount / resolution.x;
+          sum += texture2D(tDiffuse, vUv + vec2(-offset, -offset));
+          sum += texture2D(tDiffuse, vUv + vec2(-offset, offset));
+          sum += texture2D(tDiffuse, vUv + vec2(offset, -offset));
+          sum += texture2D(tDiffuse, vUv + vec2(offset, offset));
+          gl_FragColor = sum * 0.25;
+        }
+      `
+    };
+    
+    const blurPass = new ShaderPass(BlurShader);
+    // composer.addPass(blurPass); // Removed premature addition of blurPass
+
+    // Scene, camera, renderer setup
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.002);
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 10);
+    // --- Audio Setup ---
+    const listener = new THREE.AudioListener();
+    camera.add(listener);
+    
+    const ambientSound = new THREE.Audio(listener);
+    const audioLoader = new THREE.AudioLoader();
+    
+    // Load an ambient audio file (ensure the file is in your project directory)
+    audioLoader.load('./ambient.mp3', function(buffer) {
+      ambientSound.setBuffer(buffer);
+      ambientSound.setLoop(true);
+      ambientSound.setVolume(0.9);
+      // Do not auto-play; wait for user interaction
+    });
+    // -------------------
+    
+
+    // Start Screen Handling
+    const startScreen = document.getElementById('start-screen');
+    const enterButton = document.getElementById('enter-button');
+
+    // Variables for transition animation
+    let transitionActive = false;
+    let transitionStartTime = 0;
+    const transitionDuration = 3; // duration in seconds
+    const initialFov = 100;
+    const targetFov = 70;
+    const initialCameraPosition = new THREE.Vector3();
+    const targetCameraPosition = new THREE.Vector3();
+
+    enterButton.addEventListener('click', () => {
+      // Hide the start screen overlay
+      startScreen.style.display = 'none';
+      // Resume AudioContext if necessary and play ambient audio
+      if (listener.context.state === 'suspended') {
+        listener.context.resume();
+      }
+      if (!ambientSound.isPlaying) {
+        ambientSound.play();
+      }
+
+      // Start transition animation:
+      transitionActive = true;
+      transitionStartTime = clock.getElapsedTime();
+
+      // Set a fixed target camera position for a consistent transition
+      targetCameraPosition.set(0, 0, 30);
+
+      // Set initial camera position far away from target (simulate warp speed)
+      // Here we offset the target along the negative Z direction by 100 units.
+      initialCameraPosition.copy(targetCameraPosition).add(new THREE.Vector3(0, 0, -100));
+
+      // Set the camera to the initial state for the transition:
+      camera.position.copy(initialCameraPosition);
+      camera.fov = initialFov;
+      camera.updateProjectionMatrix();
+    });
+    // Typing effect for dialogue: display one sentence at a time with a "Next" button.
+    const dialogueBox = document.querySelector('.dialogue-box');
+
+    // Define the sentences (split your dialogue text manually)
+    const dialogueSentences = [
+      "Hello. This is unReality Gallery—where the familiar unravels into a dreamscape of abstraction and raw emotion.",
+      "This space was manifested by Brenden Davis, whose art redefines identity and the intricacies of the subjective experience.",
+      "Every piece here challenges the boundaries of perception.",
+      "Would you like to enter?"
+    ];
+
+    let currentSentence = 0;
+
+    function typeSentence(sentence, callback) {
+      dialogueBox.innerHTML = ""; // clear current text
+      let index = 0;
+      function typeChar() {
+        if (index < sentence.length) {
+          dialogueBox.innerHTML += sentence.charAt(index);
+          index++;
+          setTimeout(typeChar, 50); // typing speed (adjust as needed)
+        } else {
+          // After finishing the sentence, add blinking cursor
+          const cursorSpan = document.createElement('span');
+          cursorSpan.classList.add('cursor');
+          cursorSpan.textContent = '|';
+          dialogueBox.appendChild(cursorSpan);
+
+          // If there is a next sentence, add a "Next" button
+          if (currentSentence < dialogueSentences.length - 1) {
+            const nextButton = document.createElement('button');
+            nextButton.textContent = "Next";
+            nextButton.style.marginLeft = "10px";
+            nextButton.style.padding = "5px 10px";
+            nextButton.style.fontSize = "1em";
+            nextButton.addEventListener('click', () => {
+              currentSentence++;
+              typeSentence(dialogueSentences[currentSentence]);
+            });
+            dialogueBox.appendChild(document.createElement('br'));
+            dialogueBox.appendChild(nextButton);
+          }
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    }
+
+    // Start typing the first sentence
+    typeSentence(dialogueSentences[currentSentence]);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.xr.enabled = true;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.body.appendChild(renderer.domElement);
+    document.body.appendChild(VRButton.createButton(renderer));
+
+    // OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // Postprocessing composer with bloom
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      0.4,
+      0.85
+    );
+    composer.addPass(bloomPass);
+    composer.addPass(blurPass);
+
+    // --- Dynamic Ambient Particle Effects (Cosmic Dust) ---
+    const ambientParticleCount = 500;
+    const ambientGeometry = new THREE.BufferGeometry();
+    const ambientPositions = new Float32Array(ambientParticleCount * 3);
+    for (let i = 0; i < ambientParticleCount; i++) {
+      ambientPositions[i * 3] = (Math.random() - 0.5) * 200;
+      ambientPositions[i * 3 + 1] = (Math.random() - 0.5) * 200;
+      ambientPositions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+    }
+    ambientGeometry.setAttribute('position', new THREE.BufferAttribute(ambientPositions, 3));
+    const ambientMaterial = new THREE.PointsMaterial({
+      color: 0xffddaa,
+      size: 1,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      opacity: 0.5,
+      depthWrite: false
+    });
+    const ambientParticles = new THREE.Points(ambientGeometry, ambientMaterial);
+    scene.add(ambientParticles);
+
+    // --- Sun for God Rays ---
+    const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
+    const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffffee });
+    const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+    sun.position.set(0, 50, -50);
+    scene.add(sun);
+
+    const halftonePass = new HalftonePass(scene, camera, sun, {
+      resolutionScale: 1.0,
+      density: 0.96,
+      decay: 0.93,
+      weight: 0.4,
+      exposure: 0.6,
+      clampMax: 1.0,
+      samples: 60
+    });
+    composer.addPass(halftonePass);
+
+    // Responsive canvas on resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Dynamic skybox with a shader material
+    const skyboxShader = {
+      uniforms: {
+        time: { value: 0.0 }
+      },
+      vertexShader: `
+        varying vec3 vWorldPosition;
+        void main() {
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPosition.xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float time;
+        varying vec3 vWorldPosition;
+        float random(vec3 scale, float seed) {
+          return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);
+        }
+        void main() {
+          vec3 dir = normalize(vWorldPosition);
+          float r = 0.3 + 0.7 * random(vec3(12.9898, 78.233, 151.7182), time * 0.1);
+          float g = 0.1 + 0.3 * random(vec3(63.7264, 10.873, 623.6736), time * 0.1);
+          float b = 0.4 + 0.6 * random(vec3(34.8712, 76.3421, 54.5723), time * 0.1);
+          gl_FragColor = vec4(r * (dir.x * 0.5 + 0.5), g * (dir.y * 0.5 + 0.5), b * (dir.z * 0.5 + 0.5), 1.0);
+        }
+      `
+    };
+    const skyboxMaterial = new THREE.ShaderMaterial({
+      uniforms: THREE.UniformsUtils.clone(skyboxShader.uniforms),
+      vertexShader: skyboxShader.vertexShader,
+      fragmentShader: skyboxShader.fragmentShader,
+      side: THREE.BackSide
+    });
+    const skybox = new THREE.Mesh(new THREE.BoxGeometry(900, 900, 900), skyboxMaterial);
+    scene.add(skybox);
+    
+    // --- Reflective Floor ---
+    const floorGeometry = new THREE.PlaneGeometry(200, 200);
+    const floorReflector = new Reflector(floorGeometry, {
+      clipBias: 0.003,
+      textureWidth: window.innerWidth * window.devicePixelRatio,
+      textureHeight: window.innerHeight * window.devicePixelRatio,
+      color: 0x777777
+    });
+    floorReflector.rotateX(-Math.PI / 2);
+    floorReflector.position.y = -8; // Adjust the vertical position as needed
+    scene.add(floorReflector);
+    // -----------------------
+
+    // --- Add Star Field to the Background ---
+    const starsGeometry = new THREE.BufferGeometry();
+    const starCount = 1000;
+    const positions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const radius = 100 + Math.random() * 50;
+      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = radius * Math.cos(phi);
+    }
+    starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+    const stars = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(stars);
+    // --- Floating Title in the Stars ---
+    const fontLoader = new FontLoader();
+    fontLoader.load('https://cdn.jsdelivr.net/npm/three@0.157.0/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+      const textGeometry = new TextGeometry('Brenden Davis : unReality Gallery', {
+        font: font,
+        size: 3,
+        height: 0.5,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 0.03,
+        bevelSize: 0.02,
+        bevelOffset: 0,
+        bevelSegments: 5
+      });
+      const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+      textMesh.position.set(-15, 30, -100);
+      textMesh.rotation.y = Math.PI / 4;
+      scene.add(textMesh);
+    });
+    // -------------------------------
+
+    // --- Astral Art Gallery Setup ---
+    // Create a group for the gallery and load multiple image panels
+    const textureLoader = new THREE.TextureLoader();
+    const galleryImages = [
+      './cagedangel.png',
+      './Dancing2024.png',
+      './TakingNight.png',
+      './afternoon.png',
+      './image1.png',
+      './image2.png',
+      './image3.png',
+      './image4.png',
+      './image5.png',
+      './image6.png'
+    ];
+
+    const galleryGroup = new THREE.Group();
+    const numImages = galleryImages.length;
+    const galleryRadius = 20;
+    galleryImages.forEach((imgPath, index) => {
+      const angle = (index / numImages) * Math.PI * 2;
+      const x = galleryRadius * Math.cos(angle);
+      const z = galleryRadius * Math.sin(angle);
+      const texture = textureLoader.load(imgPath);
+      // Use a subdivided plane for smoother displacement
+      const panelGeometry = new THREE.PlaneGeometry(8, 5, 50, 50);
+      const panelMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          time: { value: 0 },
+          map: { value: texture }
+        },
+        vertexShader: `
+          uniform float time;
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            vec3 pos = position;
+            // Apply a gentle wave displacement
+            float wave = sin(pos.x * 1.0 + time) * 0.1 + cos(pos.y * 2.0 + time) * 0.1;
+            pos.z += wave;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D map;
+          varying vec2 vUv;
+          void main() {
+            vec4 color = texture2D(map, vUv);
+            if(color.a < 0.1) discard;
+            gl_FragColor = color;
+          }
+        `,
+        side: THREE.DoubleSide,
+        transparent: true,
+        alphaTest: 0.5
+      });
+      const panelMesh = new THREE.Mesh(panelGeometry, panelMaterial);
+      panelMesh.position.set(x, 0, z);
+      // Orient the panel to face the center of the gallery
+      panelMesh.lookAt(new THREE.Vector3(0, 0, 0));
+      galleryGroup.add(panelMesh);
+    });
+    scene.add(galleryGroup);
+    let focusedPanel = null;
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    
+    renderer.domElement.addEventListener('click', function(event) {
+      // Calculate normalized device coordinates
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+      
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(galleryGroup.children);
+      if (intersects.length > 0) {
+        focusedPanel = intersects[0].object;
+        controls.target.copy(focusedPanel.position);
+      }
+    }, false);
+    // Reset focus on double-click
+    renderer.domElement.addEventListener('dblclick', function() {
+      focusedPanel = null;
+      // Optionally reset orbit controls target to the scene center
+      controls.target.set(0, 0, 0);
+    }, false);
+    // -------------------------------
+
+    // GUI for tweaking parameters
+    const gui = new GUI();
+    const params = {
+      cameraTravelSpeed: 0.05,
+      bloomStrength: 1.5,
+      bloomRadius: 0.4,
+      bloomThreshold: 0.85
+    };
+    gui.add(params, 'cameraTravelSpeed', 0.01, 0.2).name('Camera Speed');
+    gui.add(params, 'bloomStrength', 0, 3).name('Bloom Strength').onChange(value => bloomPass.strength = value);
+    gui.add(params, 'bloomRadius', 0, 1).name('Bloom Radius').onChange(value => bloomPass.radius = value);
+    gui.add(params, 'bloomThreshold', 0, 1).name('Bloom Threshold').onChange(value => bloomPass.threshold = value);
+
+    // Set up a clock for animations
+    const clock = new THREE.Clock();
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsed = clock.getElapsedTime();
+
+      // Update ambient particle positions for a drifting effect
+      const ambientPositionsArray = ambientGeometry.attributes.position.array;
+      for (let i = 0; i < ambientPositionsArray.length; i += 3) {
+        ambientPositionsArray[i + 1] += 0.001; // drift upward
+        if (ambientPositionsArray[i + 1] > 100) {
+          ambientPositionsArray[i + 1] = -100;
+        }
+      }
+      ambientGeometry.attributes.position.needsUpdate = true;
+
+      // Update the shader uniform for displacement effect
+      galleryGroup.children.forEach(panel => {
+        panel.material.uniforms.time.value = elapsed;
+      });
+
+      // Animate the dynamic skybox
+      skyboxMaterial.uniforms.time.value = elapsed * 0.5;
+
+      // Slowly rotate the gallery for a surreal effect
+      galleryGroup.rotation.y += 0.001;
+
+      if (transitionActive) {
+        // Calculate transition progress (0 to 1)
+        const t = (clock.getElapsedTime() - transitionStartTime) / transitionDuration;
+        const progress = Math.min(t, 1);
+        // Ease-out interpolation (easeOutQuad: 1 - (1-x)^2)
+        const easeProgress = 1 - Math.pow(1 - progress, 2);
+
+        // Interpolate camera position and FOV from initial to target values
+        camera.position.lerpVectors(initialCameraPosition, targetCameraPosition, easeProgress);
+        camera.fov = initialFov + (targetFov - initialFov) * easeProgress;
+        camera.updateProjectionMatrix();
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+          // Update blur effect during transition (max blur at mid-transition)
+          blurPass.uniforms.blurAmount.value = Math.sin(easeProgress * Math.PI) * 5.0;
+          // Dynamically adjust ambient particle size for additional effect
+          ambientMaterial.size = 1 + 2 * Math.sin(easeProgress * Math.PI);
+
+        // End transition when progress is complete
+        if (progress >= 1) {
+          transitionActive = false;
+        }
+      } else if (focusedPanel) {
+        // Normal behavior when an image is focused
+        const targetPosition = new THREE.Vector3(focusedPanel.position.x, focusedPanel.position.y, focusedPanel.position.z + 10);
+        camera.position.lerp(targetPosition, params.cameraTravelSpeed);
+        camera.lookAt(focusedPanel.position);
+      } else {
+        // Normal orbiting behavior around the gallery
+        camera.position.x = 30 * Math.cos(elapsed * 0.1);
+        camera.position.z = 30 * Math.sin(elapsed * 0.1);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+      }
+
+      if (!transitionActive) {
+          blurPass.uniforms.blurAmount.value = 0;
+      }
+      controls.update();
+      composer.render();
+    }
+
+    animate();
+  </script>
+</body>
+</html>
