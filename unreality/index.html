@@ -209,6 +209,8 @@
     const targetFov = 70;
     const initialCameraPosition = new THREE.Vector3();
     const targetCameraPosition = new THREE.Vector3();
+      // Set up a clock for animations
+      const clock = new THREE.Clock();
 
     enterButton.addEventListener('click', () => {
       // Hide the start screen overlay
@@ -313,16 +315,7 @@
       );
       composer.addPass(bloomPass);
       composer.addPass(blurPass);
-      const halftonePass = new HalftonePass(scene, camera, sun, {
-        resolutionScale: 1.0,
-        density: 0.96,
-        decay: 0.93,
-        weight: 0.4,
-        exposure: 0.6,
-        clampMax: 1.0,
-        samples: 60
-      });
-      composer.addPass(halftonePass);
+     
     }
 
     // --- Dynamic Ambient Particle Effects (Cosmic Dust) ---
@@ -572,8 +565,7 @@
       if (!isLowPerformance && composer) bloomPass.threshold = value;
     });
 
-    // Set up a clock for animations
-    const clock = new THREE.Clock();
+  
 
     // Animation loop
     function animate() {
