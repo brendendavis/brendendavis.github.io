@@ -180,7 +180,7 @@
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, 0, 30); // Position regular camera at the start position
     const vrCamera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-    vrCamera.position.set(0, 0, 30); // Position VR camera in the center of the gallery
+    vrCamera.position.set(0, 0, 0); // Position VR camera in the center of the gallery
     // --- Audio Setup ---
     const listener = new THREE.AudioListener();
     camera.add(listener);
@@ -209,8 +209,9 @@
     const targetFov = 70;
     const initialCameraPosition = new THREE.Vector3();
     const targetCameraPosition = new THREE.Vector3();
-      // Set up a clock for animations
-      const clock = new THREE.Clock();
+    
+    // Set up a clock for animations
+    const clock = new THREE.Clock();
 
     enterButton.addEventListener('click', () => {
       // Hide the start screen overlay
@@ -297,6 +298,7 @@
     renderer.setPixelRatio(isLowPerformance ? 1 : window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(VRButton.createButton(renderer));
+    
     // Set up VR controllers for interaction
     const controller1 = renderer.xr.getController(0);
     const controller2 = renderer.xr.getController(1);
@@ -306,9 +308,9 @@
     const tempMatrix = new THREE.Matrix4();
     
     function onSelectStart(event) {
-    console.log('Controller selectstart event fired', event);
-    const controller = event.target;
-    tempMatrix.identity().extractRotation(controller.matrixWorld);
+      console.log('Controller selectstart event fired', event);
+      const controller = event.target;
+      tempMatrix.identity().extractRotation(controller.matrixWorld);
       raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
       raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
       const intersects = raycaster.intersectObjects(galleryGroup.children);
@@ -320,9 +322,9 @@
     }
     
     function onSelectEnd(event) {
-    console.log('Controller selectend event fired', event);
-    // Optionally, you can clear the focused panel on select end
-    // focusedPanel = null;
+      console.log('Controller selectend event fired', event);
+      // Optionally, you can clear the focused panel on select end
+      // focusedPanel = null;
     }
     
     controller1.addEventListener('selectstart', onSelectStart);
@@ -333,8 +335,6 @@
     // OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-
- 
 
     // --- Dynamic Ambient Particle Effects (Cosmic Dust) ---
     // Reduce particle count on low-performance devices
@@ -364,59 +364,60 @@
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(0, 50, -50);
     scene.add(sun);
+
     let composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
-if (isLowPerformance) {
-  const VignetteShader = {
-    uniforms: {
-      tDiffuse: { value: null },
-      offset: { value: 1.0 },
-      darkness: { value: 1.2 }
-    },
-    vertexShader: `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-      }
-    `,
-    fragmentShader: `
-      uniform sampler2D tDiffuse;
-      uniform float offset;
-      uniform float darkness;
-      varying vec2 vUv;
-      
-      void main() {
-        vec4 color = texture2D( tDiffuse, vUv );
-        vec2 uv = (vUv - vec2(0.5)) * vec2(offset);
-        float vignette = smoothstep(0.8, 1.0, length(uv));
-        color.rgb = mix( color.rgb, color.rgb * (1.0 - darkness), vignette );
-        gl_FragColor = color;
-      }
-    `
-  };
-  const vignettePass = new ShaderPass(VignetteShader);
-  composer.addPass(vignettePass);
-} else {
-  const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(window.innerWidth, window.innerHeight),
-    1.5,
-    0.4,
-    0.85
-  );
-  composer.addPass(bloomPass);
-  composer.addPass(blurPass);
-  const halftonePass = new HalftonePass(scene, camera, sun, {
-    resolutionScale: 1.0,
-    density: 0.96,
-    decay: 0.93,
-    weight: 0.4,
-    exposure: 0.6,
-    clampMax: 1.0,
-    samples: 60
-  });
-  composer.addPass(halftonePass);
-}
+    composer.addPass(new RenderPass(scene, camera));
+    if (isLowPerformance) {
+      const VignetteShader = {
+        uniforms: {
+          tDiffuse: { value: null },
+          offset: { value: 1.0 },
+          darkness: { value: 1.2 }
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D tDiffuse;
+          uniform float offset;
+          uniform float darkness;
+          varying vec2 vUv;
+          
+          void main() {
+            vec4 color = texture2D( tDiffuse, vUv );
+            vec2 uv = (vUv - vec2(0.5)) * vec2(offset);
+            float vignette = smoothstep(0.8, 1.0, length(uv));
+            color.rgb = mix( color.rgb, color.rgb * (1.0 - darkness), vignette );
+            gl_FragColor = color;
+          }
+        `
+      };
+      const vignettePass = new ShaderPass(VignetteShader);
+      composer.addPass(vignettePass);
+    } else {
+      const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.5,
+        0.4,
+        0.85
+      );
+      composer.addPass(bloomPass);
+      composer.addPass(blurPass);
+      const halftonePass = new HalftonePass(scene, camera, sun, {
+        resolutionScale: 1.0,
+        density: 0.96,
+        decay: 0.93,
+        weight: 0.4,
+        exposure: 0.6,
+        clampMax: 1.0,
+        samples: 60
+      });
+      composer.addPass(halftonePass);
+    }
 
     // If postprocessing is enabled, add halftone pass here (note: composer is only set if not low performance)
     if (!isLowPerformance && composer) {
@@ -636,12 +637,47 @@ if (isLowPerformance) {
       if (!isLowPerformance && composer) bloomPass.threshold = value;
     });
 
-  
+    // VR Controls
+    const moveSpeed = 0.1;
+    const rotateSpeed = 0.02;
+
+    function updateVRControls() {
+      if (renderer.xr.isPresenting) {
+        const session = renderer.xr.getSession();
+        if (session) {
+          session.inputSources.forEach(inputSource => {
+            const gamepad = inputSource.gamepad;
+            if (gamepad) {
+              // Movement
+              if (gamepad.axes[2] < -0.1 || gamepad.axes[2] > 0.1) {
+                const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+                camera.position.addScaledVector(forward, gamepad.axes[2] * moveSpeed);
+              }
+              if (gamepad.axes[3] < -0.1 || gamepad.axes[3] > 0.1) {
+                const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+                camera.position.addScaledVector(right, gamepad.axes[3] * moveSpeed);
+              }
+
+              // Rotation
+              if (gamepad.axes[0] < -0.1 || gamepad.axes[0] > 0.1) {
+                camera.rotation.y -= gamepad.axes[0] * rotateSpeed;
+              }
+              if (gamepad.axes[1] < -0.1 || gamepad.axes[1] > 0.1) {
+                camera.rotation.x -= gamepad.axes[1] * rotateSpeed;
+                camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+              }
+            }
+          });
+        }
+      }
+    }
 
     // Animation loop
     function animate() {
       requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
+
+      updateVRControls();
 
       // Update ambient particle positions for a drifting effect
       const ambientPositionsArray = ambientGeometry.attributes.position.array;
@@ -698,15 +734,15 @@ if (isLowPerformance) {
       }
 
       if (!transitionActive) {
-          blurPass.uniforms.blurAmount.value = 0;
+        blurPass.uniforms.blurAmount.value = 0;
       }
       controls.update();
       
       if (!renderer.xr.isPresenting && composer) {
-  composer.render(scene, camera);
-} else {
-  renderer.render(scene, camera);
-}
+        composer.render(scene, camera);
+      } else {
+        renderer.render(scene, camera);
+      }
     }
 
     renderer.setAnimationLoop(animate);
