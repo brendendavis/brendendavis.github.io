@@ -138,6 +138,9 @@
     import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
     import { VRButton } from 'three/addons/webxr/VRButton.js';
     
+    // Detect low-performing devices (e.g., OculusBrowser or small viewport)
+    const isLowPerformance = /OculusBrowser/.test(navigator.userAgent) || window.innerWidth < 800;
+    
     const BlurShader = {
       uniforms: {
         tDiffuse: { value: null },
@@ -194,7 +197,6 @@
     });
     // -------------------
     
-
     // Start Screen Handling
     const startScreen = document.getElementById('start-screen');
     const enterButton = document.getElementById('enter-button');
@@ -289,7 +291,8 @@
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.xr.enabled = true;
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Reduce pixel ratio on low-performance devices
+    renderer.setPixelRatio(isLowPerformance ? 1 : window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(VRButton.createButton(renderer));
 
@@ -297,20 +300,34 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // Postprocessing composer with bloom
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1.5,
-      0.4,
-      0.85
-    );
-    composer.addPass(bloomPass);
-    composer.addPass(blurPass);
+    // Conditionally set up postprocessing composer (only if not low performance)
+    let composer = null;
+    if (!isLowPerformance) {
+      composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.5,
+        0.4,
+        0.85
+      );
+      composer.addPass(bloomPass);
+      composer.addPass(blurPass);
+      const halftonePass = new HalftonePass(scene, camera, sun, {
+        resolutionScale: 1.0,
+        density: 0.96,
+        decay: 0.93,
+        weight: 0.4,
+        exposure: 0.6,
+        clampMax: 1.0,
+        samples: 60
+      });
+      composer.addPass(halftonePass);
+    }
 
     // --- Dynamic Ambient Particle Effects (Cosmic Dust) ---
-    const ambientParticleCount = 500;
+    // Reduce particle count on low-performance devices
+    const ambientParticleCount = isLowPerformance ? 200 : 500;
     const ambientGeometry = new THREE.BufferGeometry();
     const ambientPositions = new Float32Array(ambientParticleCount * 3);
     for (let i = 0; i < ambientParticleCount; i++) {
@@ -337,23 +354,28 @@
     sun.position.set(0, 50, -50);
     scene.add(sun);
 
-    const halftonePass = new HalftonePass(scene, camera, sun, {
-      resolutionScale: 1.0,
-      density: 0.96,
-      decay: 0.93,
-      weight: 0.4,
-      exposure: 0.6,
-      clampMax: 1.0,
-      samples: 60
-    });
-    composer.addPass(halftonePass);
+    // If postprocessing is enabled, add halftone pass here (note: composer is only set if not low performance)
+    if (!isLowPerformance && composer) {
+      const halftonePass = new HalftonePass(scene, camera, sun, {
+        resolutionScale: 1.0,
+        density: 0.96,
+        decay: 0.93,
+        weight: 0.4,
+        exposure: 0.6,
+        clampMax: 1.0,
+        samples: 60
+      });
+      composer.addPass(halftonePass);
+    }
 
     // Responsive canvas on resize
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      composer.setSize(window.innerWidth, window.innerHeight);
+      if (composer) {
+        composer.setSize(window.innerWidth, window.innerHeight);
+      }
     });
 
     // Dynamic skybox with a shader material
@@ -468,8 +490,8 @@
       const x = galleryRadius * Math.cos(angle);
       const z = galleryRadius * Math.sin(angle);
       const texture = textureLoader.load(imgPath);
-      // Use a subdivided plane for smoother displacement
-      const panelGeometry = new THREE.PlaneGeometry(8, 5, 50, 50);
+      // Use a subdivided plane for smoother displacement; use fewer segments on low-performing devices
+      const panelGeometry = new THREE.PlaneGeometry(8, 5, isLowPerformance ? 10 : 50, isLowPerformance ? 10 : 50);
       const panelMaterial = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
@@ -540,9 +562,15 @@
       bloomThreshold: 0.85
     };
     gui.add(params, 'cameraTravelSpeed', 0.01, 0.2).name('Camera Speed');
-    gui.add(params, 'bloomStrength', 0, 3).name('Bloom Strength').onChange(value => bloomPass.strength = value);
-    gui.add(params, 'bloomRadius', 0, 1).name('Bloom Radius').onChange(value => bloomPass.radius = value);
-    gui.add(params, 'bloomThreshold', 0, 1).name('Bloom Threshold').onChange(value => bloomPass.threshold = value);
+    gui.add(params, 'bloomStrength', 0, 3).name('Bloom Strength').onChange(value => {
+      if (!isLowPerformance && composer) bloomPass.strength = value;
+    });
+    gui.add(params, 'bloomRadius', 0, 1).name('Bloom Radius').onChange(value => {
+      if (!isLowPerformance && composer) bloomPass.radius = value;
+    });
+    gui.add(params, 'bloomThreshold', 0, 1).name('Bloom Threshold').onChange(value => {
+      if (!isLowPerformance && composer) bloomPass.threshold = value;
+    });
 
     // Set up a clock for animations
     const clock = new THREE.Clock();
@@ -585,10 +613,10 @@
         camera.fov = initialFov + (targetFov - initialFov) * easeProgress;
         camera.updateProjectionMatrix();
         camera.lookAt(new THREE.Vector3(0, 0, 0));
-          // Update blur effect during transition (max blur at mid-transition)
-          blurPass.uniforms.blurAmount.value = Math.sin(easeProgress * Math.PI) * 5.0;
-          // Dynamically adjust ambient particle size for additional effect
-          ambientMaterial.size = 1 + 2 * Math.sin(easeProgress * Math.PI);
+        // Update blur effect during transition (max blur at mid-transition)
+        blurPass.uniforms.blurAmount.value = Math.sin(easeProgress * Math.PI) * 5.0;
+        // Dynamically adjust ambient particle size for additional effect
+        ambientMaterial.size = 1 + 2 * Math.sin(easeProgress * Math.PI);
 
         // End transition when progress is complete
         if (progress >= 1) {
@@ -610,10 +638,11 @@
           blurPass.uniforms.blurAmount.value = 0;
       }
       controls.update();
-      if (renderer.xr.isPresenting) {
-        renderer.render(scene, camera);
-      } else {
+      // Use postprocessing only if not low-performing and not in VR mode
+      if (!isLowPerformance && !renderer.xr.isPresenting && composer) {
         composer.render(scene, camera);
+      } else {
+        renderer.render(scene, camera);
       }
     }
 
