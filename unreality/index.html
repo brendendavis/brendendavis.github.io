@@ -309,7 +309,7 @@
     renderer.setPixelRatio(isLowPerformance ? 1 : window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
-    // Create custom VR button
+    // Create custom VR button with enhanced error handling
     const createVRButton = () => {
       const button = document.createElement('button');
       button.style.position = 'fixed';
@@ -327,43 +327,75 @@
       button.textContent = 'ENTER VR';
       button.style.textTransform = 'uppercase';
       
-      function showEnterVR() {
-        button.textContent = 'ENTER VR';
-        button.removeEventListener('click', exitVR);
-        button.addEventListener('click', onRequestSession);
-      }
+      async function onRequestSession() {
+        console.log('Requesting VR session...');
+        try {
+          // First check if VR is supported
+          const supported = await navigator.xr.isSessionSupported('immersive-vr');
+          console.log('VR supported:', supported);
+          
+          if (!supported) {
+            throw new Error('VR not supported');
+          }
 
-      function showExitVR() {
-        button.textContent = 'EXIT VR';
-        button.removeEventListener('click', onRequestSession);
-        button.addEventListener('click', exitVR);
-      }
-
-      function onRequestSession() {
-        navigator.xr.requestSession('immersive-vr', {
-          optionalFeatures: ['local-floor', 'hand-tracking']
-        }).then((xrSession) => {
-          renderer.xr.setSession(xrSession);
-          xrSession.addEventListener('end', showEnterVR);
-          showExitVR();
-        }).catch((error) => {
-          console.error('Error entering VR:', error);
-          alert('Error entering VR. Make sure you are using a VR-capable browser and device.');
-        });
-      }
-
-      function exitVR() {
-        if (renderer.xr.getSession()) {
-          renderer.xr.getSession().end();
+          // Request the session with minimal requirements
+          const xrSession = await navigator.xr.requestSession('immersive-vr', {
+            optionalFeatures: ['local-floor']
+          });
+          
+          console.log('VR session created successfully');
+          
+          // Set up session
+          await renderer.xr.setSession(xrSession);
+          console.log('Renderer XR session set');
+          
+          // Update button state
+          button.textContent = 'EXIT VR';
+          button.removeEventListener('click', onRequestSession);
+          button.addEventListener('click', onEndSession);
+          
+          // Add session end handler
+          xrSession.addEventListener('end', () => {
+            console.log('VR session ended');
+            button.textContent = 'ENTER VR';
+            button.removeEventListener('click', onEndSession);
+            button.addEventListener('click', onRequestSession);
+          });
+          
+        } catch (error) {
+          console.error('Error starting VR session:', error);
+          // Show error message to user
+          const errorMessage = document.createElement('div');
+          errorMessage.style.position = 'fixed';
+          errorMessage.style.top = '50%';
+          errorMessage.style.left = '50%';
+          errorMessage.style.transform = 'translate(-50%, -50%)';
+          errorMessage.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+          errorMessage.style.color = '#ff0000';
+          errorMessage.style.padding = '20px';
+          errorMessage.style.borderRadius = '8px';
+          errorMessage.style.zIndex = '10000';
+          errorMessage.textContent = `VR Error: ${error.message}`;
+          document.body.appendChild(errorMessage);
+          setTimeout(() => errorMessage.remove(), 5000);
         }
       }
 
+      async function onEndSession() {
+        console.log('Ending VR session...');
+        if (renderer.xr.getSession()) {
+          await renderer.xr.getSession().end();
+        }
+      }
+
+      // Initial setup
       if ('xr' in navigator) {
         navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
           if (supported) {
             button.addEventListener('click', onRequestSession);
             document.body.appendChild(button);
           } else {
+            console.warn('WebXR VR not supported');
             button.textContent = 'VR NOT SUPPORTED';
             button.disabled = true;
             button.style.backgroundColor = '#333';
@@ -372,6 +404,7 @@
           }
         });
       } else {
+        console.error('WebXR not available');
         button.textContent = 'VR NOT AVAILABLE';
         button.disabled = true;
         button.style.backgroundColor = '#333';
