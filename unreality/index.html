@@ -388,17 +388,6 @@
       session = renderer.xr.getSession();
       
       try {
-        // Log session details
-        console.log('VR Session Details:', {
-          inputSources: session.inputSources.length,
-          inputSources: session.inputSources.map(source => ({
-            handedness: source.handedness,
-            targetRayMode: source.targetRayMode,
-            hasGamepad: !!source.gamepad,
-            hasHand: !!source.hand
-          }))
-        });
-
         // Request hand tracking support
         if (session.inputSources.length > 0) {
           console.log('Input sources available:', session.inputSources.length);
@@ -418,23 +407,25 @@
         }
         
         console.log('Requesting local-floor reference space...');
-        try {
-          xrReferenceSpace = await session.requestReferenceSpace('local-floor');
-          console.log('Local-floor reference space acquired successfully');
-        } catch (floorError) {
-          console.warn('Failed to get local-floor reference space:', floorError);
-          console.log('Falling back to local reference space...');
-          try {
-            xrReferenceSpace = await session.requestReferenceSpace('local');
-            console.log('Local reference space acquired successfully');
-          } catch (localError) {
-            console.error('Failed to get local reference space:', localError);
-            throw localError;
-          }
-        }
+        xrReferenceSpace = await session.requestReferenceSpace('local-floor');
+        console.log('XR reference space acquired');
         
         // Disable orbit controls in VR mode
         controls.enabled = false;
+        
+        // Log available input sources
+        console.log('Available input sources:', session.inputSources);
+        session.inputSources.forEach((source, index) => {
+          console.log(`Input source ${index}:`, {
+            handedness: source.handedness,
+            targetRayMode: source.targetRayMode,
+            gamepad: source.gamepad ? {
+              axes: source.gamepad.axes.length,
+              buttons: source.gamepad.buttons.length
+            } : 'none',
+            hand: source.hand ? 'supported' : 'not supported'
+          });
+        });
         
         // Reset VR camera position
         if (xrReferenceSpace) {
@@ -443,20 +434,14 @@
           xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(resetTransform);
           console.log('VR camera position reset complete');
         }
-
-        // Log available features
-        console.log('Available XR Features:', {
-          requiredFeatures: session.requiredFeatures,
-          optionalFeatures: session.optionalFeatures
-        });
-
       } catch (error) {
         console.error('Error during VR session start:', error);
-        // Attempt to end the session if there's an error
         try {
-          await session.end();
-        } catch (endError) {
-          console.error('Error ending session after error:', endError);
+          console.log('Falling back to local reference space...');
+          xrReferenceSpace = await session.requestReferenceSpace('local');
+          console.log('Local reference space acquired');
+        } catch (fallbackError) {
+          console.error('Error requesting fallback reference space:', fallbackError);
         }
       }
     });
@@ -479,14 +464,6 @@
     // Handle XR session error
     renderer.xr.addEventListener('sessionerror', function(event) {
       console.error('VR session error:', event);
-      // Log additional error details if available
-      if (event.error) {
-        console.error('Error details:', {
-          name: event.error.name,
-          message: event.error.message,
-          stack: event.error.stack
-        });
-      }
     });
     
     const tempMatrix = new THREE.Matrix4();
