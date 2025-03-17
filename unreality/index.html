@@ -596,17 +596,6 @@
         0.9
       );
       composer.addPass(bloomPass);
-      composer.addPass(blurPass);
-      const halftonePass = new HalftonePass(scene, camera, sun, {
-        resolutionScale: 1.0,
-        density: 0.8,
-        decay: 0.95,
-        weight: 0.2,
-        exposure: 0.8,
-        clampMax: 1.0,
-        samples: 30
-      });
-      composer.addPass(halftonePass);
     }
 
     // If postprocessing is enabled, add halftone pass here (note: composer is only set if not low performance)
