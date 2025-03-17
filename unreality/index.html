@@ -610,7 +610,11 @@
           blurPass.uniforms.blurAmount.value = 0;
       }
       controls.update();
-      composer.render(scene, renderer.xr.isPresenting ? vrCamera : camera);
+      if (renderer.xr.isPresenting) {
+        renderer.render(scene, vrCamera);
+      } else {
+        composer.render(scene, camera);
+      }
     }
 
     renderer.setAnimationLoop(animate);
