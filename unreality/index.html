@@ -332,26 +332,49 @@
       return new THREE.Mesh(geometry, material);
     }
     
+    // Check if WebXR is supported
+    if ('xr' in navigator) {
+      navigator.xr.isSessionSupported('immersive-vr').then(supported => {
+        if (supported) {
+          console.log('WebXR VR is supported');
+          const vrButton = VRButton.createButton(renderer, {
+            requiredFeatures: ['local-floor'],
+            optionalFeatures: ['hand-tracking'],
+            sessionInit: {
+              optionalFeatures: ['local-floor', 'hand-tracking']
+            }
+          });
+          document.body.appendChild(vrButton);
+        } else {
+          console.warn('WebXR VR is not supported on this device/browser');
+          // Optionally show a message to the user
+          const warningDiv = document.createElement('div');
+          warningDiv.style.position = 'fixed';
+          warningDiv.style.bottom = '10px';
+          warningDiv.style.left = '10px';
+          warningDiv.style.color = 'white';
+          warningDiv.style.background = 'rgba(0,0,0,0.5)';
+          warningDiv.style.padding = '10px';
+          warningDiv.style.borderRadius = '5px';
+          warningDiv.textContent = 'VR not supported on this device/browser';
+          document.body.appendChild(warningDiv);
+        }
+      }).catch(err => {
+        console.error('Error checking VR support:', err);
+      });
+    } else {
+      console.warn('WebXR API is not available in this browser');
+    }
+
     // Handle XR session start
     renderer.xr.addEventListener('sessionstart', async function() {
       console.log('VR session starting...');
       session = renderer.xr.getSession();
       
-      // Remove any existing event listeners to prevent duplicates
-      controller1.removeEventListener('select', onSelect);
-      controller1.removeEventListener('squeezestart', onSqueeze);
-      controller2.removeEventListener('select', onSelect);
-      controller2.removeEventListener('squeezestart', onSqueeze);
-      
-      // Re-add event listeners
-      controller1.addEventListener('select', onSelect);
-      controller1.addEventListener('squeezestart', onSqueeze);
-      controller2.addEventListener('select', onSelect);
-      controller2.addEventListener('squeezestart', onSqueeze);
-      
       try {
         // Request hand tracking support
         if (session.inputSources.length > 0) {
+          console.log('Input sources available:', session.inputSources.length);
           const inputSource = session.inputSources[0];
           if (inputSource.hand) {
             handTrackingSupported = true;
@@ -367,8 +390,10 @@
           }
         }
         
+        console.log('Requesting local-floor reference space...');
         xrReferenceSpace = await session.requestReferenceSpace('local-floor');
         console.log('XR reference space acquired');
+        
         // Disable orbit controls in VR mode
         controls.enabled = false;
         
@@ -388,12 +413,20 @@
         
         // Reset VR camera position
         if (xrReferenceSpace) {
+          console.log('Resetting VR camera position...');
           const resetTransform = new XRRigidTransform({x: 0, y: 1.6, z: 0});
           xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(resetTransform);
+          console.log('VR camera position reset complete');
         }
       } catch (error) {
-        console.error('Error requesting reference space:', error);
-        xrReferenceSpace = await session.requestReferenceSpace('local');
+        console.error('Error during VR session start:', error);
+        try {
+          console.log('Falling back to local reference space...');
+          xrReferenceSpace = await session.requestReferenceSpace('local');
+          console.log('Local reference space acquired');
+        } catch (fallbackError) {
+          console.error('Error requesting fallback reference space:', fallbackError);
+        }
       }
     });
     
@@ -933,31 +966,6 @@
       
       // Update last position
       lastPosition.copy(currentPosition);
-    }
-
-    // Check if WebXR is supported
-    if ('xr' in navigator) {
-      navigator.xr.isSessionSupported('immersive-vr').then(supported => {
-        if (supported) {
-          console.log('WebXR VR is supported');
-          document.body.appendChild(VRButton.createButton(renderer));
-        } else {
-          console.warn('WebXR VR is not supported on this device/browser');
-          // Optionally show a message to the user
-          const warningDiv = document.createElement('div');
-          warningDiv.style.position = 'fixed';
-          warningDiv.style.bottom = '10px';
-          warningDiv.style.left = '10px';
-          warningDiv.style.color = 'white';
-          warningDiv.style.background = 'rgba(0,0,0,0.5)';
-          warningDiv.style.padding = '10px';
-          warningDiv.style.borderRadius = '5px';
-          warningDiv.textContent = 'VR not supported on this device/browser';
-          document.body.appendChild(warningDiv);
-        }
-      });
-    } else {
-      console.warn('WebXR API is not available in this browser');
     }
 
     // Animation loop
