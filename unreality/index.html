@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -701,16 +703,16 @@
     const fontLoader = new FontLoader();
     fontLoader.load('https://cdn.jsdelivr.net/npm/three@0.157.0/examples/fonts/helvetiker_regular.typeface.json', function(font) {
       const textGeometry = new TextGeometry('Brenden Davis : unReality Gallery', {
-        font: font,
-        size: 3,
-        height: 0.5,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 0.03,
-        bevelSize: 0.02,
-        bevelOffset: 0,
-        bevelSegments: 5
-      });
+    font: font,
+    size: 3,
+    height: 0.5,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelOffset: 0,
+    bevelSegments: 5
+}); 
       const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
       textMesh.position.set(-15, 30, -100);
@@ -746,139 +748,63 @@
       // Use a subdivided plane for smoother displacement; use fewer segments on low-performing devices
       const panelGeometry = new THREE.PlaneGeometry(8, 5, isLowPerformance ? 10 : 50, isLowPerformance ? 10 : 50);
       const panelMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 },
-          map: { value: texture }
-        },
-        vertexShader: `
-          uniform float time;
-          varying vec2 vUv;
-          void main() {
+    uniforms: {
+        time: { value: 0 },
+        map: { value: texture }
+    },
+    vertexShader: `
+        uniform float time;
+        varying vec2 vUv;
+        void main() {
             vUv = uv;
             vec3 pos = position;
             // Apply a gentle wave displacement
             float wave = sin(pos.x * 1.0 + time) * 0.1 + cos(pos.y * 2.0 + time) * 0.1;
             pos.z += wave;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform sampler2D map;
-          varying vec2 vUv;
-          void main() {
+        }
+    `,
+    fragmentShader: `
+        uniform sampler2D map;
+        varying vec2 vUv;
+        void main() {
             vec4 color = texture2D(map, vUv);
             if(color.a < 0.1) discard;
             gl_FragColor = color;
-          }
-        `,
-        side: THREE.DoubleSide,
-        transparent: true,
-        alphaTest: 0.5
-      });
-      const panelMesh = new THREE.Mesh(panelGeometry, panelMaterial);
-      panelMesh.position.set(x, 0, z);
-      // Orient the panel to face the center of the gallery
-      panelMesh.lookAt(new THREE.Vector3(0, 0, 0));
-      galleryGroup.add(panelMesh);
-    });
-    scene.add(galleryGroup);
-    let focusedPanel = null;
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    
-    renderer.domElement.addEventListener('click', function(event) {
-      // Calculate normalized device coordinates
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-      
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(galleryGroup.children);
-      if (intersects.length > 0) {
-        focusedPanel = intersects[0].object;
-        controls.target.copy(focusedPanel.position);
-      }
-    }, false);
-    // Reset focus on double-click
-    renderer.domElement.addEventListener('dblclick', function() {
-      focusedPanel = null;
-      // Optionally reset orbit controls target to the scene center
-      controls.target.set(0, 0, 0);
-    }, false);
-    // -------------------------------
+        }
+    `,
+    side: THREE.DoubleSide,
+    transparent: true,
+    alphaTest: 0.5
+});
 
-    // GUI for tweaking parameters
-    const gui = new GUI();
-    const params = {
-      cameraTravelSpeed: 0.05,
-      bloomStrength: 0.8,
-      bloomRadius: 0.2,
-      bloomThreshold: 0.9
-    };
-    gui.add(params, 'cameraTravelSpeed', 0.01, 0.2).name('Camera Speed');
-    gui.add(params, 'bloomStrength', 0, 3).name('Bloom Strength').onChange(value => {
-      if (!isLowPerformance && composer) bloomPass.strength = value;
-    });
-    gui.add(params, 'bloomRadius', 0, 1).name('Bloom Radius').onChange(value => {
-      if (!isLowPerformance && composer) bloomPass.radius = value;
-    });
-    gui.add(params, 'bloomThreshold', 0, 1).name('Bloom Threshold').onChange(value => {
-      if (!isLowPerformance && composer) bloomPass.threshold = value;
-    });
-
-    // VR Controls
-    const moveSpeed = 0.1;
-    const rotateSpeed = 0.02;
-    let lastFrameTime = 0;
-    let lastPosition = new THREE.Vector3();
-
-    function updateVRControls() {
-      if (!renderer.xr.isPresenting || !session || !xrReferenceSpace) return;
-      
-      const frame = renderer.xr.getFrame();
-      if (!frame) return;
-      
-      const currentTime = frame.getTime();
-      const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
-      lastFrameTime = currentTime;
-      
-      // Get the headset's pose
-      const headPose = frame.getPose(renderer.xr.getCamera().matrixWorld, xrReferenceSpace);
-      if (!headPose) return;
-      
-      // Update last position for movement calculations
-      const currentPosition = new THREE.Vector3(
-        headPose.transform.position.x,
-        headPose.transform.position.y,
-        headPose.transform.position.z
-      );
-      
       // Update hand tracking if supported
       if (handTrackingSupported) {
         session.inputSources.forEach((inputSource) => {
           if (!inputSource.hand) return;
-          
+
           const hand = inputSource.hand;
           const handJointsMap = inputSource.handedness === 'left' ? handJoints.left : handJoints.right;
-          
+
           // Update each joint position
           for (let i = 0; i < hand.values.length; i++) {
             const joint = hand.values[i];
             if (!joint) continue;
-            
+
             const jointMesh = handJointsMap.get(i);
             if (!jointMesh) continue;
-            
+
             // Get joint pose in reference space
             const jointPose = frame.getPose(joint.space, xrReferenceSpace);
             if (!jointPose) continue;
-            
+
             // Update joint mesh position and rotation
             jointMesh.position.set(
               jointPose.transform.position.x,
               jointPose.transform.position.y,
               jointPose.transform.position.z
             );
-            
+
             // Check for pinch gesture
             if (i === 4) { // Index finger tip
               const thumbTip = hand.values[0];
@@ -903,18 +829,18 @@
           }
         });
       }
-      
+
       // Update controller-based movement
       session.inputSources.forEach((inputSource, index) => {
         if (!inputSource.gamepad) return;
-        
+
         const gamepad = inputSource.gamepad;
         const controller = renderer.xr.getController(index);
-        
+
         // Get controller pose in reference space
         const pose = frame.getPose(inputSource.targetRaySpace, xrReferenceSpace);
         if (!pose) return;
-        
+
         // Debug log for controller state
         if (Math.random() < 0.01) { // Limit logging to avoid console spam
           console.log(`Controller ${index} state:`, {
@@ -924,14 +850,14 @@
             orientation: pose.transform.orientation
           });
         }
-        
+
         // Quest 2 specific: thumbstick axes are typically 2 and 3
         // Check if we have enough axes
         if (gamepad.axes.length >= 4) {
           // Get thumbstick values (Quest 2 specific)
           const thumbstickX = gamepad.axes[2]; // Left/Right
           const thumbstickY = gamepad.axes[3]; // Forward/Backward
-          
+
           // Only process if thumbstick is moved significantly
           if (Math.abs(thumbstickX) > 0.1 || Math.abs(thumbstickY) > 0.1) {
             // Create movement vector based on thumbstick input
@@ -940,7 +866,7 @@
               0, // No vertical movement with thumbstick
               -thumbstickY * moveSpeed * deltaTime // Negative because forward is -Z
             );
-            
+
             // Get the headset's orientation
             const headQuaternion = new THREE.Quaternion(
               headPose.transform.orientation.x,
@@ -948,19 +874,19 @@
               headPose.transform.orientation.z,
               headPose.transform.orientation.w
             );
-            
+
             // Apply headset orientation to movement vector
             moveVector.applyQuaternion(headQuaternion);
-            
+
             // Create a transform from the movement vector
             const moveTransform = new XRRigidTransform(
               {x: moveVector.x, y: moveVector.y, z: moveVector.z},
               {x: 0, y: 0, z: 0, w: 1}
             );
-            
+
             // Apply the transform to the reference space
             xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(moveTransform);
-            
+
             // Debug output for movement
             if (Math.random() < 0.01) {
               console.log(`Moving: X:${thumbstickX.toFixed(2)} Y:${thumbstickY.toFixed(2)} Delta:${deltaTime.toFixed(3)}`);
@@ -969,7 +895,7 @@
             }
           }
         }
-        
+
         // Handle buttons for additional interactions if needed
         if (gamepad.buttons && gamepad.buttons.length > 0) {
           // Example: Use A button (typically index 0) for teleportation or other actions
@@ -979,14 +905,24 @@
           }
         }
       });
-      
+
       // Update last position
       lastPosition.copy(currentPosition);
     }
-
+  );
     // Animation loop
-    function animate() {
+    function animate(time, frame) {
+      const deltaTime = clock.getDelta();
+      const moveSpeed = 1; // adjust this value as needed
+      let headPose;
+      if (frame && xrReferenceSpace) {
+        const viewerPose = frame.getViewerPose(xrReferenceSpace);
+        if (viewerPose) {
+          headPose = viewerPose.views[0];
+        }
+      }
       const elapsed = clock.getElapsedTime();
+      const params = { cameraTravelSpeed: 0.05 };
 
       // Update VR controls if in VR mode
       if (renderer.xr.isPresenting) {
