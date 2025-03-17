@@ -353,25 +353,13 @@
 
         if (supported) {
           console.log('WebXR VR is supported');
-          // Create VR button with minimal required features
           const vrButton = VRButton.createButton(renderer, {
-            requiredFeatures: [], // Remove required features to ensure basic VR works
-            optionalFeatures: ['local-floor', 'hand-tracking'],
+            requiredFeatures: ['local-floor'],
+            optionalFeatures: ['hand-tracking'],
             sessionInit: {
               optionalFeatures: ['local-floor', 'hand-tracking']
             }
           });
-          vrButton.style.position = 'fixed';
-          vrButton.style.bottom = '20px';
-          vrButton.style.padding = '12px 24px';
-          vrButton.style.border = 'none';
-          vrButton.style.borderRadius = '4px';
-          vrButton.style.background = '#000';
-          vrButton.style.color = '#fff';
-          vrButton.style.font = 'bold 13px sans-serif';
-          vrButton.style.cursor = 'pointer';
-          vrButton.style.textTransform = 'uppercase';
-          vrButton.style.opacity = '1';
           document.body.appendChild(vrButton);
         } else {
           console.warn('WebXR VR is not supported on this device/browser');
@@ -389,31 +377,9 @@
         }
       }).catch(err => {
         console.error('Error checking VR support:', err);
-        // Show error message to user
-        const errorDiv = document.createElement('div');
-        errorDiv.style.position = 'fixed';
-        errorDiv.style.bottom = '10px';
-        errorDiv.style.left = '10px';
-        errorDiv.style.color = 'white';
-        errorDiv.style.background = 'rgba(0,0,0,0.5)';
-        errorDiv.style.padding = '10px';
-        errorDiv.style.borderRadius = '5px';
-        errorDiv.textContent = 'Error checking VR support. Please try a different browser.';
-        document.body.appendChild(errorDiv);
       });
     } else {
       console.warn('WebXR API is not available in this browser');
-      // Show message to user
-      const noWebXRDiv = document.createElement('div');
-      noWebXRDiv.style.position = 'fixed';
-      noWebXRDiv.style.bottom = '10px';
-      noWebXRDiv.style.left = '10px';
-      noWebXRDiv.style.color = 'white';
-      noWebXRDiv.style.background = 'rgba(0,0,0,0.5)';
-      noWebXRDiv.style.padding = '10px';
-      noWebXRDiv.style.borderRadius = '5px';
-      noWebXRDiv.textContent = 'WebXR is not available in this browser. Please use the Meta Quest browser or Wolvic.';
-      document.body.appendChild(noWebXRDiv);
     }
 
     // Handle XR session start
