@@ -302,21 +302,7 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // Conditionally set up postprocessing composer (only if not low performance)
-    let composer = null;
-    if (!isLowPerformance) {
-      composer = new EffectComposer(renderer);
-      composer.addPass(new RenderPass(scene, camera));
-      const bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(window.innerWidth, window.innerHeight),
-        1.5,
-        0.4,
-        0.85
-      );
-      composer.addPass(bloomPass);
-      composer.addPass(blurPass);
-     
-    }
+ 
 
     // --- Dynamic Ambient Particle Effects (Cosmic Dust) ---
     // Reduce particle count on low-performance devices
@@ -346,6 +332,59 @@
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(0, 50, -50);
     scene.add(sun);
+    let composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+if (isLowPerformance) {
+  const VignetteShader = {
+    uniforms: {
+      tDiffuse: { value: null },
+      offset: { value: 1.0 },
+      darkness: { value: 1.2 }
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D tDiffuse;
+      uniform float offset;
+      uniform float darkness;
+      varying vec2 vUv;
+      
+      void main() {
+        vec4 color = texture2D( tDiffuse, vUv );
+        vec2 uv = (vUv - vec2(0.5)) * vec2(offset);
+        float vignette = smoothstep(0.8, 1.0, length(uv));
+        color.rgb = mix( color.rgb, color.rgb * (1.0 - darkness), vignette );
+        gl_FragColor = color;
+      }
+    `
+  };
+  const vignettePass = new ShaderPass(VignetteShader);
+  composer.addPass(vignettePass);
+} else {
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  composer.addPass(bloomPass);
+  composer.addPass(blurPass);
+  const halftonePass = new HalftonePass(scene, camera, sun, {
+    resolutionScale: 1.0,
+    density: 0.96,
+    decay: 0.93,
+    weight: 0.4,
+    exposure: 0.6,
+    clampMax: 1.0,
+    samples: 60
+  });
+  composer.addPass(halftonePass);
+}
 
     // If postprocessing is enabled, add halftone pass here (note: composer is only set if not low performance)
     if (!isLowPerformance && composer) {
@@ -630,12 +669,12 @@
           blurPass.uniforms.blurAmount.value = 0;
       }
       controls.update();
-      // Use postprocessing only if not low-performing and not in VR mode
-      if (!isLowPerformance && !renderer.xr.isPresenting && composer) {
-        composer.render(scene, camera);
-      } else {
-        renderer.render(scene, camera);
-      }
+      
+      if (!renderer.xr.isPresenting && composer) {
+  composer.render(scene, camera);
+} else {
+  renderer.render(scene, camera);
+}
     }
 
     renderer.setAnimationLoop(animate);
