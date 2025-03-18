@@ -194,6 +194,10 @@
     camera.position.set(0, 0, 30); // Position regular camera at the start position
     const vrCamera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
     vrCamera.position.set(0, 0, 0); // Position VR camera in the center of the gallery
+    const raycaster = new THREE.Raycaster();
+let focusedPanel = null;
+let currentPosition = new THREE.Vector3();
+let lastPosition = new THREE.Vector3();
     // --- Audio Setup ---
     const listener = new THREE.AudioListener();
     camera.add(listener);
