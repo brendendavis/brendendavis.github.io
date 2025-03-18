@@ -962,16 +962,23 @@ function onCanvasClick(event) {
       }
     });
     const exitButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
-const exitButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
-const exitButton = new THREE.Mesh(exitButtonGeometry, exitButtonMaterial);
-exitButton.position.set(-18, 32, -100);
-exitButton.name = 'exitButton';
+    const exitButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+    const exitButton = new THREE.Mesh(exitButtonGeometry, exitButtonMaterial);
+    exitButton.position.set(-0.5, 0.5, -2);
+    exitButton.name = 'exitButton';
 
-const recenterButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
-const recenterButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
-const recenterButton = new THREE.Mesh(recenterButtonGeometry, recenterButtonMaterial);
-recenterButton.position.set(-12, 32, -100);
-recenterButton.name = 'recenterButton';
+    const recenterButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
+    const recenterButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
+    const recenterButton = new THREE.Mesh(recenterButtonGeometry, recenterButtonMaterial);
+    recenterButton.position.set(0.5, 0.5, -2);
+    recenterButton.name = 'recenterButton';
+
+    const uiContainer = new THREE.Group();
+    uiContainer.add(exitButton);
+    uiContainer.add(recenterButton);
+
+    // Parent the UI container to the camera so it stays in view during VR
+    camera.add(uiContainer);
     renderer.setAnimationLoop(animate);
   </script>
 <button id="enter-vr-button" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; font-size: 1.2em; z-index: 2000;">Enter Immersive VR</button>
