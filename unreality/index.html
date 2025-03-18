@@ -825,7 +825,7 @@ function onCanvasClick(event) {
 
       // Update VR controls if in VR mode
       if (renderer.xr.isPresenting) {
-        updateVRControls();
+        updateVRControls(deltaTime);
       } else {
         // Only update orbit controls when not in VR
         controls.update();
@@ -850,7 +850,7 @@ function onCanvasClick(event) {
       skyboxMaterial.uniforms.time.value = elapsed * 0.5;
 
       // Slowly rotate the gallery for a surreal effect
-      if (!renderer.xr.isPresenting) galleryGroup.rotation.y += 0.001;
+      galleryGroup.rotation.y += 0.001;
 
       if (transitionActive) {
         // Calculate transition progress (0 to 1)
@@ -878,22 +878,11 @@ function onCanvasClick(event) {
         const targetPosition = new THREE.Vector3(focusedPanel.position.x, focusedPanel.position.y, focusedPanel.position.z + 10);
         camera.position.lerp(targetPosition, params.cameraTravelSpeed);
         camera.lookAt(focusedPanel.position);
-      } else if (focusedPanel && renderer.xr.isPresenting) {
-        // For VR mode, perform a teleportation by shifting the scene so the focused panel comes into view.
-        const xrCamera = renderer.xr.getCamera(camera);
-        // Define a target position slightly offset from the focused panel (adjust the offset as needed)
+      } else if (focusedPanel && !renderer.xr.isPresenting) {
+        // Normal behavior when an image is focused (only in non-VR mode)
         const targetPosition = new THREE.Vector3(focusedPanel.position.x, focusedPanel.position.y, focusedPanel.position.z + 10);
-        // Compute the difference between the target position and the current XR camera position
-        const delta = new THREE.Vector3().subVectors(targetPosition, xrCamera.position);
-        // Move the entire scene by the negative of this delta to simulate a teleport
-        scene.position.sub(delta);
-        // Reset focusedPanel after the teleportation
-        focusedPanel = null;
-      } else if (!renderer.xr.isPresenting) {
-        // Normal orbiting behavior around the gallery (only in non-VR mode)
-        camera.position.x = 30 * Math.cos(elapsed * 0.1);
-        camera.position.z = 30 * Math.sin(elapsed * 0.1);
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        camera.position.lerp(targetPosition, params.cameraTravelSpeed);
+        camera.lookAt(focusedPanel.position);
       }
 
       if (!transitionActive) {
