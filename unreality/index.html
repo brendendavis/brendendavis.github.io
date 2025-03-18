@@ -890,7 +890,27 @@ function onCanvasClick(event) {
       }
     }
 
+    // Explicit UI element for starting immersive VR
+    const vrButtonExplicit = document.getElementById('enter-vr-button');
+    vrButtonExplicit.addEventListener('click', async () => {
+      if (navigator.xr) {
+        try {
+          const supported = await navigator.xr.isSessionSupported('immersive-vr');
+          if (supported) {
+            const session = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor', 'hand-tracking'] });
+            renderer.xr.setSession(session);
+          } else {
+            alert('Immersive VR is not supported on this device/browser.');
+          }
+        } catch (e) {
+          console.error('Error starting VR session:', e);
+        }
+      } else {
+        alert('WebXR is not available in this browser.');
+      }
+    });
     renderer.setAnimationLoop(animate);
   </script>
+<button id="enter-vr-button" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; font-size: 1.2em; z-index: 2000;">Enter Immersive VR</button>
 </body>
 </html>
