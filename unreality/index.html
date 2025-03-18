@@ -495,28 +495,30 @@ controller2.add(createControllerRay());
     
     // Updated controller event handlers for Meta Quest 2
     function onSelect(event) {
-      const exitIntersect = raycaster.intersectObject(exitButton);
-if (exitIntersect.length > 0) {
-    console.log('Exit button selected');
-    if (session) {
-        session.end();
-        return;
-    }
-}
-const recenterIntersect = raycaster.intersectObject(recenterButton);
-if (recenterIntersect.length > 0) {
-    console.log('Recenter button selected');
-    if (xrReferenceSpace && session) {
-        const resetTransform = new XRRigidTransform({ x: 0, y: 1.6, z: 0 });
-        xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(resetTransform);
-        return;
-    }
-}
-      console.log('Controller select event fired', event);
       const controller = event.target;
       tempMatrix.identity().extractRotation(controller.matrixWorld);
       raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
       raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+      
+      const exitIntersect = raycaster.intersectObject(exitButton);
+      if (exitIntersect.length > 0) {
+          console.log('Exit button selected');
+          if (session) {
+              session.end();
+              return;
+          }
+      }
+      const recenterIntersect = raycaster.intersectObject(recenterButton);
+      if (recenterIntersect.length > 0) {
+          console.log('Recenter button selected');
+          if (xrReferenceSpace && session) {
+              const resetTransform = new XRRigidTransform({ x: 0, y: 1.6, z: 0 });
+              xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(resetTransform);
+              return;
+          }
+      }
+      
+      console.log('Controller select event fired', event);
       const intersects = raycaster.intersectObjects(galleryGroup.children);
       if (intersects.length > 0) {
         focusedPanel = intersects[0].object;
