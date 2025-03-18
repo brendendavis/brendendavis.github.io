@@ -340,6 +340,19 @@ let lastPosition = new THREE.Vector3();
     controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
     scene.add(controllerGrip1);
     scene.add(controllerGrip2);
+    function createControllerRay() {
+  const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+  const geometry = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0, 0, -1)
+  ]);
+  const line = new THREE.Line(geometry, material);
+  line.name = 'controllerRay';
+  line.scale.z = 10; // Extend the ray to 10 units
+  return line;
+}
+controller1.add(createControllerRay());
+controller2.add(createControllerRay());
     
     // Create hand tracking visualization
     function createHandMesh() {
@@ -391,6 +404,8 @@ let lastPosition = new THREE.Vector3();
     // Handle XR session start
     renderer.xr.addEventListener('sessionstart', async function() {
       console.log('VR session starting...');
+      camera.add(exitButton);
+camera.add(recenterButton);
       session = renderer.xr.getSession();
       
       try {
@@ -455,6 +470,8 @@ let lastPosition = new THREE.Vector3();
     // Handle XR session end
     renderer.xr.addEventListener('sessionend', function() {
       console.log('VR session ending...');
+      camera.remove(exitButton);
+      camera.remove(recenterButton);
       session = null;
       xrReferenceSpace = null;
       handTrackingSupported = false;
@@ -476,6 +493,23 @@ let lastPosition = new THREE.Vector3();
     
     // Updated controller event handlers for Meta Quest 2
     function onSelect(event) {
+      const exitIntersect = raycaster.intersectObject(exitButton);
+if (exitIntersect.length > 0) {
+    console.log('Exit button selected');
+    if (session) {
+        session.end();
+        return;
+    }
+}
+const recenterIntersect = raycaster.intersectObject(recenterButton);
+if (recenterIntersect.length > 0) {
+    console.log('Recenter button selected');
+    if (xrReferenceSpace && session) {
+        const resetTransform = new XRRigidTransform({ x: 0, y: 1.6, z: 0 });
+        xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(resetTransform);
+        return;
+    }
+}
       console.log('Controller select event fired', event);
       const controller = event.target;
       tempMatrix.identity().extractRotation(controller.matrixWorld);
@@ -712,16 +746,17 @@ let lastPosition = new THREE.Vector3();
     // Create a group for the gallery and load multiple image panels
     const textureLoader = new THREE.TextureLoader();
     const galleryImages = [
-      './cagedangel.png',
-      './Dancing2024.png',
-      './TakingNight.png',
-      './afternoon.png',
       './image1.png',
       './image2.png',
       './image3.png',
       './image4.png',
       './image5.png',
-      './image6.png'
+      './image6.png',
+      './image7.png',
+      './image8.png',
+      './image9.png',
+      './image10.png',
+      './image11.png'
     ];
 
     const galleryGroup = new THREE.Group();
@@ -916,6 +951,17 @@ function onCanvasClick(event) {
         alert('WebXR is not available in this browser.');
       }
     });
+    const exitButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
+const exitButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+const exitButton = new THREE.Mesh(exitButtonGeometry, exitButtonMaterial);
+exitButton.position.set(0, -1, -3);
+exitButton.name = 'exitButton';
+
+const recenterButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
+const recenterButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
+const recenterButton = new THREE.Mesh(recenterButtonGeometry, recenterButtonMaterial);
+recenterButton.position.set(1.5, -1, -3);
+recenterButton.name = 'recenterButton';
     renderer.setAnimationLoop(animate);
   </script>
 <button id="enter-vr-button" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; font-size: 1.2em; z-index: 2000;">Enter Immersive VR</button>
