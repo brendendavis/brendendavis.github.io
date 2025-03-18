@@ -721,16 +721,16 @@ let lastPosition = new THREE.Vector3();
     const numImages = galleryImages.length;
     const galleryRadius = 20;
     galleryImages.forEach((imgPath, index) => {
-      const angle = (index / numImages) * Math.PI * 2;
-      const x = galleryRadius * Math.cos(angle);
-      const z = galleryRadius * Math.sin(angle);
-      const texture = textureLoader.load(imgPath);
-      // Use a subdivided plane for smoother displacement; use fewer segments on low-performing devices
-      const panelGeometry = new THREE.PlaneGeometry(8, 5, isLowPerformance ? 10 : 50, isLowPerformance ? 10 : 50);
-      const panelMaterial = new THREE.ShaderMaterial({
+  const angle = (index / numImages) * Math.PI * 2;
+  const x = galleryRadius * Math.cos(angle);
+  const z = galleryRadius * Math.sin(angle);
+  const texture = textureLoader.load(imgPath);
+  // Use a subdivided plane for smoother displacement; use fewer segments on low-performing devices
+  const panelGeometry = new THREE.PlaneGeometry(8, 5, isLowPerformance ? 10 : 50, isLowPerformance ? 10 : 50);
+  const panelMaterial = new THREE.ShaderMaterial({
     uniforms: {
-        time: { value: 0 },
-        map: { value: texture }
+      time: { value: 0 },
+      map: { value: texture }
     },
     vertexShader: `
         uniform float time;
@@ -756,120 +756,21 @@ let lastPosition = new THREE.Vector3();
     side: THREE.DoubleSide,
     transparent: true,
     alphaTest: 0.5
+  });
+  
+  // Create a mesh for the panel
+  const panelMesh = new THREE.Mesh(panelGeometry, panelMaterial);
+  // Position the panel along the circle
+  panelMesh.position.set(x, 0, z);
+  // Rotate the panel to face the center of the gallery
+  panelMesh.lookAt(new THREE.Vector3(0, 0, 0));
+  
+  // Add the panel mesh to the gallery group
+  galleryGroup.add(panelMesh);
 });
 
-      // Update hand tracking if supported
-      if (handTrackingSupported) {
-        session.inputSources.forEach((inputSource) => {
-          if (!inputSource.hand) return;
-
-          const hand = inputSource.hand;
-          const handJointsMap = inputSource.handedness === 'left' ? handJoints.left : handJoints.right;
-
-          // Update each joint position
-          for (let i = 0; i < hand.values.length; i++) {
-            const joint = hand.values[i];
-            if (!joint) continue;
-
-            const jointMesh = handJointsMap.get(i);
-            if (!jointMesh) continue;
-
-            // Get joint pose in reference space
-            const jointPose = frame.getPose(joint.space, xrReferenceSpace);
-            if (!jointPose) continue;
-
-            // Update joint mesh position and rotation
-            jointMesh.position.set(
-              jointPose.transform.position.x,
-              jointPose.transform.position.y,
-              jointPose.transform.position.z
-            );
-
-            // Check for pinch gesture
-            if (i === 4) { // Index finger tip
-              const thumbTip = hand.values[0];
-              if (thumbTip) {
-                const thumbPose = frame.getPose(thumbTip.space, xrReferenceSpace);
-                if (thumbPose) {
-                  const distance = jointPose.transform.position.distanceTo(thumbPose.transform.position);
-                  if (distance < 0.05) { // Pinch threshold
-                    // Trigger interaction
-                    const ray = new THREE.Ray();
-                    ray.setFromCamera(jointPose.transform.position, jointPose.transform.orientation);
-                    const intersects = raycaster.intersectObjects(galleryGroup.children);
-                    if (intersects.length > 0) {
-                      focusedPanel = intersects[0].object;
-                      controls.target.copy(focusedPanel.position);
-                      triggerHapticFeedback(renderer.xr.getController(inputSource.handedness === 'left' ? 0 : 1));
-                    }
-                  }
-                }
-              }
-            }
-          }
-        });
-      }
-
-      // Update controller-based movement
-if (session) {
-  session.inputSources.forEach((inputSource, index) => {
-    if (!inputSource.gamepad) return;
-    const gamepad = inputSource.gamepad;
-    const controller = renderer.xr.getController(index);
-    // Get controller pose in reference space
-    const pose = frame.getPose(inputSource.targetRaySpace, xrReferenceSpace);
-    if (!pose) return;
-    // Debug log for controller state
-    if (Math.random() < 0.01) {
-      console.log(`Controller ${index} state:`, {
-        axes: gamepad.axes.map(a => a.toFixed(2)),
-        buttons: gamepad.buttons.map(b => b.pressed),
-        position: pose.transform.position,
-        orientation: pose.transform.orientation
-      });
-    }
-    // Quest 2 specific: thumbstick axes are typically 2 and 3
-    if (gamepad.axes.length >= 4) {
-      const thumbstickX = gamepad.axes[2];
-      const thumbstickY = gamepad.axes[3];
-      if (Math.abs(thumbstickX) > 0.1 || Math.abs(thumbstickY) > 0.1) {
-        const moveVector = new THREE.Vector3(
-          thumbstickX * moveSpeed * deltaTime,
-          0,
-          -thumbstickY * moveSpeed * deltaTime
-        );
-        const headQuaternion = new THREE.Quaternion(
-          headPose.transform.orientation.x,
-          headPose.transform.orientation.y,
-          headPose.transform.orientation.z,
-          headPose.transform.orientation.w
-        );
-        moveVector.applyQuaternion(headQuaternion);
-        const moveTransform = new XRRigidTransform(
-          { x: moveVector.x, y: moveVector.y, z: moveVector.z },
-          { x: 0, y: 0, z: 0, w: 1 }
-        );
-        xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(moveTransform);
-        if (Math.random() < 0.01) {
-          console.log(`Moving: X:${thumbstickX.toFixed(2)} Y:${thumbstickY.toFixed(2)} Delta:${deltaTime.toFixed(3)}`);
-          console.log('Current position:', currentPosition);
-          console.log('Movement vector:', moveVector);
-        }
-      }
-    }
-    // Handle buttons for additional interactions if needed
-    if (gamepad.buttons && gamepad.buttons.length > 0) {
-      if (gamepad.buttons[0] && gamepad.buttons[0].pressed) {
-        console.log("Button A pressed on controller", index);
-      }
-    }
-  });
-}
-
-      // Update last position
-      lastPosition.copy(currentPosition);
-    }
-  );
+// Ensure the gallery group is added to the scene
+scene.add(galleryGroup);
     function updateVRControls() { }
 
     // Animation loop
