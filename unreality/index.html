@@ -771,6 +771,24 @@ let lastPosition = new THREE.Vector3();
 
 // Ensure the gallery group is added to the scene
 scene.add(galleryGroup);
+renderer.domElement.addEventListener('click', onCanvasClick, false);
+function onCanvasClick(event) {
+  // Get canvas bounding rectangle for accurate mouse coordinates
+  const rect = renderer.domElement.getBoundingClientRect();
+  const mouse = new THREE.Vector2(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1
+  );
+  
+  // Update the raycaster using the mouse coordinates and the camera
+  raycaster.setFromCamera(mouse, camera);
+  
+  // Check for intersections with the gallery image panels
+  const intersects = raycaster.intersectObjects(galleryGroup.children);
+  if (intersects.length > 0) {
+    focusedPanel = intersects[0].object;
+  }
+}
     function updateVRControls() { }
 
     // Animation loop
