@@ -403,11 +403,16 @@ controller2.add(createControllerRay());
 
     // Handle XR session start
     renderer.xr.addEventListener('sessionstart', async function() {
-      console.log('VR session starting...');
-      const xrCam = renderer.xr.getCamera(camera);
-      xrCam.add(exitButton);
-      xrCam.add(recenterButton);
-      session = renderer.xr.getSession();
+  console.log('VR session starting...');
+  session = renderer.xr.getSession();
+
+  // Add a slight delay before adding the UI elements to ensure the XR camera is fully ready.
+  setTimeout(() => {
+    const xrCam = renderer.xr.getCamera(camera);
+    xrCam.add(exitButton);
+    xrCam.add(recenterButton);
+    console.log('UI buttons added to XR camera.');
+  }, 500);
       
       try {
         // Request hand tracking support
