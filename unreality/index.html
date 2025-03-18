@@ -796,7 +796,18 @@ function onCanvasClick(event) {
     focusedPanel = intersects[0].object;
   }
 }
-    function updateVRControls() { }
+    function updateVRControls(deltaTime) {
+      if (!session) return;
+      const rotationSpeed = 1.0; // adjust rotation speed as needed
+      session.inputSources.forEach(source => {
+        if (source.gamepad && source.gamepad.axes.length > 0) {
+          let horizontal = source.gamepad.axes[0];
+          if (Math.abs(horizontal) > 0.2) { // deadzone threshold
+            galleryGroup.rotation.y += horizontal * rotationSpeed * deltaTime;
+          }
+        }
+      });
+    }
 
     // Animation loop
     function animate(time, frame) {
