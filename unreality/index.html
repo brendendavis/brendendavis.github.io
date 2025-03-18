@@ -961,22 +961,56 @@ function onCanvasClick(event) {
         alert('WebXR is not available in this browser.');
       }
     });
-    const exitButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
-    const exitButtonMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+    // Helper function to create a text sprite for button labels
+    function createTextSprite(message, scale) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 128;
+      const context = canvas.getContext('2d');
+      // Clear the canvas with a transparent background
+      context.fillStyle = 'rgba(0, 0, 0, 0)';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      // Set text properties
+      context.font = '48px Arial';
+      context.fillStyle = 'white';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.fillText(message, canvas.width / 2, canvas.height / 2);
+      
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+      const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+      const sprite = new THREE.Sprite(spriteMaterial);
+      sprite.scale.set(scale.x, scale.y, 1);
+      return sprite;
+    }
+    
+    // Create smaller, dark grey, translucent exit button
+    const exitButtonGeometry = new THREE.PlaneGeometry(0.8, 0.4);
+    const exitButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.7 });
     const exitButton = new THREE.Mesh(exitButtonGeometry, exitButtonMaterial);
     exitButton.position.set(-0.5, 0.5, -2);
     exitButton.name = 'exitButton';
-
-    const recenterButtonGeometry = new THREE.PlaneGeometry(1, 0.5);
-    const recenterButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
+    // Add label to the exit button
+    const exitLabel = createTextSprite('Exit', { x: 0.7, y: 0.3 });
+    exitLabel.position.set(0, 0, 0.01);
+    exitButton.add(exitLabel);
+    
+    // Create smaller, dark grey, translucent recenter button
+    const recenterButtonGeometry = new THREE.PlaneGeometry(0.8, 0.4);
+    const recenterButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.7 });
     const recenterButton = new THREE.Mesh(recenterButtonGeometry, recenterButtonMaterial);
     recenterButton.position.set(0.5, 0.5, -2);
     recenterButton.name = 'recenterButton';
-
+    // Add label to the recenter button
+    const recenterLabel = createTextSprite('Recenter', { x: 0.7, y: 0.3 });
+    recenterLabel.position.set(0, 0, 0.01);
+    recenterButton.add(recenterLabel);
+    
     const uiContainer = new THREE.Group();
     uiContainer.add(exitButton);
     uiContainer.add(recenterButton);
-
+    
     // Parent the UI container to the camera so it stays in view during VR
     camera.add(uiContainer);
     renderer.setAnimationLoop(animate);
