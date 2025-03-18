@@ -404,8 +404,9 @@ controller2.add(createControllerRay());
     // Handle XR session start
     renderer.xr.addEventListener('sessionstart', async function() {
       console.log('VR session starting...');
-      camera.add(exitButton);
-camera.add(recenterButton);
+      const xrCam = renderer.xr.getCamera(camera);
+      xrCam.add(exitButton);
+      xrCam.add(recenterButton);
       session = renderer.xr.getSession();
       
       try {
@@ -470,8 +471,9 @@ camera.add(recenterButton);
     // Handle XR session end
     renderer.xr.addEventListener('sessionend', function() {
       console.log('VR session ending...');
-      camera.remove(exitButton);
-      camera.remove(recenterButton);
+      const xrCam = renderer.xr.getCamera(camera);
+      xrCam.remove(exitButton);
+      xrCam.remove(recenterButton);
       session = null;
       xrReferenceSpace = null;
       handTrackingSupported = false;
