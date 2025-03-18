@@ -489,6 +489,13 @@ let lastPosition = new THREE.Vector3();
         
         // Trigger haptic feedback if available
         triggerHapticFeedback(controller);
+        if (renderer.xr.isPresenting) {
+          const xrCamera = renderer.xr.getCamera(camera);
+          const targetPosition = new THREE.Vector3(focusedPanel.position.x, focusedPanel.position.y, focusedPanel.position.z + 10);
+          const delta = new THREE.Vector3().subVectors(targetPosition, xrCamera.position);
+          scene.position.sub(delta);
+          focusedPanel = null;
+        }
       }
     }
     
@@ -832,7 +839,7 @@ function onCanvasClick(event) {
       skyboxMaterial.uniforms.time.value = elapsed * 0.5;
 
       // Slowly rotate the gallery for a surreal effect
-      galleryGroup.rotation.y += 0.001;
+      if (!renderer.xr.isPresenting) galleryGroup.rotation.y += 0.001;
 
       if (transitionActive) {
         // Calculate transition progress (0 to 1)
