@@ -864,6 +864,10 @@ function onCanvasClick(event) {
     const bubble = bubbleIntersects[0].object;
     bubbleGroup.remove(bubble);
     console.log('Bubble popped!');
+    if (bubbleSound.isPlaying) {
+      bubbleSound.stop();
+    }
+    bubbleSound.play();
     return; // Exit after popping a bubble
   }
   
