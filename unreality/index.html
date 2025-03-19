@@ -795,7 +795,7 @@ scene.remove(recenterButton);
   './image10.png',
   './image11.png',
   './image12.png',
-  './image13.jpg'
+  './image13.png'
 ];
 
 const artworkTitles = [
@@ -867,7 +867,7 @@ galleryImages.forEach((imgPath, index) => {
   // Adjust the scale as needed; here, the label is sized to roughly match the panel width
   const label = createTextSprite(artworkTitles[index], { x: 6, y: 3 });
   // Position the label below the panel in its local coordinate space (offset along Y axis and slightly forward in Z to avoid z-fighting)
-  label.position.set(0, -3, 0.1);
+  label.position.set(0, -3, 0.5);
   panelMesh.add(label);
   
   // Add the panel mesh (with its label) to the gallery group
