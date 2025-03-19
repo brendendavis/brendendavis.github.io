@@ -866,8 +866,10 @@ galleryImages.forEach((imgPath, index) => {
   // Create a text label for the artwork using the existing createTextSprite function
   // Adjust the scale as needed; here, the label is sized to roughly match the panel width
   const label = createTextSprite(artworkTitles[index], { x: 6, y: 3 });
-  // Position the label below the panel in its local coordinate space (offset along Y axis and slightly forward in Z to avoid z-fighting)
-  label.position.set(0, -3, 0.5);
+  // Disable depth testing so that the label is always rendered on top
+  label.material.depthTest = false;
+  // Adjust the label's position further away from the panel to reduce intersection issues
+  label.position.set(0, -3, 1);
   panelMesh.add(label);
   
   // Add the panel mesh (with its label) to the gallery group
