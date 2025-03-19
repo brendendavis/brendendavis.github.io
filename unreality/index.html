@@ -137,6 +137,7 @@
     import { Reflector } from 'three/addons/objects/Reflector.js';
     import { FontLoader } from 'three/addons/loaders/FontLoader.js';
     import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
     import { VRButton } from 'three/addons/webxr/VRButton.js';
     import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
@@ -198,6 +199,7 @@
 let focusedPanel = null;
 let currentPosition = new THREE.Vector3();
 let lastPosition = new THREE.Vector3();
+
     // --- Audio Setup ---
     const listener = new THREE.AudioListener();
     camera.add(listener);
@@ -844,6 +846,101 @@ scene.remove(recenterButton);
 
 // Ensure the gallery group is added to the scene
 scene.add(galleryGroup);
+    // --- Interactive Avatar Setup ---
+    // Create interactive avatar using the mask.webm video
+    const video = document.createElement('video');
+    video.crossOrigin = 'anonymous';
+    video.src = './mask.webm'; // Keep the .webm format
+    video.preload = 'auto'; // Ensure the video is buffered before playback
+    video.loop = true;
+    video.muted = true; // Mute the video to bypass autoplay restrictions
+    video.playsInline = true; // Ensure it plays inline on mobile devices
+
+    // Log when the video has loaded enough data to play, including current time for debugging
+    video.addEventListener('loadeddata', () => {
+      console.log('Video loaded and ready to play, current time:', video.currentTime);
+      video.play().catch(err => {
+        console.error('Video play error:', err);
+      });
+    });
+
+    const avatarVideoTexture = new THREE.VideoTexture(video);
+    avatarVideoTexture.minFilter = THREE.LinearFilter;
+    avatarVideoTexture.magFilter = THREE.LinearFilter;
+    avatarVideoTexture.format = THREE.RGBAFormat; // Use RGBA format for transparency
+
+    const avatarMaterial = new THREE.MeshBasicMaterial({
+      map: avatarVideoTexture,
+      transparent: true, // Enable transparency
+      side: THREE.DoubleSide // Render both sides of the material
+    });
+    const avatarGeometry = new THREE.PlaneGeometry(2, 2); // Adjust size as needed
+    const avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
+    avatarMesh.position.set(0, -5, 10); // Adjust position as needed
+    scene.add(avatarMesh);
+
+    // Add event listener to ensure the video plays after user interaction
+    document.addEventListener('click', () => {
+      if (video.paused) {
+        video.play().catch(err => {
+          console.error('Video play error:', err);
+        });
+      }
+    });
+
+// Function to display artwork information when the avatar is clicked
+function displayArtworkInfo() {
+  // If the modal already exists, remove it
+  let modal = document.getElementById('artwork-info-modal');
+  if (modal) {
+    modal.remove();
+    return;
+  }
+  
+  // Create a new modal element
+  modal = document.createElement('div');
+  modal.id = 'artwork-info-modal';
+  modal.style.position = 'fixed';
+  modal.style.top = '50%';
+  modal.style.left = '50%';
+  modal.style.transform = 'translate(-50%, -50%)';
+  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  modal.style.color = '#00ffff';
+  modal.style.padding = '20px';
+  modal.style.border = '2px solid #00ffff';
+  modal.style.borderRadius = '10px';
+  modal.style.zIndex = '3000';
+  modal.style.maxWidth = '80vw';
+  modal.style.maxHeight = '80vh';
+  modal.style.overflowY = 'auto';
+  
+  modal.innerHTML = `
+    <h2>Artwork Information</h2>
+    <ul style="list-style: none; padding: 0;">
+      <li><strong>Channel 3 (graphics on tv)</strong> (2023), mixed media painting on wood board, 24.5&quot; x 36.5&quot;</li>
+      <li><strong>Fighting over paper</strong> (2023), mixed media painting on wood board, 19&quot; x 24&quot;</li>
+      <li><strong>The rain fell all at once</strong> (2023), mixed media painting on wood board, 36.5&quot; x 24.5&quot;</li>
+      <li><strong>Road trip (by my own hand)</strong> (2023), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+      <li><strong>One way</strong> (2023), mixed media painting on wood board, 37&quot; x 25&quot;</li>
+      <li><strong>Demolition day</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+      <li><strong>On the fence</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+      <li><strong>Taking the night</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+      <li><strong>Dancing</strong> (2024), mixed media painting on wood board, 14&quot; x 12.5&quot;</li>
+      <li><strong>On the fence / Service</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot; and 24&quot; x 48&quot;</li>
+      <li><strong>Six days in the dark</strong> (2023), mixed media painting on wood board, 37&quot; x 25&quot;</li>
+      <li><strong>The Caged Angel</strong> (2023), mixed media painting on wood board, 24&quot; x 48&quot;</li>
+      <li><strong>The Adversary #1</strong> (2022), mixed media painting on wood board, 24&quot; x 48&quot;</li>
+    </ul>
+    <button id="close-artwork-info" style="margin-top: 10px; padding: 5px 10px; font-size: 1em;">Close</button>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Add event listener to close the modal when the button is clicked
+  document.getElementById('close-artwork-info').addEventListener('click', () => {
+    modal.remove();
+  });
+}
 // --- Bubble Setup ---
 const bubbleGroup = new THREE.Group();
 scene.add(bubbleGroup);
@@ -876,6 +973,13 @@ function onCanvasClick(event) {
   
   // Update the raycaster using the mouse coordinates and the camera
   raycaster.setFromCamera(mouse, camera);
+  
+  // Check for intersections with the avatar
+  const avatarIntersects = raycaster.intersectObject(avatarMesh);
+  if (avatarIntersects.length > 0) {
+    displayArtworkInfo();
+    return; // Exit if the avatar is clicked
+  }
   
   // First, check for intersections with bubbles
   const bubbleIntersects = raycaster.intersectObjects(bubbleGroup.children);
@@ -911,6 +1015,13 @@ function onCanvasClick(event) {
 
     // Animation loop
     function animate(time, frame) {
+      // Make the avatar always face the user (rotate on horizontal plane)
+      if (avatarMesh) {
+        const lookAtPos = camera.position.clone();
+        lookAtPos.y = avatarMesh.position.y; // keep avatar's vertical orientation
+        avatarMesh.lookAt(lookAtPos);
+      }
+      // Removed avatarVideoTexture.needsUpdate as the avatar now uses a 3D model
       const deltaTime = clock.getDelta();
       const moveSpeed = 1; // adjust this value as needed
       let headPose;
