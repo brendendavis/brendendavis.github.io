@@ -531,13 +531,15 @@ scene.remove(recenterButton);
         
         // Trigger haptic feedback if available
         triggerHapticFeedback(controller);
-        if (renderer.xr.isPresenting) {
+      if (renderer.xr.isPresenting) {
           const xrCamera = renderer.xr.getCamera(camera);
           const targetPosition = new THREE.Vector3(focusedPanel.position.x, focusedPanel.position.y, focusedPanel.position.z + 10);
           const delta = new THREE.Vector3().subVectors(targetPosition, xrCamera.position);
-          scene.position.sub(delta);
+          // Instead of moving the scene, update the XR reference space offset
+          const transform = new XRRigidTransform({ x: delta.x, y: delta.y, z: delta.z });
+          xrReferenceSpace = xrReferenceSpace.getOffsetReferenceSpace(transform);
           focusedPanel = null;
-        }
+      }
       }
     }
     
