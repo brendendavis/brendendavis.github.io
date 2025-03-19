@@ -896,56 +896,108 @@ scene.add(galleryGroup);
 
 // Function to display artwork information when the avatar is clicked
 function displayArtworkInfo() {
-  // If the modal already exists, remove it
-  let modal = document.getElementById('artwork-info-modal');
-  if (modal) {
-    modal.remove();
-    return;
+  if (renderer.xr.isPresenting) {
+    // VR mode: Create a 3D panel attached to the camera
+    // Check if a VR artwork info panel already exists
+    let existingPanel = camera.getObjectByName('vrArtworkInfoPanel');
+    if (existingPanel) {
+      camera.remove(existingPanel);
+      return;
+    }
+    // Create a canvas to draw the artwork information
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+
+    // Draw background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Set text properties
+    ctx.fillStyle = '#00ffff';
+    ctx.font = '28px Courier New';
+    ctx.textBaseline = 'top';
+
+    const lines = [
+      'Artwork Information:',
+      'Channel 3 (graphics on tv) (2023), mixed media painting on wood board, 24.5" x 36.5"',
+      'Fighting over paper (2023), mixed media painting on wood board, 19" x 24"',
+      'The rain fell all at once (2023), mixed media painting on wood board, 36.5" x 24.5"',
+      'Road trip (by my own hand) (2023), mixed media painting on wood board, 24" x 24"',
+      'One way (2023), mixed media painting on wood board, 37" x 25"',
+      'Demolition day (2024), mixed media painting on wood board, 24" x 24"',
+      'On the fence (2024), mixed media painting on wood board, 24" x 24"',
+      'Taking the night (2024), mixed media painting on wood board, 24" x 24"',
+      'Dancing (2024), mixed media painting on wood board, 14" x 12.5"',
+      'On the fence / Service (2024), mixed media painting on wood board, 24" x 24" and 24" x 48"',
+      'Six days in the dark (2023), mixed media painting on wood board, 37" x 25"',
+      'The Caged Angel (2023), mixed media painting on wood board, 24" x 48"',
+      'The Adversary #1 (2022), mixed media painting on wood board, 24" x 48"'
+    ];
+
+    const lineHeight = 32;
+    const x = 20;
+    let y = 20;
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], x, y);
+      y += lineHeight;
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    const geometry = new THREE.PlaneGeometry(2.5, 1.25);
+    const panel = new THREE.Mesh(geometry, material);
+    panel.name = 'vrArtworkInfoPanel';
+    // Position the panel 2 units in front of the camera
+    panel.position.set(0, 0, -2);
+    camera.add(panel);
+  } else {
+    // Standard mode: Use HTML modal
+    let modal = document.getElementById('artwork-info-modal');
+    if (modal) {
+      modal.remove();
+      return;
+    }
+    modal = document.createElement('div');
+    modal.id = 'artwork-info-modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '50%';
+    modal.style.left = '50%';
+    modal.style.transform = 'translate(-50%, -50%)';
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    modal.style.color = '#00ffff';
+    modal.style.padding = '20px';
+    modal.style.border = '2px solid #00ffff';
+    modal.style.borderRadius = '10px';
+    modal.style.zIndex = '3000';
+    modal.style.maxWidth = '80vw';
+    modal.style.maxHeight = '80vh';
+    modal.style.overflowY = 'auto';
+    modal.innerHTML = `
+      <h2>Artwork Information</h2>
+      <ul style="list-style: none; padding: 0;">
+        <li><strong>Channel 3 (graphics on tv)</strong> (2023), mixed media painting on wood board, 24.5&quot; x 36.5&quot;</li>
+        <li><strong>Fighting over paper</strong> (2023), mixed media painting on wood board, 19&quot; x 24&quot;</li>
+        <li><strong>The rain fell all at once</strong> (2023), mixed media painting on wood board, 36.5&quot; x 24.5&quot;</li>
+        <li><strong>Road trip (by my own hand)</strong> (2023), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+        <li><strong>One way</strong> (2023), mixed media painting on wood board, 37&quot; x 25&quot;</li>
+        <li><strong>Demolition day</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+        <li><strong>On the fence</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+        <li><strong>Taking the night</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
+        <li><strong>Dancing</strong> (2024), mixed media painting on wood board, 14&quot; x 12.5&quot;</li>
+        <li><strong>On the fence / Service</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot; and 24&quot; x 48&quot;</li>
+        <li><strong>Six days in the dark</strong> (2023), mixed media painting on wood board, 37&quot; x 25&quot;</li>
+        <li><strong>The Caged Angel</strong> (2023), mixed media painting on wood board, 24&quot; x 48&quot;</li>
+        <li><strong>The Adversary #1</strong> (2022), mixed media painting on wood board, 24&quot; x 48&quot;</li>
+      </ul>
+      <button id="close-artwork-info" style="margin-top: 10px; padding: 5px 10px; font-size: 1em;">Close</button>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('close-artwork-info').addEventListener('click', () => {
+      modal.remove();
+    });
   }
-  
-  // Create a new modal element
-  modal = document.createElement('div');
-  modal.id = 'artwork-info-modal';
-  modal.style.position = 'fixed';
-  modal.style.top = '50%';
-  modal.style.left = '50%';
-  modal.style.transform = 'translate(-50%, -50%)';
-  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-  modal.style.color = '#00ffff';
-  modal.style.padding = '20px';
-  modal.style.border = '2px solid #00ffff';
-  modal.style.borderRadius = '10px';
-  modal.style.zIndex = '3000';
-  modal.style.maxWidth = '80vw';
-  modal.style.maxHeight = '80vh';
-  modal.style.overflowY = 'auto';
-  
-  modal.innerHTML = `
-    <h2>Artwork Information</h2>
-    <ul style="list-style: none; padding: 0;">
-      <li><strong>Channel 3 (graphics on tv)</strong> (2023), mixed media painting on wood board, 24.5&quot; x 36.5&quot;</li>
-      <li><strong>Fighting over paper</strong> (2023), mixed media painting on wood board, 19&quot; x 24&quot;</li>
-      <li><strong>The rain fell all at once</strong> (2023), mixed media painting on wood board, 36.5&quot; x 24.5&quot;</li>
-      <li><strong>Road trip (by my own hand)</strong> (2023), mixed media painting on wood board, 24&quot; x 24&quot;</li>
-      <li><strong>One way</strong> (2023), mixed media painting on wood board, 37&quot; x 25&quot;</li>
-      <li><strong>Demolition day</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
-      <li><strong>On the fence</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
-      <li><strong>Taking the night</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot;</li>
-      <li><strong>Dancing</strong> (2024), mixed media painting on wood board, 14&quot; x 12.5&quot;</li>
-      <li><strong>On the fence / Service</strong> (2024), mixed media painting on wood board, 24&quot; x 24&quot; and 24&quot; x 48&quot;</li>
-      <li><strong>Six days in the dark</strong> (2023), mixed media painting on wood board, 37&quot; x 25&quot;</li>
-      <li><strong>The Caged Angel</strong> (2023), mixed media painting on wood board, 24&quot; x 48&quot;</li>
-      <li><strong>The Adversary #1</strong> (2022), mixed media painting on wood board, 24&quot; x 48&quot;</li>
-    </ul>
-    <button id="close-artwork-info" style="margin-top: 10px; padding: 5px 10px; font-size: 1em;">Close</button>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  // Add event listener to close the modal when the button is clicked
-  document.getElementById('close-artwork-info').addEventListener('click', () => {
-    modal.remove();
-  });
 }
 // --- Bubble Setup ---
 const bubbleGroup = new THREE.Group();
