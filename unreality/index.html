@@ -509,6 +509,20 @@ scene.remove(recenterButton);
       raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
       raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
       
+      // Check for bubble intersections in VR mode
+      const bubbleIntersects = raycaster.intersectObjects(bubbleGroup.children);
+      if (bubbleIntersects.length > 0) {
+          const bubble = bubbleIntersects[0].object;
+          bubbleGroup.remove(bubble);
+          console.log('Bubble popped!');
+          if (bubbleSound.isPlaying) {
+              bubbleSound.stop();
+          }
+          bubbleSound.play();
+          triggerHapticFeedback(controller);
+          return;
+      }
+      
       const exitIntersect = raycaster.intersectObject(exitButton);
       if (exitIntersect.length > 0) {
           console.log('Exit button selected');
