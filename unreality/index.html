@@ -543,6 +543,17 @@ scene.remove(recenterButton);
           }
       }
       
+      // Check for intersection with the avatar in VR mode
+      if (avatarMesh) {
+        const avatarIntersects = raycaster.intersectObject(avatarMesh);
+        if (avatarIntersects.length > 0) {
+          console.log('Avatar selected in VR mode');
+          displayArtworkInfo();
+          triggerHapticFeedback(controller);
+          return;
+        }
+      }
+      
       console.log('Controller select event fired', event);
       const intersects = raycaster.intersectObjects(galleryGroup.children);
       if (intersects.length > 0) {
