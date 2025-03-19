@@ -825,6 +825,27 @@ scene.remove(recenterButton);
 
 // Ensure the gallery group is added to the scene
 scene.add(galleryGroup);
+// --- Bubble Setup ---
+const bubbleGroup = new THREE.Group();
+scene.add(bubbleGroup);
+
+function spawnBubble() {
+  const bubbleRadius = Math.random() * 0.5 + 0.5;
+  const bubbleGeometry = new THREE.SphereGeometry(bubbleRadius, 16, 16);
+  const bubbleMaterial = new THREE.MeshBasicMaterial({
+    color: 0x00ffff,
+    transparent: true,
+    opacity: 0.6
+  });
+  const bubble = new THREE.Mesh(bubbleGeometry, bubbleMaterial);
+  bubble.position.set(
+    (Math.random() - 0.5) * 30,
+    -10,
+    (Math.random() - 0.5) * 30
+  );
+  bubble.userData.speed = Math.random() * 0.01 + 0.005; // upward speed
+  bubbleGroup.add(bubble);
+}
 renderer.domElement.addEventListener('click', onCanvasClick, false);
 function onCanvasClick(event) {
   // Get canvas bounding rectangle for accurate mouse coordinates
@@ -837,7 +858,16 @@ function onCanvasClick(event) {
   // Update the raycaster using the mouse coordinates and the camera
   raycaster.setFromCamera(mouse, camera);
   
-  // Check for intersections with the gallery image panels
+  // First, check for intersections with bubbles
+  const bubbleIntersects = raycaster.intersectObjects(bubbleGroup.children);
+  if (bubbleIntersects.length > 0) {
+    const bubble = bubbleIntersects[0].object;
+    bubbleGroup.remove(bubble);
+    console.log('Bubble popped!');
+    return; // Exit after popping a bubble
+  }
+  
+  // Then, check for intersections with the gallery image panels
   const intersects = raycaster.intersectObjects(galleryGroup.children);
   if (intersects.length > 0) {
     focusedPanel = intersects[0].object;
@@ -869,6 +899,18 @@ function onCanvasClick(event) {
       }
       const elapsed = clock.getElapsedTime();
       const params = { cameraTravelSpeed: 0.05 };
+      // Spawn bubbles sporadically
+if (Math.random() < 0.005) {
+  spawnBubble();
+}
+
+// Update bubbles: make them float upward and remove if they reach above y = 20
+bubbleGroup.children.slice().forEach(bubble => {
+  bubble.position.y += bubble.userData.speed;
+  if (bubble.position.y > 20) {
+    bubbleGroup.remove(bubble);
+  }
+});
 
       // Update VR controls if in VR mode
       if (renderer.xr.isPresenting) {
