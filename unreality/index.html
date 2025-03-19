@@ -213,6 +213,11 @@ let lastPosition = new THREE.Vector3();
       // Do not auto-play; wait for user interaction
     });
     // -------------------
+    const bubbleSound = new THREE.Audio(listener);
+    audioLoader.load('./bubblesfx.mp3', function(buffer) {
+      bubbleSound.setBuffer(buffer);
+      bubbleSound.setVolume(1.0);
+    });
     
     // Start Screen Handling
     const startScreen = document.getElementById('start-screen');
