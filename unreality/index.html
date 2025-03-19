@@ -1027,13 +1027,15 @@ function displayArtworkInfo() {
 }
 // --- Bubble Setup ---
 const bubbleGroup = new THREE.Group();
+let bubblePopCount = 0;
+let currentBubbleColor = 0x00ffff;
 scene.add(bubbleGroup);
 
 function spawnBubble() {
   const bubbleRadius = Math.random() * 0.5 + 0.5;
   const bubbleGeometry = new THREE.SphereGeometry(bubbleRadius, 16, 16);
   const bubbleMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00ffff,
+    color: currentBubbleColor,
     transparent: true,
     opacity: 0.6
   });
@@ -1075,6 +1077,18 @@ function onCanvasClick(event) {
       bubbleSound.stop();
     }
     bubbleSound.play();
+    bubblePopCount++;
+    if (bubblePopCount === 8) {
+      currentBubbleColor = 0xff0000;
+      console.log('Bubble color changed to red!');
+    } else if (bubblePopCount === 16) {
+      currentBubbleColor = 0x00ff00;
+      console.log('Bubble color changed to green!');
+    } else if (bubblePopCount === 24) {
+      currentBubbleColor = 0x00ffff;
+      bubblePopCount = 0;
+      console.log('Bubble color reset to default!');
+    }
     return; // Exit after popping a bubble
   }
   
