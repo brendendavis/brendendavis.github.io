@@ -783,25 +783,42 @@ scene.remove(recenterButton);
     // Create a group for the gallery and load multiple image panels
     const textureLoader = new THREE.TextureLoader();
     const galleryImages = [
-      './image1.png',
-      './image2.png',
-      './image3.png',
-      './image4.png',
-      './image5.png',
-      './image6.png',
-      './image7.png',
-      './image8.png',
-      './image9.png',
-      './image10.png',
-      './image11.png',
-      './image12.png',
-      './image13.jpeg'
-    ];
+  './image1.png',
+  './image2.png',
+  './image3.png',
+  './image4.png',
+  './image5.png',
+  './image6.png',
+  './image7.png',
+  './image8.png',
+  './image9.png',
+  './image10.png',
+  './image11.png',
+  './image12.png',
+  './image13.jpeg'
+];
 
-    const galleryGroup = new THREE.Group();
-    const numImages = galleryImages.length;
-    const galleryRadius = 20;
-    galleryImages.forEach((imgPath, index) => {
+const artworkTitles = [
+  "Channel 3 (graphics on tv) (2023)",
+  "Fighting over paper (2023)",
+  "The rain fell all at once (2023)",
+  "Road trip (by my own hand) (2023)",
+  "One way (2023)",
+  "Demolition day (2024)",
+  "On the fence (2024)",
+  "Taking the night (2024)",
+  "Dancing (2024)",
+  "On the fence / Service (2024)",
+  "Six days in the dark (2023)",
+  "The Caged Angel (2023)",
+  "The Adversary #1 (2022)"
+];
+
+const galleryGroup = new THREE.Group();
+const numImages = galleryImages.length;
+const galleryRadius = 20;
+
+galleryImages.forEach((imgPath, index) => {
   const angle = (index / numImages) * Math.PI * 2;
   const x = galleryRadius * Math.cos(angle);
   const z = galleryRadius * Math.sin(angle);
@@ -846,7 +863,14 @@ scene.remove(recenterButton);
   // Rotate the panel to face the center of the gallery
   panelMesh.lookAt(new THREE.Vector3(0, 0, 0));
   
-  // Add the panel mesh to the gallery group
+  // Create a text label for the artwork using the existing createTextSprite function
+  // Adjust the scale as needed; here, the label is sized to roughly match the panel width
+  const label = createTextSprite(artworkTitles[index], { x: 6, y: 3 });
+  // Position the label below the panel in its local coordinate space (offset along Y axis and slightly forward in Z to avoid z-fighting)
+  label.position.set(0, -3, 0.1);
+  panelMesh.add(label);
+  
+  // Add the panel mesh (with its label) to the gallery group
   galleryGroup.add(panelMesh);
 });
 
