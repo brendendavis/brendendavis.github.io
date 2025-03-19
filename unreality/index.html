@@ -199,6 +199,24 @@
 let focusedPanel = null;
 let currentPosition = new THREE.Vector3();
 let lastPosition = new THREE.Vector3();
+// --- Particle Trail Setup ---
+const trailParticles = [];
+const trailParticleGroup = new THREE.Group();
+scene.add(trailParticleGroup);
+let lastTrailSpawnTime1 = 0;
+let lastTrailSpawnTime2 = 0;
+const trailSpawnInterval = 0.1; // seconds
+
+function spawnTrailParticle(position) {
+  const particleGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+  const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
+  const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+  particle.position.copy(position);
+  particle.userData.lifetime = 1; // lifetime in seconds
+  particle.userData.age = 0;
+  trailParticleGroup.add(particle);
+  trailParticles.push(particle);
+}
 
     // --- Audio Setup ---
     const listener = new THREE.AudioListener();
@@ -1208,6 +1226,32 @@ bubbleGroup.children.slice().forEach(bubble => {
 
       if (!transitionActive) {
         blurPass.uniforms.blurAmount.value = 0;
+      }
+
+      // Update trail particles
+      for (let i = trailParticles.length - 1; i >= 0; i--) {
+        const p = trailParticles[i];
+        p.userData.age += deltaTime;
+        const t = Math.max(1 - (p.userData.age / p.userData.lifetime), 0);
+        p.material.opacity = t;
+        p.scale.setScalar(t);
+        if (p.userData.age >= p.userData.lifetime) {
+          trailParticleGroup.remove(p);
+          trailParticles.splice(i, 1);
+        }
+      }
+
+      // In VR mode, spawn trail particles at controller positions at set intervals
+      if (renderer.xr.isPresenting) {
+        const elapsedTime = clock.getElapsedTime();
+        if (elapsedTime - lastTrailSpawnTime1 > trailSpawnInterval) {
+          spawnTrailParticle(controller1.position);
+          lastTrailSpawnTime1 = elapsedTime;
+        }
+        if (elapsedTime - lastTrailSpawnTime2 > trailSpawnInterval) {
+          spawnTrailParticle(controller2.position);
+          lastTrailSpawnTime2 = elapsedTime;
+        }
       }
 
       // Render the scene
