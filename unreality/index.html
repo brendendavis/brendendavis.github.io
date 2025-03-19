@@ -795,7 +795,7 @@ scene.remove(recenterButton);
   './image10.png',
   './image11.png',
   './image12.png',
-  './image13.jpeg'
+  './image13.jpg'
 ];
 
 const artworkTitles = [
@@ -1223,26 +1223,59 @@ bubbleGroup.children.slice().forEach(bubble => {
     });
     // Helper function to create a text sprite for button labels
     function createTextSprite(message, scale) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 256;
-      canvas.height = 128;
-      const context = canvas.getContext('2d');
-      // Clear the canvas with a transparent background
-      context.fillStyle = 'rgba(0, 0, 0, 0)';
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      // Set text properties
-      context.font = '48px Arial';
-      context.fillStyle = 'white';
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-      context.fillText(message, canvas.width / 2, canvas.height / 2);
-      
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.minFilter = THREE.LinearFilter;
-      const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
-      const sprite = new THREE.Sprite(spriteMaterial);
-      sprite.scale.set(scale.x, scale.y, 1);
-      return sprite;
+  // Create a larger canvas for the text sprite
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 256;
+  const context = canvas.getContext('2d');
+ 
+  // Clear the canvas with a transparent background
+  context.fillStyle = 'rgba(0, 0, 0, 0)';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+ 
+  // Set text properties
+  const fontSize = 48;
+  context.font = fontSize + 'px Arial';
+  context.fillStyle = 'white';
+  context.textAlign = 'center';
+  context.textBaseline = 'top';
+ 
+  // Implement text wrapping
+  const maxWidth = canvas.width - 20; // Leave some padding
+  const words = message.split(' ');
+  let line = '';
+  const lines = [];
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = context.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      lines.push(line);
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+ 
+  // Calculate vertical offset to center the text block
+  const lineHeight = fontSize * 1.2;
+  const totalTextHeight = lines.length * lineHeight;
+  let y = (canvas.height - totalTextHeight) / 2;
+ 
+  // Draw each line of text
+  for (let i = 0; i < lines.length; i++) {
+    context.fillText(lines[i].trim(), canvas.width / 2, y);
+    y += lineHeight;
+  }
+ 
+  // Create texture and sprite
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.minFilter = THREE.LinearFilter;
+  const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+  const sprite = new THREE.Sprite(spriteMaterial);
+  sprite.scale.set(scale.x, scale.y, 1);
+  return sprite;
     }
     
     // Create smaller, dark grey, translucent exit button
