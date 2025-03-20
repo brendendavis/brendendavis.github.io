@@ -22,10 +22,10 @@
           <li><a href="#ability-scores">Ability Scores</a></li>
           <li><a href="#inspiration">Inspiration & Proficiency</a></li>
           <li><a href="#saving-throws">Saving Throws</a></li>
-          <li><a href="#dice-roller">Dice Roller</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#other-proficiencies">Other Proficiencies</a></li>
           <li><a href="#combat-stats">Combat Stats</a></li>
+          <li><a href="#dice-roller">Dice Roller</a></li>
           <li><a href="#attacks-spellcasting">Attacks & Spellcasting</a></li>
           <li><a href="#spellcasting-details">Spellcasting Details</a></li>
           <li><a href="#spell-management">Spell Management</a></li>
@@ -343,14 +343,6 @@
     </table>
   </fieldset>
 </section>
-        <section id="dice-roller">
-          <fieldset>
-            <legend>Dice Roller</legend>
-            <input type="text" id="diceFormula" placeholder="e.g., 2d20+1d6">
-            <button onclick="rollDice(event)">Roll Dice</button>
-            <div id="diceResults"></div>
-          </fieldset>
-        </section>
         
         <section id="skills">
           <fieldset>
@@ -522,6 +514,17 @@
               </div>
             </div>
           </fieldset>
+        </section>
+        <section id="dice-roller">
+          <fieldset>
+            <legend>Dice Roller</legend>
+            <input type="text" id="diceFormula" placeholder="e.g., 2d20+1d6">
+            <button onclick="rollDice(event)">Roll Dice</button>
+            <div id="diceResults"></div>
+          </fieldset>
+          <div id="attackDamageResults" style="min-height: 30px;  margin: 25px; ">
+            <!-- Attack & Damage rolls will appear here -->
+          </div>
         </section>
         
         <section id="attacks-spellcasting">

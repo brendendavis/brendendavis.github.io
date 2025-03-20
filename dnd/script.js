@@ -898,6 +898,29 @@ function addWeaponRow() {
   deleteButton.textContent = "Delete";
   deleteButton.addEventListener("click", () => deleteWeaponRow(deleteButton));
   propCell.appendChild(deleteButton);
+  
+  // Create a button to roll the attack
+  const rollAttackBtn = document.createElement("button");
+  rollAttackBtn.type = "button"; // prevent form submission
+  rollAttackBtn.textContent = "Roll Attack";
+  rollAttackBtn.addEventListener("click", function() {
+    // We will define rollWeaponAttack below
+    // The attack bonus is in the second cell's input
+    const attackInputValue = attackCell.querySelector("input").value;
+    rollWeaponAttack(attackInputValue);
+  });
+  propCell.appendChild(rollAttackBtn);
+  
+  // Create a button to roll damage
+  const rollDamageBtn = document.createElement("button");
+  rollDamageBtn.type = "button"; // prevent form submission
+  rollDamageBtn.textContent = "Roll Damage";
+  rollDamageBtn.addEventListener("click", function() {
+    // The damage is in the third cell's input
+    const damageInputValue = damageCell.querySelector("input").value;
+    rollWeaponDamage(damageInputValue);
+  });
+  propCell.appendChild(rollDamageBtn);
 
   // Event: When a weapon is selected, automatically fill in its damage and properties.
   nameInput.addEventListener("input", function () {
@@ -920,6 +943,55 @@ function deleteWeaponRow(btn) {
 
 // Ensure that the weapons data is loaded once the DOM is fully ready.
 document.addEventListener("DOMContentLoaded", loadWeaponsData);
+
+function rollWeaponAttack(attackBonusString) {
+  // if "+3" or whatever was typed
+  let bonus = attackBonusString.trim();
+  if (!bonus) {
+    bonus = "+0";
+  } else if(!bonus.startsWith("+") && !bonus.startsWith("-")) {
+    bonus = "+" + bonus;
+  }
+
+  // Build formula like "1d20+3"
+  const formula = "1d20" + bonus;
+  rollDiceWithFormula(formula, "Attack Roll");
+}
+
+function rollWeaponDamage(damageDiceString) {
+  // e.g. "1d8+2"
+  let dice = damageDiceString.trim();
+  if(!dice) {
+    dice = "1d6"; // fallback
+  }
+  rollDiceWithFormula(dice, "Damage Roll");
+}
+
+function rollDiceWithFormula(diceFormula, label) {
+  const diceFormulaInput = document.getElementById("diceFormula");
+  diceFormulaInput.value = diceFormula;
+
+  const diceResultsDiv = document.getElementById("diceResults");
+  const attackDamageResultsDiv = document.getElementById("attackDamageResults");
+// If no such element, do nothing (in case user didn't add it)
+  if (attackDamageResultsDiv) {
+    // Create a new div for this result
+    const resultEl = document.createElement("div");
+    resultEl.innerHTML = `<strong>${label}:</strong> Rolling <em>${diceFormula}</em>...`;
+
+    // Append to the results container
+    attackDamageResultsDiv.appendChild(resultEl);
+
+    // Automatically remove after, e.g., 10 seconds
+    setTimeout(() => {
+      resultEl.remove();
+    }, 10000);
+  }
+  diceResultsDiv.innerHTML += `<div><strong>${label}:</strong> Rolling <em>${diceFormula}</em>...</div>`;
+
+  // Reuse the existing rollDice function
+  rollDice({ preventDefault: () => {} });
+}
 
 /****************************************************
  *   RACE / CLASS / SPELL SLOTS / POINT BUY LOGIC   *
