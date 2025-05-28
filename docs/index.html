@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BRENDEN DAVIS - Contemporary Artist Portfolio featuring works, prints, CV, biography, and exhibitions." />
+  <title>BRENDEN DAVIS</title>
+  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/clash-display.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <!-- Optionally add a favicon here -->
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
+</head>
+<body>
+  <header>
+    <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/cv/">CV</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="pdf-viewer" aria-labelledby="docs-heading">
+      <h2 id="docs-heading"></h2>
+      <div class="pdf-container">
+        <div class="pdf-item">
+          <h3>Portfolio</h3>
+          <iframe
+            src="/docfiles/bdavisportfolio.pdf"
+            title="Brenden Davis Portfolio"
+            frameborder="0"
+          ></iframe>
+          <p class="pdf-download">
+            <a href="/docfiles/bdavisportfolio.pdf" download>Download PDF</a>
+          </p>
+        </div>
+        <div class="pdf-item">
+          <h3>Résumé</h3>
+          <iframe
+            src="/docfiles/bdavisresume.pdf"
+            title="Brenden Davis Résumé"
+            frameborder="0"
+          ></iframe>
+          <p class="pdf-download">
+            <a href="/docfiles/bdavisresume.pdf" download>Download PDF</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+  
+  <script>
+    // Accordion Toggle Functionality with ARIA updates
+    document.addEventListener("DOMContentLoaded", function() {
+      const accButtons = document.getElementsByClassName("accordion-button");
+      Array.from(accButtons).forEach(button => {
+        button.addEventListener("click", function() {
+          // Toggle active state and aria-expanded attribute
+          const isExpanded = this.getAttribute("aria-expanded") === "true";
+          this.setAttribute("aria-expanded", !isExpanded);
+          this.classList.toggle("active");
+  
+          // Toggle the corresponding panel's max-height for smooth animation
+          const panel = this.nextElementSibling;
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
