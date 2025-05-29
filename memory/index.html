@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="NEW HISTORY - An exhibition featuring emerging Mississippi-based artists exploring Black American experience through various mediums." />
+  <title>BRENDEN DAVIS - NEW HISTORY Exhibition</title>
+  <link rel="preload" href="fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/clash-display.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  
+  <!-- Page-specific styles -->
+  <style>
+    .exhibition-hero-image {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      object-fit: cover;
+      padding-top: 2rem;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .exhibition-hero {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .video-container {
+      flex: 1;
+      max-width: 300px;
+    }
+    .video-container p {
+      max-width: 400px;
+    }
+    .image-container {
+      flex: 0 0 50%;       /* container takes half the row */
+      max-width: 50%;
+    }
+    .exhibition-side-image {
+      width: 100%;         /* fill its container */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .exhibition-video {
+  width: 100%;
+  height: auto;
+  max-height: 600px; /* Limit height for portrait video */
+  object-fit: contain;
+}
+
+    .featured-artists {
+      text-align: right;
+      margin-top: -50px; /* Reduces space between statement and artists list */
+      margin-top: 5%;
+    }
+
+    .featured-artists ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .featured-artists li {
+      margin: 50px 0;
+    }
+
+    .biography {
+      margin-top: -50px; /* Reduces space between images and statement */
+    }
+
+    .statement-text {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Make layout responsive */
+    @media (max-width: 768px) {
+      .content-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50%;
+      }
+
+      .video-container {
+        width: 100%;
+      }
+    }
+   
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="/works/">Works</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/cv/">CV</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="artist-bio-container">
+      <section class="exhibition-hero" aria-labelledby="hero-heading">
+        <img
+          src="/images/memorycorruptbioheader.png"
+          alt="Memory Corrupted exhibition header and artist bio"
+          class="exhibition-hero-image"
+        />
+      </section>
+    </div>
+    
+    <!-- Featured Artists Section -->
+    <section class="featured-artists" aria-labelledby="artists-heading">
+      <!-- Curatorial Statement Section -->
+      <section class="biography" aria-labelledby="statement-heading">
+        <h2 id="statement-heading" style="color: #121212;">NEW HISTORY</h2>
+        <h2>Curatorial Statement</h2>
+        <div class="statement-text">
+          <p><br>MEMORY CORRUPTED is an evolving archive of my shifting perceptions over the past eight years. Drawing inspiration from the fluidity of memory, Black surrealist traditions, and everyday textures of life, I embrace a chaotic and instinctive process, working with paint, clay, paper, and digital media to capture moments as fragmented time capsules. <br>Influenced by artists such as Betye Saar, Jean-Michel Basquiat, and David Hammons, I layer symbolism and found materials to explore identity, social critique, and the fallibility of recollection. <br>This exhibition is both a deeply personal offering and an open invitation for viewers to locate their own stories within the blur of past and present.</p>
+        </div>
+      </section>
+   <!-- Artists and Video Container -->
+   <div class="content-container">
+    <div class="image-container">
+      <img 
+        src="/images/note to self 2.PNG"
+        alt="Featured artwork"
+        class="exhibition-side-image"
+      />
+    </div>
+
+    <div class="video-container">
+      <video 
+        src="/images/my%20network2.MP4"
+        class="exhibition-video"
+        controls
+        autoplay muted>
+        Your browser does not support the video element.
+      </video>
+    </div>
+  </div>
+  </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+</body>
+</html>
