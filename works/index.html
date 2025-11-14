@@ -67,41 +67,29 @@
         </button>
         <div class="panel" id="graphic-design-panel" role="region" aria-labelledby="graphic-design-button">
           <div class="gallery">
-             <div class="work-item">
-              <img src="../images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="grapic design sample" />
+            <div class="work-item">
+              <img src="../images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Painting work: abstract figure painting" />
             </div>
             <div class="work-item">
-              <img src="../images/birdisthewordad.png" alt="grapic design sample" />
+              <img src="../images/birdisthewordad.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/BYOB-2.png" alt="grapic design sample" />
+              <img src="../images/BYOB-2.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/bookclubposterFINAL-2.png" alt="grapic design sample" />
+              <img src="../images/bookclubposterFINAL-2.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/galleryopensignedit11-04-2.png" alt="grapic design sample" />
+              <img src="../images/galleryopensignedit11-04-2.png" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/ThickSkull-motionlogo-2.gif" alt="grapic design sample" />
+              <img src="../images/ThickSkull-motionlogo-2.gif" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/MMA_VGMD_1024x768_3update-2.png" alt="grapic design sample" />
+              <img src="../images/MMA_VGMD_1024x768_3update-2.png" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/family-day-square---animated.gif" alt="grapic design sample" />
-            </div>
-            <div class="work-item">
-              <img src="../images/msv_lit.png" alt="grapic design sample" />
-            </div>
-            <div class="work-item">
-              <img src="../images/2025summerinternship.png" alt="grapic design sample" />
-            </div>
-            <div class="work-item">
-              <img src="../images/Conference Committee.gif" alt="grapic design sample" />
-            </div>
-            <div class="work-item">
-              <img src="../images/2025DIAbannerv1.png" alt="grapic design sample" />
+              <img src="../images/family-day-square---animated.gif" alt="Painting work: abstract figure" />
             </div>
             <!-- Add more graphic design images as needed -->
           </div>
@@ -174,5 +162,38 @@
       });
     });
   </script>
+</script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get modal elements
+      const modal = document.getElementById("lightbox-modal");
+      const modalImg = document.querySelector(".lightbox-content");
+      const closeBtn = document.querySelector(".lightbox-modal .close");
+      
+      // Open modal when any gallery image is clicked
+      document.querySelectorAll(".gallery img").forEach(img => {
+        img.addEventListener("click", function() {
+          modal.style.display = "flex";
+          modalImg.src = this.src;
+        });
+      });
+      
+      // Close modal when close button is clicked
+      closeBtn.addEventListener("click", function() {
+        modal.style.display = "none";
+      });
+      
+      // Close modal when clicking outside the image
+      modal.addEventListener("click", function(e) {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    });
+  </script>
+  <div id="lightbox-modal" class="lightbox-modal">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" src="" alt="Expanded work">
+  </div>
 </body>
 </html>
