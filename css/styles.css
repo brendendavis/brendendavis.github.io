@@ -378,6 +378,39 @@ footer {
   }
 
 /* ============================================
+   Lightbox Modal Styles
+   ============================================ */
+.lightbox-modal {
+  display: none; /* Hidden by default; will be set to flex via JS when opened */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-modal .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #F5F5F5;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ============================================
    Responsive Adjustments
    ============================================ */
    @media (max-width: 768px) {
@@ -417,52 +450,3 @@ footer {
       font-size: 1.2rem;
     }
   }
-  /* ============================================
-   PDF Viewer Section
-   ============================================ */
-.pdf-viewer {
-  max-width: 900px;
-  margin: var(--padding-large) auto;
-  text-align: center;
-  color: var(--color-text);
-  font-family: var(--font-base);
-}
-
-.pdf-viewer h2 {
-  font-size: 2rem;
-  margin-bottom: var(--padding-base);
-}
-
-.pdf-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: var(--padding-base);
-}
-
-.pdf-container iframe {
-  width: 100%;
-  max-width: 300px;
-  height: 45vh;          /* adjust as needed */
-  border: none;
-  background: var(--color-background);
-}
-
-/* Fallback / small screens */
-@media (max-width: 768px) {
-  .pdf-container iframe {
-    width: 90%;
-    height: 60vh;
-    aspect-ratio: 16/9;
-  }
-}
-
-.pdf-download a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: bold;
-  transition: color var(--transition-speed);
-}
-
-.pdf-download a:hover {
-  color: var(--color-secondary);
-}
