@@ -139,10 +139,14 @@
   <footer>
     <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
   </footer>
-  
+  <div id="lightbox-modal" class="lightbox-modal">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" src="" alt="Expanded work" />
+  </div>
   <script>
-    // Accordion Toggle Functionality with ARIA updates
+    // Accordion Toggle Functionality with ARIA updates + Lightbox
     document.addEventListener("DOMContentLoaded", function() {
+      // Accordion setup
       const accButtons = document.getElementsByClassName("accordion-button");
       Array.from(accButtons).forEach(button => {
         button.addEventListener("click", function() {
@@ -159,6 +163,42 @@
             panel.style.maxHeight = panel.scrollHeight + "px";
           }
         });
+      });
+  
+      // Lightbox setup
+      const modal = document.getElementById("lightbox-modal");
+      const modalImg = document.querySelector(".lightbox-content");
+      const closeBtn = document.querySelector(".lightbox-modal .close");
+  
+      // Open modal when any gallery image is clicked
+      document.querySelectorAll(".gallery img").forEach(img => {
+        img.addEventListener("click", function() {
+          modal.style.display = "flex";
+          modalImg.src = this.src;
+          modalImg.alt = this.alt || "Expanded work";
+        });
+      });
+  
+      // Close modal when close button is clicked
+      closeBtn.addEventListener("click", function() {
+        modal.style.display = "none";
+        modalImg.src = "";
+      });
+  
+      // Close modal when clicking outside the image (on the overlay)
+      modal.addEventListener("click", function(e) {
+        if (e.target === modal) {
+          modal.style.display = "none";
+          modalImg.src = "";
+        }
+      });
+  
+      // Optional: close on Escape key
+      document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape" && modal.style.display === "flex") {
+          modal.style.display = "none";
+          modalImg.src = "";
+        }
       });
     });
   </script>
