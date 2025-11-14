@@ -162,38 +162,5 @@
       });
     });
   </script>
-</script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // Get modal elements
-      const modal = document.getElementById("lightbox-modal");
-      const modalImg = document.querySelector(".lightbox-content");
-      const closeBtn = document.querySelector(".lightbox-modal .close");
-      
-      // Open modal when any gallery image is clicked
-      document.querySelectorAll(".gallery img").forEach(img => {
-        img.addEventListener("click", function() {
-          modal.style.display = "flex";
-          modalImg.src = this.src;
-        });
-      });
-      
-      // Close modal when close button is clicked
-      closeBtn.addEventListener("click", function() {
-        modal.style.display = "none";
-      });
-      
-      // Close modal when clicking outside the image
-      modal.addEventListener("click", function(e) {
-        if (e.target === modal) {
-          modal.style.display = "none";
-        }
-      });
-    });
-  </script>
-  <div id="lightbox-modal" class="lightbox-modal">
-    <span class="close">&times;</span>
-    <img class="lightbox-content" src="" alt="Expanded work">
-  </div>
 </body>
 </html>
