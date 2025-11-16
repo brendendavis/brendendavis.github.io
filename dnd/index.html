@@ -1032,9 +1032,42 @@
       document.body.classList.toggle("sidebar-open");
     });
   }
+  const closeSidebar = () => document.body.classList.remove("sidebar-open");
+  function scrollSectionIntoView(selector, contextDoc = document) {
+    if (!selector) return false;
+    const target = contextDoc.querySelector(selector);
+    if (!target) return false;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.classList.remove("pulse-highlight");
+    const view = contextDoc.defaultView || window;
+    const raf = view.requestAnimationFrame || window.requestAnimationFrame;
+    if (typeof raf === "function") {
+      raf(() => target.classList.add("pulse-highlight"));
+    } else {
+      target.classList.add("pulse-highlight");
+    }
+    const timeoutFn = view.setTimeout || window.setTimeout;
+    timeoutFn(() => target.classList.remove("pulse-highlight"), 800);
+    return true;
+  }
   document.querySelectorAll(".sidebar a").forEach(link => {
-    link.addEventListener("click", () => {
-      document.body.classList.remove("sidebar-open");
+    link.addEventListener("click", closeSidebar);
+    const href = link.getAttribute("href") || "";
+    if (!href.startsWith("#")) return;
+    link.addEventListener("click", (event) => {
+      const selector = href;
+      const activePanel = document.querySelector(".profile-panel.active");
+      if (activePanel && activePanel.dataset.profileId !== "dm") {
+        const frame = activePanel.querySelector("iframe");
+        const frameDoc = frame?.contentDocument;
+        if (frameDoc && scrollSectionIntoView(selector, frameDoc)) {
+          event.preventDefault();
+          return;
+        }
+      }
+      if (scrollSectionIntoView(selector, document)) {
+        event.preventDefault();
+      }
     });
   });
   document.addEventListener("keydown", (event) => {
@@ -1081,12 +1114,7 @@
   document.querySelectorAll("[data-scroll-target]").forEach(button => {
     button.addEventListener("click", () => {
       const selector = button.dataset.scrollTarget;
-      const target = document.querySelector(selector);
-      if (!target) return;
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      target.classList.remove("pulse-highlight");
-      requestAnimationFrame(() => target.classList.add("pulse-highlight"));
-      setTimeout(() => target.classList.remove("pulse-highlight"), 800);
+      scrollSectionIntoView(selector, document);
     });
   });
   document.querySelectorAll(".module-tabs").forEach(tabGroup => {
