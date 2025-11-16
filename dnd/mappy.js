@@ -16,6 +16,7 @@
         const view = { zoom: 1, offsetX: 0, offsetY: 0, dragging: false, dragStartX: 0, dragStartY: 0 };
         const PLAYER_VIEW_STATE_KEY = 'mappyPlayerViewState';
         let IS_PLAYER_VIEW = !!window.IS_PLAYER_VIEW;
+        let latestPlayerViewState = null;
 
         // Only these are base, generative terrains (used in probabilities and dropdown)
         const BASE_TERRAINS = ['grass', 'forest', 'rocky', 'water'];
@@ -266,6 +267,7 @@ function spriteKeyFor(x, y, tile){
             ensureFogSize();
             renderViewport();
             renderMinimap();
+            schedulePlayerViewSync();
         }
         function toggleFogEditMode(){
             if (IS_PLAYER_VIEW) {
@@ -282,6 +284,7 @@ function spriteKeyFor(x, y, tile){
             const H = fogMask.length, W = fogMask[0]?.length||0;
             for(let y=0;y<H;y++) for(let x=0;x<W;x++) fogMask[y][x]=0;
             renderViewport();
+            schedulePlayerViewSync();
         }
         function toggleReadOnly(){
             const toggleEl = document.getElementById('readOnlyToggle');
@@ -317,6 +320,7 @@ function spriteKeyFor(x, y, tile){
             pushState();
             labels = [];
             renderViewport();
+            schedulePlayerViewSync();
         }
         // --- Undo/Redo ---
         let undoStack = [];
@@ -353,6 +357,52 @@ function spriteKeyFor(x, y, tile){
             } catch(err){
                 console.error('Failed to load player view state', err);
                 return null;
+            }
+        }
+        let pendingPlayerSync = false;
+        let playerSyncHandle = null;
+        function schedulePlayerViewSync(){
+            if (IS_PLAYER_VIEW || !mappyInitialized) return;
+            pendingPlayerSync = true;
+            if (playerSyncHandle) return;
+            const publish = () => {
+                playerSyncHandle = null;
+                if (!pendingPlayerSync) return;
+                pendingPlayerSync = false;
+                publishPlayerViewState();
+            };
+            if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+                playerSyncHandle = window.requestAnimationFrame(publish);
+            } else {
+                playerSyncHandle = setTimeout(publish, 0);
+            }
+        }
+        function applyPlayerViewSnapshot(snapshot){
+            if (!IS_PLAYER_VIEW || !snapshot) return;
+            latestPlayerViewState = snapshot;
+            if (!mappyInitialized) return;
+            applyStoredMapState(snapshot);
+            if (Array.isArray(snapshot.fogMask)) {
+                fogMask = snapshot.fogMask.map(row => row.slice());
+            }
+            fogEnabled = !!snapshot.fogEnabled;
+            const fogToggle = document.getElementById('fogToggle');
+            if (fogToggle) {
+                fogToggle.checked = fogEnabled;
+            }
+            ensureFogSize();
+            ensureViewInBounds();
+            renderMap();
+        }
+        function handlePlayerViewStorageEvent(event){
+            if (!IS_PLAYER_VIEW) return;
+            if (event && event.key && event.key !== PLAYER_VIEW_STATE_KEY) return;
+            if (!event || event.newValue === null) return;
+            try{
+                const snapshot = JSON.parse(event.newValue);
+                applyPlayerViewSnapshot(snapshot);
+            } catch(err){
+                console.warn('Failed to parse player view state update', err);
             }
         }
         function restoreState(s){
@@ -506,6 +556,7 @@ function applyFogBrush(cx, cy){
             if(dx*dx + dy*dy <= r2){ fogMask[y][x] = hide ? 1 : 0; }
         }
     }
+    schedulePlayerViewSync();
 }
 function applyFogBrushFromEvent(e){
     if(!fogEnabled || !fogEditMode) return;
@@ -1175,6 +1226,7 @@ function fitViewToMap(){
 
             // minimap always updates
             renderMinimap();
+            schedulePlayerViewSync();
         }
 
         function renderViewport(){
@@ -1415,7 +1467,12 @@ vp.addEventListener('wheel', (e)=>{
                     const ty = Math.floor(worldY / TILE_SIZE);
                     if(inBounds(tx,ty)){
                         const text = prompt('Label text:');
-                        if(text){ pushState(); labels.push({x:tx, y:ty, text}); renderViewport(); }
+                        if(text){
+                            pushState();
+                            labels.push({x:tx, y:ty, text});
+                            renderViewport();
+                            schedulePlayerViewSync();
+                        }
                     }
                     return; // do not fall through to edit/select
                 }
@@ -1452,6 +1509,7 @@ vp.addEventListener('wheel', (e)=>{
                     pushState();
                     labels.splice(bestI,1);
                     renderViewport();
+                    schedulePlayerViewSync();
                 }
             });
         }
@@ -1508,6 +1566,7 @@ vp.addEventListener('wheel', (e)=>{
                 addPointOfInterest(x, y);
             }
             renderMap();
+            schedulePlayerViewSync();
         }
 
         function addEncountersToMap() {
@@ -1549,6 +1608,7 @@ vp.addEventListener('wheel', (e)=>{
             });
             selectedTiles = [];  // Clear the selection
             renderMap();  // Re-render the map
+            schedulePlayerViewSync();
         }
 
         function addPointOfInterest(x, y) {
@@ -1558,6 +1618,7 @@ vp.addEventListener('wheel', (e)=>{
             }
             mapGrid[y][x] = 'structure';
             renderMap();
+            schedulePlayerViewSync();
         }
 
         function getActiveCharacterKey() {
@@ -1735,17 +1796,15 @@ vp.addEventListener('wheel', (e)=>{
             }
             mappyInitialized = true;
             const preloadedPlayerState = IS_PLAYER_VIEW ? loadPlayerViewState() : null;
+            if (IS_PLAYER_VIEW && preloadedPlayerState && !latestPlayerViewState) {
+                latestPlayerViewState = preloadedPlayerState;
+            }
             wireMappyControls();
             preloadSprites(() => {
                 createTerrainProbabilityInputs();
                 populateTerrainDropdown();
-                if(preloadedPlayerState){
-                    applyStoredMapState(preloadedPlayerState);
-                    if (Array.isArray(preloadedPlayerState.fogMask)) {
-                        fogMask = preloadedPlayerState.fogMask.map(row => row.slice());
-                    }
-                    fogEnabled = !!preloadedPlayerState.fogEnabled;
-                    ensureFogSize();
+                if (IS_PLAYER_VIEW && latestPlayerViewState) {
+                    applyPlayerViewSnapshot(latestPlayerViewState);
                 } else {
                     generateMap();
                 }
@@ -1767,6 +1826,7 @@ vp.addEventListener('wheel', (e)=>{
         }
 
         window.setMappyPlayerViewMode = setMappyPlayerViewMode;
+        window.addEventListener('storage', handlePlayerViewStorageEvent);
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeMappy);
