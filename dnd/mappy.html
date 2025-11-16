@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Mappy: A Customizable D&D Map Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .map-and-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            gap: 20px;
+        }
+        #map-container {
+            display: grid;
+            gap: 1px;
+            background-color: #ccc;
+            padding: 1px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .tile {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #999;
+            background-size: cover;
+            position: relative;
+        }
+        .encounter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background-image: url('images/encounter_icon.png');
+            background-size: cover;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .btn-group button {
+            margin-bottom: 10px;
+        }
+        #legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        .legend-sprite {
+            width: 32px;
+            height: 32px;
+            margin-right: 5px;
+            border: 1px solid #999;
+            background-size: cover;
+        }
+
+        #controls,
+        #terrain-probabilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        #controls.is-visible,
+        #terrain-probabilities.is-visible {
+            max-height: 600px;
+            opacity: 1;
+            pointer-events: auto;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mr. Mappy</h1>
+    <label>
+        <input type="checkbox" id="toggle-controls"> Show Advanced Options
+    </label>
+    <div id="controls">
+        <label for="mapSize">Map Size:</label>
+        <input type="number" id="mapSize" min="10" max="50" value="20">
+        
+        <label for="numTrails">Number of Trails:</label>
+        <input type="number" id="numTrails" min="0" max="5" value="1">
+        
+        <label for="minTrailLength">Min Trail Length:</label>
+        <input type="number" id="minTrailLength" min="0" max="20" value="20">
+        
+        <label for="maxTrailLength">Max Trail Length:</label>
+        <input type="number" id="maxTrailLength" min="0" max="20" value="20">
+        <label for="seed">Seed (optional):</label>
+        <input type="text" id="seed" placeholder="e.g., 12345">
+        <label>
+            <input type="checkbox" id="smoothToggle" checked> Smooth biomes
+        </label>
+        <label>
+            <input type="checkbox" id="contourToggle"> Show contours (elevation)
+        </label>
+    </div>
+    <div id="terrain-probabilities"></div>
+    
+    <div class="map-and-buttons">
+        <div>
+            <div id="map-container"></div>
+            <canvas id="viewport" width="640" height="640" style="border:1px solid #333; background:#222"></canvas>
+        </div>
+        <div class="btn-group">
+            <label for="presetSelect">Preset:</label>
+            <select id="presetSelect">
+                <option value="default" selected>Default</option>
+                <option value="island">Island</option>
+                <option value="mountain_caves">Mountain Caves</option>
+                <option value="village">Village</option>
+                <option value="old_ruins">Old Ruins</option>
+                <option value="archipelago">Archipelago</option>
+                <option value="riverlands">Riverlands</option>
+                <option value="jungle">Jungle</option>
+            </select>
+            <button id="generatePresetBtn">Generate Preset</button>
+            <button id="generateMapBtn">Generate New Map</button>
+            <button id="saveMapBtn">Save Map</button>
+            <button id="loadMapBtn">Load Map</button>
+            <button id="downloadMapBtn">Download Map as PNG</button>
+            <button id="undoMapBtn">Undo</button>
+            <button id="redoMapBtn">Redo</button>
+            <label>
+                <input type="checkbox" id="toggle-multi-select"> Multi-Select Mode
+            </label>
+            <br>
+            <label>
+                <input type="checkbox" id="readOnlyToggle"> Read-only View
+            </label>
+            <br>
+            <label>
+                <input type="checkbox" id="measureToggle"> Measure Tool
+            </label>
+            <br>
+            <label>
+                <input type="checkbox" id="labelToggle"> Label Mode
+            </label>
+            <button id="clearLabelsBtn">Clear Labels</button>
+            <br>
+            <label>
+                <input type="checkbox" id="fogToggle"> Fog of War
+            </label>
+            <div id="fogControls" style="display:none; margin-left:8px;">
+                <label><input type="checkbox" id="fogEditToggle"> Fog Edit Mode</label>
+                <div>
+                    <label><input type="radio" name="fogMode" value="reveal" checked> Reveal</label>
+                    <label><input type="radio" name="fogMode" value="hide"> Hide</label>
+                </div>
+                <div>
+                    <label>Brush Size: <input type="range" id="fogBrush" min="1" max="5" value="2"></label>
+                </div>
+                <button id="clearFogBtn">Clear Fog</button>
+            </div>
+            <br>
+            <label for="terrainDropdown">Change Selected Tiles to:</label>
+            <select id="terrainDropdown">
+                <option value="">Select terrain</option>
+                <!-- Dynamically generated terrain options -->
+            </select>
+        </div>
+    </div>
+    
+    <canvas id="mapCanvas" style="display: none;"></canvas>
+    <canvas id="minimap" width="160" height="160" style="border:1px solid #999; margin-top:10px;"></canvas>
+    <div id="legend"></div>
+    
+        <script src="mappy.js"></script>
+</body>
+</html>
