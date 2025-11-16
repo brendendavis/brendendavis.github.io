@@ -1,6 +1,0 @@
-This favicon was generated using the following font:
-
-- Font Title: Romanesco
-- Font Author: undefined
-- Font Source: https://fonts.gstatic.com/s/romanesco/v21/w8gYH2ozQOY7_r_J7mSn3HwLqOqSBg.ttf
-- Font License: undefined)
