@@ -972,6 +972,25 @@
                   <select id="terrainDropdown">
                     <option value="">Select terrain</option>
                   </select>
+                  <div class="mappy-sync-panel">
+                    <strong>Campaign Sync</strong>
+                    <p id="authStatusText" class="mappy-auth-status">Signed out</p>
+                    <label for="playerSlotInput">Player Slot ID</label>
+                    <input type="text" id="playerSlotInput" placeholder="player-1">
+                    <button type="button" id="playerSlotApplyBtn">Set Slot</button>
+                    <button type="button" id="playerAnonLoginBtn">Join as Player (Anon)</button>
+                    <div class="dm-only mappy-dm-auth">
+                      <label for="dmEmailInput">DM Email</label>
+                      <input type="email" id="dmEmailInput" placeholder="dm@example.com" autocomplete="email">
+                      <label for="dmPasswordInput">DM Password</label>
+                      <input type="password" id="dmPasswordInput" placeholder="••••••••" autocomplete="current-password">
+                      <button type="button" id="dmLoginBtn">DM Sign In</button>
+                      <button type="button" id="dmClaimBtn">Claim Campaign</button>
+                    </div>
+                    <button type="button" id="authSignOutBtn">Sign Out</button>
+                    <div id="authErrorText" class="mappy-auth-error" role="status"></div>
+                    <div id="dmPlayerDocList" class="dm-only mappy-player-docs"></div>
+                  </div>
                 </div>
               </div>
 
@@ -1280,13 +1299,14 @@
       apiKey: "AIzaSyAMLwvHKhkTpEjipGyqTlh83WKjVQWU9fs",
       authDomain: "dndmanager-bd67.firebaseapp.com",
       projectId: "dndmanager-bd67",
-     
+      databaseURL: "REPLACE_WITH_YOUR_DATABASE_URL",
       storageBucket: "dndmanager-bd67.firebasestorage.app",
       messagingSenderId: "443148232086",
       appId: "1:443148232086:web:77305736218ec4a105e9b7",
     };
   </script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script>
     (function() {
@@ -1299,6 +1319,10 @@
           firebase.initializeApp(window.FIREBASE_CONFIG);
         }
         window.firebaseDB = firebase.firestore();
+        window.firebaseAuth = firebase.auth();
+        if (window.firebaseAuth?.useDeviceLanguage) {
+          window.firebaseAuth.useDeviceLanguage();
+        }
       } catch (err) {
         console.warn('Failed to initialize Firebase', err);
       }
