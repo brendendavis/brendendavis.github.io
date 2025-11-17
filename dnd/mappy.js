@@ -1651,7 +1651,7 @@ function fitViewToMap(){
             const minTrailLength = parseInt(document.getElementById('minTrailLength').value);
             const maxTrailLength = parseInt(document.getElementById('maxTrailLength').value);
             const startX = Math.floor(mapSize / 2);
-            const startY = mapSize - 1;
+            const startY = mapSize - 1; 
 
             for (let i = 0; i < numTrails; i++) {
                 const direction = ['n', 'e', 'w'][Math.floor(rand() * 3)];
