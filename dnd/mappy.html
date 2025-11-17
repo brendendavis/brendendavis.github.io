@@ -102,6 +102,34 @@
             pointer-events: auto;
             padding: 10px;
         }
+        .mappy-sync-panel {
+            margin-top: 20px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .mappy-sync-panel input,
+        .mappy-sync-panel button {
+            width: 100%;
+        }
+        .mappy-auth-status {
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .mappy-auth-error {
+            color: #b22222;
+            font-size: 0.85rem;
+        }
+        .mappy-player-docs {
+            max-height: 180px;
+            overflow-y: auto;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -193,13 +221,66 @@
                 <option value="">Select terrain</option>
                 <!-- Dynamically generated terrain options -->
             </select>
+            <div class="mappy-sync-panel">
+                <strong>Campaign Sync</strong>
+                <p id="authStatusText" class="mappy-auth-status">Signed out</p>
+                <label for="playerSlotInput">Player Slot ID</label>
+                <input type="text" id="playerSlotInput" placeholder="player-1">
+                <button type="button" id="playerSlotApplyBtn">Set Slot</button>
+                <button type="button" id="playerAnonLoginBtn">Join as Player (Anon)</button>
+                <div class="dm-only mappy-dm-auth">
+                    <label for="dmEmailInput">DM Email</label>
+                    <input type="email" id="dmEmailInput" placeholder="dm@example.com" autocomplete="email">
+                    <label for="dmPasswordInput">DM Password</label>
+                    <input type="password" id="dmPasswordInput" placeholder="••••••••" autocomplete="current-password">
+                    <button type="button" id="dmLoginBtn">DM Sign In</button>
+                    <button type="button" id="dmClaimBtn">Claim Campaign</button>
+                </div>
+                <button type="button" id="authSignOutBtn">Sign Out</button>
+                <div id="authErrorText" class="mappy-auth-error" role="status"></div>
+                <div id="dmPlayerDocList" class="dm-only mappy-player-docs"></div>
+            </div>
         </div>
     </div>
     
     <canvas id="mapCanvas" style="display: none;"></canvas>
     <canvas id="minimap" width="160" height="160" style="border:1px solid #999; margin-top:10px;"></canvas>
     <div id="legend"></div>
-    
-        <script src="mappy.js"></script>
+
+    <script>
+        window.FIREBASE_CONFIG = window.FIREBASE_CONFIG || {
+            apiKey: "AIzaSyAMLwvHKhkTpEjipGyqTlh83WKjVQWU9fs",
+            authDomain: "dndmanager-bd67.firebaseapp.com",
+            projectId: "dndmanager-bd67",
+            databaseURL: "REPLACE_WITH_YOUR_DATABASE_URL",
+            storageBucket: "dndmanager-bd67.firebasestorage.app",
+            messagingSenderId: "443148232086",
+            appId: "1:443148232086:web:77305736218ec4a105e9b7"
+        };
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script>
+        (function(){
+            if (!window.FIREBASE_CONFIG || !window.FIREBASE_CONFIG.apiKey) {
+                console.warn('Firebase config missing. Remote map sync is disabled.');
+                return;
+            }
+            try {
+                if (!window.firebase?.apps?.length) {
+                    firebase.initializeApp(window.FIREBASE_CONFIG);
+                }
+                window.firebaseDB = firebase.firestore();
+                window.firebaseAuth = firebase.auth();
+                if (window.firebaseAuth?.useDeviceLanguage) {
+                    window.firebaseAuth.useDeviceLanguage();
+                }
+            } catch (err) {
+                console.warn('Failed to initialize Firebase', err);
+            }
+        })();
+    </script>
+    <script src="mappy.js"></script>
 </body>
 </html>
