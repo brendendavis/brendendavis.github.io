@@ -7,6 +7,12 @@
         const MAX_TRAIL_LENGTH = 20;
         const MAP_STORAGE_KEY = 'mappyMaps';
         let mappyInitialized = false;
+        const DEFAULT_CAMPAIGN_ID = window.CAMPAIGN_ID || 'default';
+        const SESSION_ID = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        const REMOTE_COLLECTION = 'campaignMaps';
+        let firebaseDocRef = null;
+        let firebaseUnsubscribe = null;
+        let hydratingFromRemote = false;
 
         // Viewport (canvas) settings
         const USE_CANVAS_VIEW = true; // use canvas for interactive view
@@ -50,6 +56,54 @@ function spriteKeyFor(x, y, tile){
   if (tile === 'rocky') return rockyVariantAt(x, y);
   return tile;
 }
+        function firebaseAvailable(){
+            return !!window.firebaseDB && !!DEFAULT_CAMPAIGN_ID;
+        }
+        function ensureFirebaseDoc(){
+            if (!firebaseAvailable()) return null;
+            if (!firebaseDocRef){
+                firebaseDocRef = window.firebaseDB.collection(REMOTE_COLLECTION).doc(DEFAULT_CAMPAIGN_ID);
+            }
+            return firebaseDocRef;
+        }
+        function fetchInitialRemoteState(){
+            const doc = ensureFirebaseDoc();
+            if(!doc) return Promise.resolve(null);
+            return doc.get().then(snapshot => snapshot.exists ? snapshot.data() : null).catch(err => {
+                console.warn('Failed to fetch remote map', err);
+                return null;
+            });
+        }
+        function subscribeToRemoteUpdates(){
+            const doc = ensureFirebaseDoc();
+            if(!doc || firebaseUnsubscribe) return;
+            firebaseUnsubscribe = doc.onSnapshot(snapshot => {
+                if(!snapshot.exists) return;
+                const data = snapshot.data();
+                if(!data || data.sessionId === SESSION_ID) return;
+                latestPlayerViewState = data;
+                hydratingFromRemote = true;
+                if(IS_PLAYER_VIEW){
+                    applyPlayerViewSnapshot(data);
+                } else if(mappyInitialized){
+                    applyStoredMapState(data);
+                    if (Array.isArray(data.fogMask)) {
+                        fogMask = data.fogMask.map(row => row.slice());
+                    }
+                    fogEnabled = !!data.fogEnabled;
+                    ensureFogSize();
+                    fitViewToMap();
+                    renderMap();
+                    renderViewport();
+                }
+                hydratingFromRemote = false;
+            }, err => console.warn('Remote sync listener error', err));
+        }
+        function writeRemoteState(payload){
+            const doc = ensureFirebaseDoc();
+            if(!doc) return;
+            doc.set(payload).catch(err => console.error('Failed to sync map to Firebase', err));
+        }
         // Deterministic tiny jitter per tile so trees don't "swim" while panning
         function stableNoise(x, y, k=0){
             // x,y are tile coords encoded via sx,sy in caller
@@ -345,7 +399,11 @@ function spriteKeyFor(x, y, tile){
                 const payload = cloneState();
                 payload.fogEnabled = fogEnabled;
                 payload.fogMask = fogMask.map(row => row.slice());
+                payload.updatedAt = Date.now();
+                payload.sessionId = SESSION_ID;
+                payload.campaignId = DEFAULT_CAMPAIGN_ID;
                 localStorage.setItem(PLAYER_VIEW_STATE_KEY, JSON.stringify(payload));
+                writeRemoteState(payload);
             } catch(err){
                 console.error('Failed to publish player view state', err);
             }
@@ -362,7 +420,7 @@ function spriteKeyFor(x, y, tile){
         let pendingPlayerSync = false;
         let playerSyncHandle = null;
         function schedulePlayerViewSync(){
-            if (IS_PLAYER_VIEW || !mappyInitialized) return;
+            if (IS_PLAYER_VIEW || !mappyInitialized || hydratingFromRemote) return;
             pendingPlayerSync = true;
             if (playerSyncHandle) return;
             const publish = () => {
@@ -648,6 +706,9 @@ function fitViewToMap(){
                     publishPlayerViewState();
                     const url = new URL(window.location.href);
                     url.searchParams.set('view', 'player');
+                    if (window.CAMPAIGN_ID) {
+                        url.searchParams.set('campaign', window.CAMPAIGN_ID);
+                    }
                     window.open(url.toString(), '_blank');
                 });
             }
@@ -1704,6 +1765,16 @@ vp.addEventListener('wheel', (e)=>{
             selectedTiles = [];
             ensureFogSize();
         }
+        function bootstrapFromState(data){
+            if(!data) return false;
+            applyStoredMapState(data);
+            if (Array.isArray(data.fogMask)) {
+                fogMask = data.fogMask.map(row => row.slice());
+            }
+            fogEnabled = !!data.fogEnabled;
+            ensureFogSize();
+            return true;
+        }
 
         // Save/Load Functions
         function saveMap() {
@@ -1794,35 +1865,57 @@ vp.addEventListener('wheel', (e)=>{
             if (!container || mappyInitialized) {
                 return;
             }
-            mappyInitialized = true;
             const preloadedPlayerState = IS_PLAYER_VIEW ? loadPlayerViewState() : null;
-            if (IS_PLAYER_VIEW && preloadedPlayerState && !latestPlayerViewState) {
-                latestPlayerViewState = preloadedPlayerState;
+            const begin = (initialState, fromRemote=false) => {
+                if (mappyInitialized) return;
+                mappyInitialized = true;
+                const stateToApply = initialState || preloadedPlayerState;
+                hydratingFromRemote = !!fromRemote && !!initialState;
+                wireMappyControls();
+                preloadSprites(() => {
+                    createTerrainProbabilityInputs();
+                    populateTerrainDropdown();
+                    if (IS_PLAYER_VIEW && stateToApply && !latestPlayerViewState) {
+                        latestPlayerViewState = stateToApply;
+                    }
+                    if(stateToApply){
+                        bootstrapFromState(stateToApply);
+                    } else {
+                        generateMap();
+                    }
+                    fitViewToMap();
+                    pushState();
+                    initViewportInteractions();
+                    renderViewport();
+                    toggleReadOnly(); // sync initial UI state (unchecked => not read-only)
+                    if(!IS_PLAYER_VIEW){
+                        toggleMeasureMode();
+                        toggleLabelMode();
+                        toggleFogEnabled();
+                        toggleFogEditMode();
+                    } else {
+                        toggleFogEnabled();
+                    }
+                    setMappyPlayerViewMode(IS_PLAYER_VIEW);
+                    hydratingFromRemote = false;
+                    subscribeToRemoteUpdates();
+                    if (!fromRemote && !IS_PLAYER_VIEW && firebaseAvailable()) {
+                        schedulePlayerViewSync();
+                    }
+                });
+            };
+            if (firebaseAvailable()) {
+                fetchInitialRemoteState().then(remoteState => {
+                    if(remoteState){
+                        latestPlayerViewState = remoteState;
+                        begin(remoteState, true);
+                    } else {
+                        begin(null, false);
+                    }
+                }).catch(() => begin(null, false));
+            } else {
+                begin(null, false);
             }
-            wireMappyControls();
-            preloadSprites(() => {
-                createTerrainProbabilityInputs();
-                populateTerrainDropdown();
-                if (IS_PLAYER_VIEW && latestPlayerViewState) {
-                    applyPlayerViewSnapshot(latestPlayerViewState);
-                } else {
-                    generateMap();
-                }
-                fitViewToMap();
-                pushState();
-                initViewportInteractions();
-                renderViewport();
-                toggleReadOnly(); // sync initial UI state (unchecked => not read-only)
-                if(!IS_PLAYER_VIEW){
-                    toggleMeasureMode();
-                    toggleLabelMode();
-                    toggleFogEnabled();
-                    toggleFogEditMode();
-                } else {
-                    toggleFogEnabled();
-                }
-                setMappyPlayerViewMode(IS_PLAYER_VIEW);
-            });
         }
 
         window.setMappyPlayerViewMode = setMappyPlayerViewMode;
