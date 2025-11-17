@@ -96,6 +96,20 @@ function spriteKeyFor(x, y, tile){
             }
             return firebaseDocRef;
         }
+        function writeCampaignMap(payload){
+            const doc = ensureFirebaseDoc();
+            if(!doc) return;
+            const remotePayload = prepareRemotePayload(payload);
+            doc.set(remotePayload).catch(err => console.error('Failed to sync map to Firebase', err));
+        }
+        function listenToCampaignMap(handler){
+            const doc = ensureFirebaseDoc();
+            if(!doc) return null;
+            return doc.onSnapshot(snapshot => {
+                if(!snapshot.exists) return;
+                handler(normalizeIncomingState(snapshot.data()));
+            }, err => console.warn('Remote sync listener error', err));
+        }
         function fetchInitialRemoteState(){
             const doc = ensureFirebaseDoc();
             if(!doc) return Promise.resolve(null);
@@ -105,11 +119,8 @@ function spriteKeyFor(x, y, tile){
             });
         }
         function subscribeToRemoteUpdates(){
-            const doc = ensureFirebaseDoc();
-            if(!doc || firebaseUnsubscribe) return;
-            firebaseUnsubscribe = doc.onSnapshot(snapshot => {
-                if(!snapshot.exists) return;
-                const data = normalizeIncomingState(snapshot.data());
+            if(firebaseUnsubscribe) return;
+            const unsubscribe = listenToCampaignMap(data => {
                 if(!data || data.sessionId === SESSION_ID) return;
                 latestPlayerViewState = data;
                 hydratingFromRemote = true;
@@ -127,13 +138,10 @@ function spriteKeyFor(x, y, tile){
                     renderViewport();
                 }
                 hydratingFromRemote = false;
-            }, err => console.warn('Remote sync listener error', err));
-        }
-        function writeRemoteState(payload){
-            const doc = ensureFirebaseDoc();
-            if(!doc) return;
-            const remotePayload = prepareRemotePayload(payload);
-            doc.set(remotePayload).catch(err => console.error('Failed to sync map to Firebase', err));
+            });
+            if(unsubscribe){
+                firebaseUnsubscribe = unsubscribe;
+            }
         }
         // Deterministic tiny jitter per tile so trees don't "swim" while panning
         function stableNoise(x, y, k=0){
@@ -434,7 +442,7 @@ function spriteKeyFor(x, y, tile){
                 payload.sessionId = SESSION_ID;
                 payload.campaignId = DEFAULT_CAMPAIGN_ID;
                 localStorage.setItem(PLAYER_VIEW_STATE_KEY, JSON.stringify(payload));
-                writeRemoteState(payload);
+                writeCampaignMap(payload);
             } catch(err){
                 console.error('Failed to publish player view state', err);
             }
