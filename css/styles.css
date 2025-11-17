@@ -137,6 +137,20 @@ h1 a, p a {
   text-align: left;
 }
 
+.bio-divider {
+  display: flex;
+  justify-content: center;
+  margin: 3rem auto;
+}
+
+.bio-divider img {
+  display: block;
+  width: 100%;
+  max-width: 1100px;
+  height: auto;
+  opacity: 0.9;
+}
+
 /* ============================================
    Hero Buttons Container
    ============================================ */
@@ -377,7 +391,7 @@ footer {
     background-color: var(--color-secondary);
   }
 
-/* ============================================
+  /* ============================================
    Lightbox Modal Styles
    ============================================ */
 .lightbox-modal {
@@ -409,6 +423,7 @@ footer {
   cursor: pointer;
   user-select: none;
 }
+
 
 /* ============================================
    Responsive Adjustments
