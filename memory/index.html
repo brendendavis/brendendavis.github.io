@@ -3,13 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="BRENDEN DAVIS - Contemporary Artist Portfolio featuring works, prints, CV, biography, and exhibitions." />
-  <title>BRENDEN DAVIS - Home</title>
+  <meta name="description" content="NEW HISTORY - An exhibition featuring emerging Mississippi-based artists exploring Black American experience through various mediums." />
+  <title>BRENDEN DAVIS - Memory Corrupted Exhibition</title>
   <link rel="preload" href="fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="stylesheet" href="css/clash-display.css" />
   <link rel="stylesheet" href="/css/styles.css" />
-  <!-- Optionally, add a favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  
+  <!-- Page-specific styles -->
+  <style>
+    .exhibition-hero-image {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      object-fit: cover;
+      padding-top: 2rem;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .exhibition-hero {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .video-container {
+      flex: 1;
+      max-width: 300px;
+    }
+    .video-container p {
+      max-width: 400px;
+    }
+    .image-container {
+      flex: 0 0 50%;       /* container takes half the row */
+      max-width: 50%;
+    }
+    .exhibition-side-image {
+      width: 100%;         /* fill its container */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .exhibition-video {
+  width: 100%;
+  height: auto;
+  max-height: 600px; /* Limit height for portrait video */
+  object-fit: contain;
+}
+
+    .featured-artists {
+      text-align: right;
+      margin-top: -50px; /* Reduces space between statement and artists list */
+      margin-top: 5%;
+    }
+
+    .featured-artists ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .featured-artists li {
+      margin: 50px 0;
+    }
+
+    .biography {
+      margin-top: -50px; /* Reduces space between images and statement */
+    }
+
+    .statement-text {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Make layout responsive */
+    @media (max-width: 768px) {
+      .content-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50%;
+      }
+
+      .video-container {
+        width: 100%;
+      }
+    }
+   
+  </style>
 </head>
 <body>
   <header>
@@ -17,9 +108,9 @@
       <h1><a href="/home/">BRENDEN DAVIS</a></h1>
       <nav aria-label="Primary Navigation">
         <ul class="nav-list">
-          <li><a href="/works/">Works</a></li> <!-- Updated link -->
-          <li><a href="/contact/">Contact</a></li> <!-- Updated link -->
-          <li><a href="/cv/">CV</a></li> <!-- Updated link -->
+          <li><a href="/works/">Works</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/cv/">CV</a></li>
         </ul>
       </nav>
     </div>
@@ -27,47 +118,56 @@
 
   <main>
     <div class="artist-bio-container">
-      <!-- Artist Image Section -->
-      <section class="hero" aria-labelledby="hero-heading">
-        <img 
-          src="/images/headshot.png" 
-          alt="Portrait of BRENDEN DAVIS, contemporary artist" 
-          class="artist-image" 
+      <section class="exhibition-hero" aria-labelledby="hero-heading">
+        <img
+          src="/images/memorycorruptbioheader.png"
+          alt="Memory Corrupted exhibition header and artist bio"
+          class="exhibition-hero-image"
         />
       </section>
-      
-      <!-- Biography Section -->
-      <section class="biography" aria-labelledby="bio-heading">
-        <h2 id="bio-heading" style="color: #121212;">Biography</h2>
-        <h2>
-          Brenden Davis is a multidisciplinary artist<br>from Jackson, Mississippi,<br>working in painting, graphic design,<br> and animation.<br>Their art blends surrealism and abstraction with explorations of the Black<br>experience, crafting dreamlike figures and landscapes that challenge <br>societal perceptions and spark dialogue.
-        </h2>
-      </section>
-    </div>
-
-    <!-- Animated Divider -->
-    <div class="bio-divider" aria-hidden="true">
-      <img src="/images/bd_anim1.gif" alt="" loading="lazy" />
     </div>
     
-    <!-- Exhibitions Section -->
-    <section class="exhibitions" aria-labelledby="exhibitions-heading">
-      <h2 id="exhibitions-heading">Exhibitions</h2>
-      <ul>
-        <li ><strong>2025: </strong><a href="/memory/"> "Memory Corrupted: An Exploration of Time and Perception" – Arts Center of Mississippi</a></li>
-        <li ><strong>2025: </strong><a href="/newhistory/"> "NEW HISTORY" – Hall Gallery, 2025 </a></li>
-        <li><strong>2025: </strong> "BOLD in DESIGN (ART PARTY 2025)" – Mississippi Museum of Art</li>
-        <li><strong>2024: </strong> "The South Got Somethin’ to Say" – Arts Center of Mississippi</li>
-        <li><strong>2024: </strong> “It Takes a Village” – Arts Center of Mississippi</li>
-        <li><strong>2024: </strong> "LANDSCAPE (ART PARTY 2024)" – Mississippi Museum of Art</li>
-        <li><strong>2023: </strong> "2023 Mississippi Invitational" – Mississippi Museum of Art</li>
-        <li><strong>2023: </strong> "LUCID BODIES: VISIONS OF AFRO-SURREALISM IN THE SOUTH" – Municipal Art Gallery</li>
-        <li><strong>2023: </strong> "The Mash Up - Art Exhibition" – Municipal Art Gallery, 2023</li>
-        <li><strong>2022: </strong> "The Art of Wellness: Panel Conversation & Art Exhibit " – Duling Hall</li>
-        <li><strong>2021: </strong> "2021 Mississippi Invitational" – Mississippi Museum of Art</li> 
-        <!-- Add more exhibitions as needed -->
-      </ul>
-    </section>
+    <!-- Featured Artists Section -->
+    <section class="featured-artists" aria-labelledby="artists-heading">
+      <!-- Curatorial Statement Section -->
+      <section class="biography" aria-labelledby="statement-heading">
+        <h2 id="statement-heading" style="color: #121212;">NEW HISTORY</h2>
+        <h2>Artist's Statement</h2>
+        <div class="statement-text">
+          <p><br>MEMORY CORRUPTED is an evolving archive of my shifting perceptions over the past eight years. Drawing inspiration from the fluidity of memory, Black surrealist traditions, and everyday textures of life, I embrace a chaotic and instinctive process, working with paint, clay, paper, and digital media to capture moments as fragmented time capsules. <br>Influenced by artists such as Betye Saar, Jean-Michel Basquiat, and David Hammons, I layer symbolism and found materials to explore identity, social critique, and the fallibility of recollection. <br>This exhibition is both a deeply personal offering and an open invitation for viewers to locate their own stories within the blur of past and present.</p>
+        </div>
+      </section>
+   <!-- Artists and Video Container -->
+   <div class="content-container">
+    <div class="image-container">
+      <img 
+        src="/images/memcorrupted_selectedworks.gif"
+        alt="Featured artwork"
+        class="exhibition-side-image"
+      />
+    </div>
+
+    <div class="video-container">
+      <video 
+        src="/images/my%20network2.MP4"
+        class="exhibition-video"
+        controls
+        autoplay muted>
+        Your browser does not support the video element.
+      </video>
+    </div>
+  </div>
+<h2 class="guided-discussion-heading" style="margin-bottom: 0.5rem; margin-top: 10%;">Guided Discussion</h2>
+  <div style="display: flex; justify-content: center; align-items: center;">
+      <iframe 
+      style= "align-items: center;" 
+      src="https://drive.google.com/file/d/14zPWoWSZpl8qlZwOgQ0BLLvp1pB86ZRs/preview" 
+      width="960" 
+      height="540" 
+      allow="autoplay">
+    </iframe>
+    </div>
+  </section>
   </main>
 
   <footer>
