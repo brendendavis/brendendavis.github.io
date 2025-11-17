@@ -56,6 +56,36 @@ function spriteKeyFor(x, y, tile){
   if (tile === 'rocky') return rockyVariantAt(x, y);
   return tile;
 }
+        function encodeGrid(grid){
+            if(!Array.isArray(grid)) return grid;
+            const obj = {};
+            grid.forEach((row, idx) => { obj[idx] = row; });
+            return obj;
+        }
+        function decodeGrid(gridLike){
+            if(Array.isArray(gridLike)) return gridLike;
+            if (!gridLike || typeof gridLike !== 'object') return gridLike;
+            return Object.keys(gridLike)
+                .sort((a,b)=>Number(a)-Number(b))
+                .map(key => gridLike[key]);
+        }
+        function normalizeIncomingState(data){
+            if(!data) return data;
+            const normalized = {...data};
+            if(normalized.mapGrid && !Array.isArray(normalized.mapGrid)){
+                normalized.mapGrid = decodeGrid(normalized.mapGrid);
+            }
+            if(normalized.fogMask && !Array.isArray(normalized.fogMask)){
+                normalized.fogMask = decodeGrid(normalized.fogMask);
+            }
+            return normalized;
+        }
+        function prepareRemotePayload(payload){
+            const remote = {...payload};
+            if(remote.mapGrid) remote.mapGrid = encodeGrid(remote.mapGrid);
+            if(remote.fogMask) remote.fogMask = encodeGrid(remote.fogMask);
+            return remote;
+        }
         function firebaseAvailable(){
             return !!window.firebaseDB && !!DEFAULT_CAMPAIGN_ID;
         }
@@ -69,7 +99,7 @@ function spriteKeyFor(x, y, tile){
         function fetchInitialRemoteState(){
             const doc = ensureFirebaseDoc();
             if(!doc) return Promise.resolve(null);
-            return doc.get().then(snapshot => snapshot.exists ? snapshot.data() : null).catch(err => {
+            return doc.get().then(snapshot => snapshot.exists ? normalizeIncomingState(snapshot.data()) : null).catch(err => {
                 console.warn('Failed to fetch remote map', err);
                 return null;
             });
@@ -79,7 +109,7 @@ function spriteKeyFor(x, y, tile){
             if(!doc || firebaseUnsubscribe) return;
             firebaseUnsubscribe = doc.onSnapshot(snapshot => {
                 if(!snapshot.exists) return;
-                const data = snapshot.data();
+                const data = normalizeIncomingState(snapshot.data());
                 if(!data || data.sessionId === SESSION_ID) return;
                 latestPlayerViewState = data;
                 hydratingFromRemote = true;
@@ -102,7 +132,8 @@ function spriteKeyFor(x, y, tile){
         function writeRemoteState(payload){
             const doc = ensureFirebaseDoc();
             if(!doc) return;
-            doc.set(payload).catch(err => console.error('Failed to sync map to Firebase', err));
+            const remotePayload = prepareRemotePayload(payload);
+            doc.set(remotePayload).catch(err => console.error('Failed to sync map to Firebase', err));
         }
         // Deterministic tiny jitter per tile so trees don't "swim" while panning
         function stableNoise(x, y, k=0){
@@ -437,13 +468,14 @@ function spriteKeyFor(x, y, tile){
         }
         function applyPlayerViewSnapshot(snapshot){
             if (!IS_PLAYER_VIEW || !snapshot) return;
-            latestPlayerViewState = snapshot;
+            const normalized = normalizeIncomingState(snapshot);
+            latestPlayerViewState = normalized;
             if (!mappyInitialized) return;
-            applyStoredMapState(snapshot);
-            if (Array.isArray(snapshot.fogMask)) {
-                fogMask = snapshot.fogMask.map(row => row.slice());
+            applyStoredMapState(normalized);
+            if (Array.isArray(normalized.fogMask)) {
+                fogMask = normalized.fogMask.map(row => row.slice());
             }
-            fogEnabled = !!snapshot.fogEnabled;
+            fogEnabled = !!normalized.fogEnabled;
             const fogToggle = document.getElementById('fogToggle');
             if (fogToggle) {
                 fogToggle.checked = fogEnabled;
