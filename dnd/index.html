@@ -13,6 +13,7 @@
     (function() {
       const params = new URLSearchParams(window.location.search);
       const startInPlayerView = params.get('view') === 'player';
+      window.CAMPAIGN_ID = params.get('campaign') || 'default';
       window.PROFILE_ID = params.get('profile') || (startInPlayerView ? 'player' : 'dm');
       window.IS_EMBEDDED_VIEW = params.get('embedded') === 'true';
       function setGlobalPlayerView(isPlayer) {
@@ -1190,6 +1191,9 @@
           params.set('view', 'player');
           params.set('profile', profileId);
           params.set('embedded', 'true');
+          if (window.CAMPAIGN_ID) {
+            params.set('campaign', window.CAMPAIGN_ID);
+          }
           frame.src = `index.html?${params.toString()}`;
           panel.appendChild(frame);
           panelContainer.appendChild(panel);
@@ -1269,6 +1273,35 @@
       section.addEventListener('click', loadMappyScript, { once: true });
       const advToggle = document.getElementById('toggle-controls');
       advToggle?.addEventListener('focus', loadMappyScript, { once: true });
+    })();
+  </script>
+  <script>
+    window.FIREBASE_CONFIG = window.FIREBASE_CONFIG || {
+      apiKey: "AIzaSyAMLwvHKhkTpEjipGyqTlh83WKjVQWU9fs",
+      authDomain: "dndmanager-bd67.firebaseapp.com",
+      projectId: "dndmanager-bd67",
+     
+      storageBucket: "dndmanager-bd67.firebasestorage.app",
+      messagingSenderId: "443148232086",
+      appId: "1:443148232086:web:77305736218ec4a105e9b7",
+    };
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>
+    (function() {
+      if (!window.FIREBASE_CONFIG || !window.FIREBASE_CONFIG.apiKey) {
+        console.warn('Firebase config missing. Remote map sync is disabled.');
+        return;
+      }
+      try {
+        if (!window.firebase?.apps?.length) {
+          firebase.initializeApp(window.FIREBASE_CONFIG);
+        }
+        window.firebaseDB = firebase.firestore();
+      } catch (err) {
+        console.warn('Failed to initialize Firebase', err);
+      }
     })();
   </script>
   <!-- Add HTML2PDF library -->
