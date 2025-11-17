@@ -22,7 +22,20 @@
         const view = { zoom: 1, offsetX: 0, offsetY: 0, dragging: false, dragStartX: 0, dragStartY: 0 };
         const PLAYER_VIEW_STATE_KEY = 'mappyPlayerViewState';
         let IS_PLAYER_VIEW = !!window.IS_PLAYER_VIEW;
-        let latestPlayerViewState = null;
+        let latestCampaignState = null;
+        const PLAYER_SLOT_STORAGE_KEY = 'mappyPlayerSlot';
+        const DEFAULT_PLAYER_SLOT = 'player';
+        let activePlayerId = determineInitialPlayerSlot();
+        window.PLAYER_ID = activePlayerId;
+        let firebaseAuthInstance = window.firebaseAuth || null;
+        let firebaseAuthInitPromise = null;
+        let firebaseUser = null;
+        let campaignDmId = null;
+        let playerDocUnsubscribe = null;
+        let playerCollectionUnsubscribe = null;
+        let playerDocCache = {};
+        let latestPlayerDocState = null;
+        let anonSignInRequested = false;
 
         // Only these are base, generative terrains (used in probabilities and dropdown)
         const BASE_TERRAINS = ['grass', 'forest', 'rocky', 'water'];
@@ -56,6 +69,39 @@ function spriteKeyFor(x, y, tile){
   if (tile === 'rocky') return rockyVariantAt(x, y);
   return tile;
 }
+        function sanitizePlayerId(raw){
+            if(!raw) return DEFAULT_PLAYER_SLOT;
+            return raw.toString().toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0, 32) || DEFAULT_PLAYER_SLOT;
+        }
+        function determineInitialPlayerSlot(){
+            try{
+                const params = new URLSearchParams(window.location.search);
+                const urlSlot = params.get('player') || params.get('profile');
+                const stored = localStorage.getItem(PLAYER_SLOT_STORAGE_KEY);
+                const fallback = window.PROFILE_ID && window.PROFILE_ID !== 'dm' ? window.PROFILE_ID : DEFAULT_PLAYER_SLOT;
+                return sanitizePlayerId(urlSlot || stored || fallback);
+            } catch(err){
+                return DEFAULT_PLAYER_SLOT;
+            }
+        }
+        function syncPlayerSlotInputs(){
+            const input = document.getElementById('playerSlotInput');
+            if(input){
+                input.value = activePlayerId;
+            }
+        }
+        function setActivePlayerSlot(nextId, opts={}){
+            const { persist=true } = opts;
+            const sanitized = sanitizePlayerId(nextId);
+            if(!sanitized || sanitized === activePlayerId) return;
+            activePlayerId = sanitized;
+            window.PLAYER_ID = sanitized;
+            if(persist){
+                try{ localStorage.setItem(PLAYER_SLOT_STORAGE_KEY, sanitized); } catch(err){}
+            }
+            syncPlayerSlotInputs();
+            refreshPlayerDocSubscription();
+        }
         function encodeGrid(grid){
             if(!Array.isArray(grid)) return grid;
             const obj = {};
@@ -102,6 +148,11 @@ function spriteKeyFor(x, y, tile){
             const remotePayload = prepareRemotePayload(payload);
             doc.set(remotePayload).catch(err => console.error('Failed to sync map to Firebase', err));
         }
+        function canCurrentUserWriteCampaign(){
+            if(!firebaseUser) return false;
+            if(!campaignDmId) return false;
+            return firebaseUser.uid === campaignDmId;
+        }
         function listenToCampaignMap(handler){
             const doc = ensureFirebaseDoc();
             if(!doc) return null;
@@ -109,6 +160,218 @@ function spriteKeyFor(x, y, tile){
                 if(!snapshot.exists) return;
                 handler(normalizeIncomingState(snapshot.data()));
             }, err => console.warn('Remote sync listener error', err));
+        }
+        function ensurePlayerDocRef(){
+            const campaignDoc = ensureFirebaseDoc();
+            if(!campaignDoc || !activePlayerId) return null;
+            return campaignDoc.collection('players').doc(activePlayerId);
+        }
+        function writePlayerMapState(payload){
+            const doc = ensurePlayerDocRef();
+            if(!doc) return;
+            const remotePayload = prepareRemotePayload(payload);
+            doc.set(remotePayload, { merge: true }).catch(err => console.error('Failed to sync player doc to Firebase', err));
+        }
+        function listenToPlayerDoc(handler){
+            const doc = ensurePlayerDocRef();
+            if(!doc) return null;
+            return doc.onSnapshot(snapshot => {
+                if(!snapshot.exists){
+                    handler(null);
+                    return;
+                }
+                handler(normalizeIncomingState(snapshot.data()));
+            }, err => console.warn('Player state listener error', err));
+        }
+        function refreshPlayerDocSubscription(){
+            if(playerDocUnsubscribe){
+                playerDocUnsubscribe();
+                playerDocUnsubscribe = null;
+            }
+            latestPlayerDocState = null;
+            if(IS_PLAYER_VIEW && mappyInitialized){
+                applyCombinedPlayerState();
+            }
+            if(!firebaseAvailable() || !activePlayerId) return;
+            if(IS_PLAYER_VIEW || (firebaseUser && !IS_PLAYER_VIEW)){
+                const unsubscribe = listenToPlayerDoc(data => {
+                    latestPlayerDocState = data;
+                    if(IS_PLAYER_VIEW){
+                        applyCombinedPlayerState();
+                    }
+                });
+                if(unsubscribe){
+                    playerDocUnsubscribe = unsubscribe;
+                }
+            }
+        }
+        function subscribeToAllPlayerDocs(){
+            if(playerCollectionUnsubscribe){
+                return;
+            }
+            const campaignDoc = ensureFirebaseDoc();
+            if(!campaignDoc) return;
+            playerCollectionUnsubscribe = campaignDoc.collection('players').onSnapshot(snapshot => {
+                const next = {};
+                snapshot.forEach(doc => {
+                    next[doc.id] = normalizeIncomingState(doc.data());
+                });
+                playerDocCache = next;
+                renderPlayerDocList();
+            }, err => console.warn('Failed to fetch player docs', err));
+        }
+        function renderPlayerDocList(){
+            const container = document.getElementById('dmPlayerDocList');
+            if(!container) return;
+            const entries = Object.entries(playerDocCache || {});
+            if(!entries.length){
+                container.textContent = 'No player states yet.';
+                return;
+            }
+            container.innerHTML = '';
+            entries.sort((a,b)=> (b[1]?.updatedAt || 0) - (a[1]?.updatedAt || 0));
+            entries.forEach(([playerId, data]) => {
+                const row = document.createElement('div');
+                row.className = 'mappy-player-doc';
+                const meta = document.createElement('span');
+                const stamp = data?.updatedAt ? new Date(data.updatedAt).toLocaleString() : 'never';
+                const fogState = data?.fogEnabled ? 'fog on' : 'fog off';
+                meta.textContent = `${playerId} · ${fogState} · ${stamp}`;
+                const controls = document.createElement('div');
+                const openBtn = document.createElement('button');
+                openBtn.type = 'button';
+                openBtn.textContent = 'Open';
+                openBtn.addEventListener('click', ()=>openPlayerWindow(playerId));
+                const clearBtn = document.createElement('button');
+                clearBtn.type = 'button';
+                clearBtn.textContent = 'Clear';
+                clearBtn.addEventListener('click', ()=>resetPlayerDoc(playerId));
+                controls.appendChild(openBtn);
+                controls.appendChild(clearBtn);
+                row.appendChild(meta);
+                row.appendChild(controls);
+                container.appendChild(row);
+            });
+        }
+        function openPlayerWindow(playerId){
+            try{
+                const url = new URL(window.location.href);
+                url.searchParams.set('view', 'player');
+                url.searchParams.set('player', playerId);
+                if(window.CAMPAIGN_ID){
+                    url.searchParams.set('campaign', window.CAMPAIGN_ID);
+                }
+                window.open(url.toString(), '_blank');
+            } catch(err){
+                console.warn('Unable to open player view window', err);
+            }
+        }
+        function resetPlayerDoc(playerId){
+            if(!firebaseAvailable() || !playerId) return;
+            if(!canCurrentUserWriteCampaign()){
+                setAuthError('Only the campaign DM can reset player docs.');
+                return;
+            }
+            const doc = ensureFirebaseDoc()?.collection('players').doc(playerId);
+            if(!doc) return;
+            doc.delete().catch(err => console.warn('Failed to reset player doc', err));
+        }
+        function setAuthError(message){
+            const msg = message || '';
+            const el = document.getElementById('authErrorText');
+            if(el){
+                el.textContent = msg;
+            }
+        }
+        function updateAuthStatusUI(){
+            const el = document.getElementById('authStatusText');
+            if(!el) return;
+            if(firebaseUser){
+                const label = firebaseUser.isAnonymous ? 'Anon player' : (firebaseUser.email || 'Signed in');
+                el.textContent = `Signed in as ${label}`;
+            } else {
+                el.textContent = 'Signed out';
+            }
+        }
+        function handleAuthDependentSubscriptions(){
+            refreshPlayerDocSubscription();
+            const isDmUser = canCurrentUserWriteCampaign();
+            if(!IS_PLAYER_VIEW && firebaseUser && isDmUser){
+                subscribeToAllPlayerDocs();
+            }
+            if(!firebaseUser || !isDmUser){
+                cleanupPlayerDocRoster();
+            }
+        }
+        function cleanupPlayerDocRoster(){
+            if(playerCollectionUnsubscribe){
+                playerCollectionUnsubscribe();
+                playerCollectionUnsubscribe = null;
+            }
+            playerDocCache = {};
+            renderPlayerDocList();
+        }
+        function getFirebaseAuth(){
+            if(firebaseAuthInstance) return firebaseAuthInstance;
+            if(window.firebaseAuth){
+                firebaseAuthInstance = window.firebaseAuth;
+                return firebaseAuthInstance;
+            }
+            if(window.firebase?.auth){
+                try{
+                    firebaseAuthInstance = firebase.auth();
+                    window.firebaseAuth = firebaseAuthInstance;
+                } catch(err){
+                    console.warn('Failed to init Firebase auth', err);
+                }
+            }
+            return firebaseAuthInstance;
+        }
+        function initFirebaseAuth(){
+            if(firebaseAuthInitPromise) return firebaseAuthInitPromise;
+            const auth = getFirebaseAuth();
+            if(!auth){
+                firebaseAuthInitPromise = Promise.resolve(null);
+                return firebaseAuthInitPromise;
+            }
+            firebaseAuthInitPromise = new Promise(resolve => {
+                auth.onAuthStateChanged(user => {
+                    firebaseUser = user;
+                    updateAuthStatusUI();
+                    handleAuthDependentSubscriptions();
+                    if(!user && IS_PLAYER_VIEW && !anonSignInRequested){
+                        attemptAnonymousSignIn();
+                    }
+                    resolve(user);
+                }, err => {
+                    setAuthError('Auth error: ' + (err?.message || err));
+                    resolve(null);
+                });
+            });
+            return firebaseAuthInitPromise;
+        }
+        function attemptAnonymousSignIn(){
+            const auth = getFirebaseAuth();
+            if(!auth) return;
+            anonSignInRequested = true;
+            auth.signInAnonymously().catch(err => {
+                setAuthError('Anon sign-in failed: ' + (err?.message || err));
+            });
+        }
+        function signInDmWithEmail(email, password){
+            const auth = getFirebaseAuth();
+            if(!auth || !email || !password){
+                setAuthError('Email and password are required.');
+                return;
+            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then(()=>setAuthError(''))
+                .catch(err=>setAuthError('DM sign-in failed: ' + (err?.message || err)));
+        }
+        function signOutOfFirebase(){
+            const auth = getFirebaseAuth();
+            if(!auth) return;
+            auth.signOut().catch(err=>setAuthError('Sign out failed: ' + (err?.message || err)));
         }
         function fetchInitialRemoteState(){
             const doc = ensureFirebaseDoc();
@@ -121,27 +384,67 @@ function spriteKeyFor(x, y, tile){
         function subscribeToRemoteUpdates(){
             if(firebaseUnsubscribe) return;
             const unsubscribe = listenToCampaignMap(data => {
-                if(!data || data.sessionId === SESSION_ID) return;
-                latestPlayerViewState = data;
-                hydratingFromRemote = true;
+                if(!data) return;
+                if(typeof data.dmId !== 'undefined'){
+                    campaignDmId = data.dmId;
+                    toggleReadOnly();
+                    handleAuthDependentSubscriptions();
+                }
                 if(IS_PLAYER_VIEW){
                     applyPlayerViewSnapshot(data);
-                } else if(mappyInitialized){
-                    applyStoredMapState(data);
-                    if (Array.isArray(data.fogMask)) {
-                        fogMask = data.fogMask.map(row => row.slice());
-                    }
-                    fogEnabled = !!data.fogEnabled;
-                    ensureFogSize();
-                    fitViewToMap();
-                    renderMap();
-                    renderViewport();
+                    return;
                 }
+                latestCampaignState = data;
+                if(data.sessionId === SESSION_ID || !mappyInitialized) return;
+                hydratingFromRemote = true;
+                applyStoredMapState(data);
+                if (Array.isArray(data.fogMask)) {
+                    fogMask = data.fogMask.map(row => row.slice());
+                }
+                fogEnabled = !!data.fogEnabled;
+                ensureFogSize();
+                fitViewToMap();
+                renderMap();
+                renderViewport();
                 hydratingFromRemote = false;
             });
             if(unsubscribe){
                 firebaseUnsubscribe = unsubscribe;
             }
+        }
+        function claimCampaignOwnership(){
+            if(!firebaseAvailable()){
+                setAuthError('Firebase unavailable.');
+                return;
+            }
+            const doc = ensureFirebaseDoc();
+            if(!doc){
+                setAuthError('Campaign doc missing.');
+                return;
+            }
+            if(!firebaseUser){
+                setAuthError('Sign in as DM before claiming.');
+                return;
+            }
+            doc.get().then(snapshot => {
+                const data = snapshot.exists ? snapshot.data() : {};
+                const existingDm = data?.dmId;
+                if(existingDm && existingDm !== firebaseUser.uid){
+                    throw new Error('Campaign already claimed by another DM.');
+                }
+                return doc.set({
+                    dmId: firebaseUser.uid,
+                    dmDisplayName: firebaseUser.email || null,
+                    claimedAt: Date.now()
+                }, { merge: true });
+            }).then(()=>{
+                campaignDmId = firebaseUser.uid;
+                setAuthError('');
+                toggleReadOnly();
+                schedulePlayerViewSync();
+            }).catch(err => {
+                setAuthError('Claim failed: ' + (err?.message || err));
+            });
         }
         // Deterministic tiny jitter per tile so trees don't "swim" while panning
         function stableNoise(x, y, k=0){
@@ -329,7 +632,8 @@ function spriteKeyFor(x, y, tile){
         let dmReadOnlyPreference = false;
         // Labels & measuring state
         let labelMode = false;
-        let labels = []; // {x,y,text}
+        let labels = []; // {x,y,text} canonical DM labels
+        let playerLabels = []; // player-specific overlay labels
         let measureMode = false;
         let measureStart = null; // {x,y} in world tile coords (floats)
         let measureEnd = null;
@@ -349,11 +653,9 @@ function spriteKeyFor(x, y, tile){
             }
         }
         function toggleFogEnabled(){
-            if (!IS_PLAYER_VIEW) {
-                const toggle = document.getElementById('fogToggle');
-                if (toggle) {
-                    fogEnabled = toggle.checked;
-                }
+            const toggle = document.getElementById('fogToggle');
+            if (toggle) {
+                fogEnabled = toggle.checked;
             }
             const fc = document.getElementById('fogControls');
             if(fc) fc.style.display = fogEnabled ? 'block' : 'none';
@@ -363,15 +665,11 @@ function spriteKeyFor(x, y, tile){
             schedulePlayerViewSync();
         }
         function toggleFogEditMode(){
-            if (IS_PLAYER_VIEW) {
-                fogEditMode = false;
-                return;
-            }
             const toggle = document.getElementById('fogEditToggle');
             fogEditMode = !!toggle && toggle.checked;
         }
         function clearFog(){
-            if (readOnly) return;
+            if (readOnly && !IS_PLAYER_VIEW) return;
             if(!fogEnabled) return;
             pushState();
             const H = fogMask.length, W = fogMask[0]?.length||0;
@@ -381,14 +679,27 @@ function spriteKeyFor(x, y, tile){
         }
         function toggleReadOnly(){
             const toggleEl = document.getElementById('readOnlyToggle');
-            if (IS_PLAYER_VIEW) {
-                if (toggleEl) {
-                    dmReadOnlyPreference = !!toggleEl.checked;
+            const forcePlayerLock = IS_PLAYER_VIEW && !canCurrentUserWriteCampaign();
+            if(IS_PLAYER_VIEW){
+                if(forcePlayerLock){
+                    readOnly = true;
+                    if(toggleEl){
+                        dmReadOnlyPreference = !!toggleEl.checked;
+                        toggleEl.checked = true;
+                    }
+                } else {
+                    readOnly = !!toggleEl?.checked;
                 }
-                readOnly = true;
             } else {
                 readOnly = !!toggleEl?.checked;
                 dmReadOnlyPreference = readOnly;
+            }
+            if(toggleEl){
+                if(IS_PLAYER_VIEW){
+                    toggleEl.disabled = forcePlayerLock;
+                } else {
+                    toggleEl.disabled = false;
+                }
             }
             // disable some editing UI in read-only mode for safety
             const dd = document.getElementById('terrainDropdown');
@@ -409,9 +720,16 @@ function spriteKeyFor(x, y, tile){
             if(labelMode){ measureMode = false; const mt=document.getElementById('measureToggle'); if(mt) mt.checked=false; }
         }
         function clearLabels(){
-            if (readOnly) return;
+            if (readOnly && !IS_PLAYER_VIEW) return;
+            const target = IS_PLAYER_VIEW ? playerLabels : labels;
+            if(!target.length) return;
             pushState();
-            labels = [];
+            target.length = 0;
+            if(IS_PLAYER_VIEW){
+                playerLabels = [];
+            } else {
+                labels = [];
+            }
             renderViewport();
             schedulePlayerViewSync();
         }
@@ -423,6 +741,7 @@ function spriteKeyFor(x, y, tile){
                 mapGrid: mapGrid.map(r => r.slice()),
                 encounters: encounters.map(e => ({x:e.x,y:e.y})),
                 labels: labels.map(lb => ({x: lb.x, y: lb.y, text: lb.text})),
+                playerLabels: playerLabels.map(lb => ({x: lb.x, y: lb.y, text: lb.text})),
                 settings: {
                     mapSize: document.getElementById('mapSize').value,
                     numTrails: document.getElementById('numTrails').value,
@@ -442,7 +761,33 @@ function spriteKeyFor(x, y, tile){
                 payload.sessionId = SESSION_ID;
                 payload.campaignId = DEFAULT_CAMPAIGN_ID;
                 localStorage.setItem(PLAYER_VIEW_STATE_KEY, JSON.stringify(payload));
-                writeCampaignMap(payload);
+                if(!firebaseAvailable()) return;
+                if(IS_PLAYER_VIEW){
+                    if(!activePlayerId){
+                        console.warn('Player slot not set; skipping player state sync.');
+                        return;
+                    }
+                    if(!firebaseUser){
+                        attemptAnonymousSignIn();
+                        return;
+                    }
+                    const playerPayload = {
+                        labels: playerLabels.map(lb => ({x: lb.x, y: lb.y, text: lb.text})),
+                        fogMask: payload.fogMask.map(row => row.slice()),
+                        fogEnabled: payload.fogEnabled,
+                        updatedAt: payload.updatedAt,
+                        sessionId: payload.sessionId,
+                        campaignId: payload.campaignId,
+                        playerId: activePlayerId
+                    };
+                    writePlayerMapState(playerPayload);
+                } else {
+                    if(!canCurrentUserWriteCampaign()){
+                        console.warn('Current user cannot write campaign map. Claim the campaign as DM.');
+                        return;
+                    }
+                    writeCampaignMap(payload);
+                }
             } catch(err){
                 console.error('Failed to publish player view state', err);
             }
@@ -459,7 +804,8 @@ function spriteKeyFor(x, y, tile){
         let pendingPlayerSync = false;
         let playerSyncHandle = null;
         function schedulePlayerViewSync(){
-            if (IS_PLAYER_VIEW || !mappyInitialized || hydratingFromRemote) return;
+            if (!mappyInitialized || hydratingFromRemote) return;
+            if (IS_PLAYER_VIEW && !activePlayerId) return;
             pendingPlayerSync = true;
             if (playerSyncHandle) return;
             const publish = () => {
@@ -475,15 +821,40 @@ function spriteKeyFor(x, y, tile){
             }
         }
         function applyPlayerViewSnapshot(snapshot){
-            if (!IS_PLAYER_VIEW || !snapshot) return;
+            if (!snapshot) return;
             const normalized = normalizeIncomingState(snapshot);
-            latestPlayerViewState = normalized;
-            if (!mappyInitialized) return;
-            applyStoredMapState(normalized);
-            if (Array.isArray(normalized.fogMask)) {
-                fogMask = normalized.fogMask.map(row => row.slice());
+            latestCampaignState = normalized;
+            if(typeof normalized?.dmId !== 'undefined'){
+                campaignDmId = normalized.dmId;
+                toggleReadOnly();
+                handleAuthDependentSubscriptions();
             }
-            fogEnabled = !!normalized.fogEnabled;
+            if (!IS_PLAYER_VIEW || !mappyInitialized) return;
+            applyCombinedPlayerState();
+        }
+        function applyCombinedPlayerState(){
+            if(!IS_PLAYER_VIEW || !mappyInitialized || !latestCampaignState) return;
+            const merged = {...latestCampaignState};
+            const playerState = latestPlayerDocState;
+            if(playerState){
+                merged.fogEnabled = playerState.fogEnabled ?? merged.fogEnabled;
+                if(Array.isArray(playerState.fogMask)){
+                    merged.fogMask = playerState.fogMask.map(row=>row.slice());
+                }
+                if(Array.isArray(playerState.labels)){
+                    const baseLabels = Array.isArray(merged.labels) ? merged.labels.slice() : [];
+                    merged.labels = baseLabels.concat(playerState.labels);
+                }
+            }
+            hydratingFromRemote = true;
+            applyStoredMapState(merged);
+            if(playerState){
+                playerLabels = Array.isArray(playerState.labels) ? playerState.labels.map(lb => ({x: lb.x, y: lb.y, text: lb.text})) : [];
+            }
+            if (Array.isArray(merged.fogMask)) {
+                fogMask = merged.fogMask.map(row => row.slice());
+            }
+            fogEnabled = !!merged.fogEnabled;
             const fogToggle = document.getElementById('fogToggle');
             if (fogToggle) {
                 fogToggle.checked = fogEnabled;
@@ -491,6 +862,8 @@ function spriteKeyFor(x, y, tile){
             ensureFogSize();
             ensureViewInBounds();
             renderMap();
+            renderViewport();
+            hydratingFromRemote = false;
         }
         function handlePlayerViewStorageEvent(event){
             if (!IS_PLAYER_VIEW) return;
@@ -507,6 +880,7 @@ function spriteKeyFor(x, y, tile){
             mapGrid = s.mapGrid.map(r => r.slice());
             encounters = s.encounters.map(e => ({x:e.x,y:e.y}));
             labels = Array.isArray(s.labels) ? s.labels.map(lb => ({x: lb.x, y: lb.y, text: lb.text})) : [];
+            playerLabels = Array.isArray(s.playerLabels) ? s.playerLabels.map(lb => ({x: lb.x, y: lb.y, text: lb.text})) : [];
             const st = s.settings;
             document.getElementById('mapSize').value = st.mapSize;
             document.getElementById('numTrails').value = st.numTrails;
@@ -752,6 +1126,32 @@ function fitViewToMap(){
                     window.open(url.toString(), '_blank');
                 });
             }
+            wireAuthUiControls();
+        }
+        function wireAuthUiControls(){
+            syncPlayerSlotInputs();
+            const slotInput = document.getElementById('playerSlotInput');
+            const applySlot = () => {
+                const next = slotInput?.value || '';
+                setActivePlayerSlot(next);
+            };
+            document.getElementById('playerSlotApplyBtn')?.addEventListener('click', applySlot);
+            slotInput?.addEventListener('keydown', (e)=>{
+                if(e.key === 'Enter'){
+                    e.preventDefault();
+                    applySlot();
+                }
+            });
+            document.getElementById('playerAnonLoginBtn')?.addEventListener('click', ()=>attemptAnonymousSignIn());
+            document.getElementById('dmLoginBtn')?.addEventListener('click', ()=>{
+                const email = document.getElementById('dmEmailInput')?.value?.trim();
+                const password = document.getElementById('dmPasswordInput')?.value || '';
+                signInDmWithEmail(email, password);
+            });
+            document.getElementById('authSignOutBtn')?.addEventListener('click', ()=>signOutOfFirebase());
+            document.getElementById('dmClaimBtn')?.addEventListener('click', ()=>claimCampaignOwnership());
+            updateAuthStatusUI();
+            renderPlayerDocList();
         }
 
         function toggleMultiSelect() {
@@ -1390,7 +1790,8 @@ function fitViewToMap(){
             ctx.strokeStyle = 'rgba(0,0,0,0.6)';
             ctx.lineWidth = 2;
             ctx.font = `${Math.max(10, 10*z)}px Arial`;
-            labels.forEach(lb=>{
+            const activeLabels = IS_PLAYER_VIEW ? labels.concat(playerLabels) : labels;
+            activeLabels.forEach(lb=>{
                 const cx = (lb.x * TILE_SIZE - view.offsetX + TILE_SIZE/2) * z;
                 const cy = (lb.y * TILE_SIZE - view.offsetY + TILE_SIZE/2) * z;
                 ctx.strokeText(lb.text, cx+1, cy+1);
@@ -1558,7 +1959,7 @@ vp.addEventListener('wheel', (e)=>{
             // click to interact with tiles
             vp.addEventListener('click', (e)=>{
                 if(labelMode){
-                    if (readOnly) return; // block label edits in read-only
+                    if (readOnly && !IS_PLAYER_VIEW) return; // block label edits in read-only DM mode
                     const rect = vp.getBoundingClientRect();
                     const sx = e.clientX - rect.left;
                     const sy = e.clientY - rect.top;
@@ -1570,7 +1971,8 @@ vp.addEventListener('wheel', (e)=>{
                         const text = prompt('Label text:');
                         if(text){
                             pushState();
-                            labels.push({x:tx, y:ty, text});
+                            const target = IS_PLAYER_VIEW ? playerLabels : labels;
+                            target.push({x:tx, y:ty, text});
                             renderViewport();
                             schedulePlayerViewSync();
                         }
@@ -1593,22 +1995,24 @@ vp.addEventListener('wheel', (e)=>{
             // right-click to delete nearest label
             vp.addEventListener('contextmenu', (e)=>{
                 e.preventDefault();
-                if(readOnly) return;
+                if(readOnly && !IS_PLAYER_VIEW) return;
+                const target = IS_PLAYER_VIEW ? playerLabels : labels;
+                if(!target.length) return;
                 const rect = vp.getBoundingClientRect();
                 const sx = e.clientX - rect.left;
                 const sy = e.clientY - rect.top;
                 const worldX = view.offsetX + sx / view.zoom;
                 const worldY = view.offsetY + sy / view.zoom;
                 let bestI = -1, bestD = 1e9;
-                for(let i=0;i<labels.length;i++){
-                    const lx = (labels[i].x + 0.5) * TILE_SIZE;
-                    const ly = (labels[i].y + 0.5) * TILE_SIZE;
+                for(let i=0;i<target.length;i++){
+                    const lx = (target[i].x + 0.5) * TILE_SIZE;
+                    const ly = (target[i].y + 0.5) * TILE_SIZE;
                     const d = Math.hypot(worldX - lx, worldY - ly);
                     if(d < bestD){ bestD = d; bestI = i; }
                 }
                 if(bestI !== -1 && bestD <= TILE_SIZE*0.6){
                     pushState();
-                    labels.splice(bestI,1);
+                    target.splice(bestI,1);
                     renderViewport();
                     schedulePlayerViewSync();
                 }
@@ -1747,6 +2151,7 @@ vp.addEventListener('wheel', (e)=>{
                 mapGrid: mapGrid.map(row => row.slice()),
                 encounters: encounters.map(e => ({ x: e.x, y: e.y })),
                 labels: labels.map(lb => ({ x: lb.x, y: lb.y, text: lb.text })),
+                playerLabels: playerLabels.map(lb => ({ x: lb.x, y: lb.y, text: lb.text })),
                 fogMask: fogMask.map(row => row.slice()),
                 terrainProbabilities: { ...terrainProbabilities },
                 settings: {
@@ -1793,6 +2198,11 @@ vp.addEventListener('wheel', (e)=>{
             }
             if (Array.isArray(data.labels)) {
                 labels = data.labels.map(lb => ({ x: lb.x, y: lb.y, text: lb.text }));
+            }
+            if (Array.isArray(data.playerLabels)) {
+                playerLabels = data.playerLabels.map(lb => ({ x: lb.x, y: lb.y, text: lb.text }));
+            } else {
+                playerLabels = [];
             }
             if (Array.isArray(data.fogMask)) {
                 fogMask = data.fogMask.map(row => row.slice());
@@ -1915,8 +2325,8 @@ vp.addEventListener('wheel', (e)=>{
                 preloadSprites(() => {
                     createTerrainProbabilityInputs();
                     populateTerrainDropdown();
-                    if (IS_PLAYER_VIEW && stateToApply && !latestPlayerViewState) {
-                        latestPlayerViewState = stateToApply;
+                    if (IS_PLAYER_VIEW && stateToApply && !latestCampaignState) {
+                        latestCampaignState = stateToApply;
                     }
                     if(stateToApply){
                         bootstrapFromState(stateToApply);
@@ -1939,22 +2349,34 @@ vp.addEventListener('wheel', (e)=>{
                     setMappyPlayerViewMode(IS_PLAYER_VIEW);
                     hydratingFromRemote = false;
                     subscribeToRemoteUpdates();
+                    refreshPlayerDocSubscription();
                     if (!fromRemote && !IS_PLAYER_VIEW && firebaseAvailable()) {
                         schedulePlayerViewSync();
                     }
                 });
             };
-            if (firebaseAvailable()) {
-                fetchInitialRemoteState().then(remoteState => {
-                    if(remoteState){
-                        latestPlayerViewState = remoteState;
-                        begin(remoteState, true);
-                    } else {
-                        begin(null, false);
-                    }
-                }).catch(() => begin(null, false));
+            const startAfterAuth = () => {
+                if (firebaseAvailable()) {
+                    fetchInitialRemoteState().then(remoteState => {
+                        if(remoteState){
+                            latestCampaignState = remoteState;
+                            if(typeof remoteState?.dmId !== 'undefined'){
+                                campaignDmId = remoteState.dmId;
+                            }
+                            begin(remoteState, true);
+                        } else {
+                            begin(null, false);
+                        }
+                    }).catch(() => begin(null, false));
+                } else {
+                    begin(null, false);
+                }
+            };
+            const authPromise = initFirebaseAuth();
+            if(authPromise){
+                authPromise.finally(startAfterAuth);
             } else {
-                begin(null, false);
+                startAfterAuth();
             }
         }
 
