@@ -349,9 +349,18 @@ footer {
   padding: 1rem 0;
 }
 
+.gallery .work-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
 .gallery img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
+  max-height: 520px;
   transition: transform 0.5s;
 }
 
