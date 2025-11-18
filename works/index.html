@@ -37,37 +37,87 @@
         <div class="panel" id="paintings-panel" role="region" aria-labelledby="paintings-button" aria-hidden="true">
           <div class="gallery">
             <div class="work-item">
-              <img src="/images/theoffice.png" alt="Painting work: mixed media painting and assemblage" />
+              <img src="/images/theoffice.png" alt="mixed media work: Office Culture - cloth, photo tranfer and mixed media painting on wood board, 2025" />
             </div>
             <div class="work-item">
-              <img src="/images/starfish.png" alt="Painting work: mixed media painting and assemblage" />
+              <img 
+                src="/images/starfish.png" 
+                alt="Thunder in My Ear / Starfish in My Basil mixed media assemblage on wood panel, 2025" 
+                data-title="Thunder in My Ear / Starfish in My Basil" 
+                data-meta="Brenden Davis — mixed media assemblage on wood panel · 2025 · 24&quot; x 48&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/downloads.PNG" alt="Painting work: mixed media painting and assemblage" />
+              <img 
+                src="/images/downloads.PNG" 
+                alt="Downloads / Wireless Connection canvas, clay, photo transfer, and mixed media painting on wood board, 2025" 
+                data-title="Downloads / Wireless Connection" 
+                data-meta="Brenden Davis — canvas, clay, photo transfer, and mixed media on wood board · 2025"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/the+adversary+1.png" alt="Painting work: abstract figure painting" />
+              <img 
+                src="/images/the+adversary+1.png" 
+                alt="The Adversary #1 mixed media painting on wood board, 2022" 
+                data-title="The Adversary #1" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 48&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/the+adversary+2.png" alt="Painting work: abstract pattern" />
+              <img 
+                src="/images/the+adversary+2.png" 
+                alt="The Adversary #2 mixed media painting on wood board, 2022" 
+                data-title="The Adversary #2" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 48&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/6daysinthedark.png" alt="Painting work: abstract pattern" />
+              <img 
+                src="/images/6daysinthedark.png" 
+                alt="Six Days in the Dark mixed media painting on wood board, 2023" 
+                data-title="Six Days in the Dark" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2023 · 37&quot; x 25&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/brickbybrickselfportrait.png" alt="Painting work: abstract pattern" />
+              <img 
+                src="/images/brickbybrickselfportrait.png" 
+                alt="Self-Portrait / Brick by Brick mixed media painting on wood board, 2022" 
+                data-title="Self-Portrait / Brick by Brick" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 36&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/good afternoon.png" alt="Painting work: abstract figure" />
+              <img 
+                src="/images/good afternoon.png" 
+                alt="Good Afternoon mixed media painting on wood board, 2024" 
+                data-title="Good Afternoon" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2024 · 24&quot; x 24&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/LateShift.png" alt="Painting work: abstract figure" />
+              <img 
+                src="/images/LateShift.png" 
+                alt="Late Shift plywood board with oil pastel and acrylic paint, 2024" 
+                data-title="Late Shift" 
+                data-meta="Brenden Davis — plywood board, oil pastel, acrylic paint · 2024 · 24&quot; x 24&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/SERVICE.png" alt="Painting work: abstract figure" />
+              <img 
+                src="/images/SERVICE.png" 
+                alt="Service mixed media painting on wood board, 2024" 
+                data-title="Service" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2024 · 24&quot; x 48&quot;"
+              />
             </div>
             <div class="work-item">
-              <img src="/images/siren+sound.png" alt="Painting work: abstract figure" />
+              <img 
+                src="/images/siren+sound.png" 
+                alt="Siren Sound mixed media painting on wood board, 2022" 
+                data-title="Siren Sound" 
+                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 48&quot;"
+              />
             </div>
             <!-- Add more painting images as needed -->
           </div>
@@ -142,7 +192,12 @@
               <img src="/images/case+open.png" alt="Sculptural work: dynamic structure detail" />
             </div>
             <div class="work-item">
-              <img src="/images/networkconnection.png" alt="Sculptural work: dynamic structure detail" />
+              <img 
+                src="/images/networkconnection.png" 
+                alt="Network Connection mixed media installation, 2025" 
+                data-title="Network Connection" 
+                data-meta="Brenden Davis — mixed media installation · 2025"
+              />
             </div>
             <!-- Add more sculptural work images as needed -->
           </div>
@@ -154,9 +209,15 @@
   <footer>
     <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
   </footer>
-  <div id="lightbox-modal" class="lightbox-modal">
-    <span class="close">&times;</span>
-    <img class="lightbox-content" src="" alt="Expanded work" />
+  <div id="lightbox-modal" class="lightbox-modal" aria-hidden="true">
+    <span class="close" role="button" aria-label="Close">&times;</span>
+    <div class="lightbox-inner">
+      <img class="lightbox-content" src="" alt="Expanded work" />
+      <div class="lightbox-caption" aria-live="polite">
+        <p class="lightbox-title"></p>
+        <p class="lightbox-meta"></p>
+      </div>
+    </div>
   </div>
   <script>
     // Accordion Toggle Functionality with ARIA updates + Lightbox
@@ -190,35 +251,53 @@
       const modal = document.getElementById("lightbox-modal");
       const modalImg = document.querySelector(".lightbox-content");
       const closeBtn = document.querySelector(".lightbox-modal .close");
-  
+      const captionWrapper = document.querySelector(".lightbox-caption");
+      const captionTitle = document.querySelector(".lightbox-title");
+      const captionMeta = document.querySelector(".lightbox-meta");
+
       // Open modal when any gallery image is clicked
       document.querySelectorAll(".gallery img").forEach(img => {
         img.addEventListener("click", function() {
           modal.style.display = "flex";
+          modal.setAttribute("aria-hidden", "false");
           modalImg.src = this.src;
           modalImg.alt = this.alt || "Expanded work";
+          const title = this.dataset.title || "";
+          const meta = this.dataset.meta || "";
+          captionTitle.textContent = title;
+          captionMeta.textContent = meta;
+          captionWrapper.style.display = (title || meta) ? "block" : "none";
         });
       });
-  
+
       // Close modal when close button is clicked
       closeBtn.addEventListener("click", function() {
         modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
         modalImg.src = "";
+        captionTitle.textContent = "";
+        captionMeta.textContent = "";
       });
-  
+
       // Close modal when clicking outside the image (on the overlay)
       modal.addEventListener("click", function(e) {
         if (e.target === modal) {
           modal.style.display = "none";
+          modal.setAttribute("aria-hidden", "true");
           modalImg.src = "";
+          captionTitle.textContent = "";
+          captionMeta.textContent = "";
         }
       });
-  
+
       // Optional: close on Escape key
       document.addEventListener("keydown", function(e) {
         if (e.key === "Escape" && modal.style.display === "flex") {
           modal.style.display = "none";
+          modal.setAttribute("aria-hidden", "true");
           modalImg.src = "";
+          captionTitle.textContent = "";
+          captionMeta.textContent = "";
         }
       });
     });
