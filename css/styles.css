@@ -169,6 +169,19 @@ h1 a, p a {
   padding-top: 10%;
 }
 
+.exhibitions-bookend {
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto 0;
+}
+
+.exhibitions-bookend img {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
 /* ============================================
    Hero Buttons Container
    ============================================ */
