@@ -14,7 +14,7 @@
   --font-base: 'ClashDisplay-Medium', sans-serif;
 
   /* Spacing */
-  --padding-base: 1rem; 
+  --padding-base: 1rem;
   --padding-large: 2rem;
 
   /* Transition */
@@ -462,10 +462,20 @@ footer {
   justify-content: center;
 }
 
+.lightbox-inner {
+  text-align: center;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 90vh;
+}
+
 .lightbox-content {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 90vw;
+  max-height: 70vh;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
 }
 
 .lightbox-modal .close {
@@ -477,6 +487,27 @@ footer {
   font-weight: bold;
   cursor: pointer;
   user-select: none;
+}
+
+.lightbox-caption {
+  display: none;
+  margin-top: 1rem;
+  color: var(--color-text);
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lightbox-title {
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lightbox-meta {
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
 }
 
 
