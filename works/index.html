@@ -34,7 +34,7 @@
         <button class="accordion-button" id="paintings-button" aria-label="Toggle Paintings gallery" aria-expanded="false" aria-controls="paintings-panel">
           PAINTINGS
         </button>
-        <div class="panel" id="paintings-panel" role="region" aria-labelledby="paintings-button">
+        <div class="panel" id="paintings-panel" role="region" aria-labelledby="paintings-button" aria-hidden="true">
           <div class="gallery">
             <div class="work-item">
               <img src="/images/theoffice.png" alt="Painting work: mixed media painting and assemblage" />
@@ -77,7 +77,7 @@
         <button class="accordion-button" id="graphic-design-button" aria-label="Toggle Graphic Design gallery" aria-expanded="false" aria-controls="graphic-design-panel">
           GRAPHIC DESIGN
         </button>
-        <div class="panel" id="graphic-design-panel" role="region" aria-labelledby="graphic-design-button">
+        <div class="panel" id="graphic-design-panel" role="region" aria-labelledby="graphic-design-button" aria-hidden="true">
           <div class="gallery">
             <div class="work-item">
               <img src="/images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Painting work: abstract figure painting" />
@@ -111,7 +111,7 @@
         <button class="accordion-button" id="animation-button" aria-label="Toggle Animation gallery" aria-expanded="false" aria-controls="animation-panel">
           ANIMATION
         </button>
-        <div class="panel" id="animation-panel" role="region" aria-labelledby="animation-button">
+        <div class="panel" id="animation-panel" role="region" aria-labelledby="animation-button" aria-hidden="true">
           <div class="gallery">
             <div class="work-item" id="videoworks">
               <iframe src="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview" width="640" height="480" allow="autoplay" title="Animation reel clip 1"></iframe>
@@ -130,7 +130,7 @@
         <button class="accordion-button" id="sculptural-button" aria-label="Toggle Sculptural Work gallery" aria-expanded="false" aria-controls="sculptural-panel">
           SCULPTURAL WORK
         </button>
-        <div class="panel" id="sculptural-panel" role="region" aria-labelledby="sculptural-button">
+        <div class="panel" id="sculptural-panel" role="region" aria-labelledby="sculptural-button" aria-hidden="true">
           <div class="gallery">
             <div class="work-item">
               <img src="/images/indownloader.app_picture_0789171001738733775.jpg" alt="Sculptural work: vibrant form study" />
@@ -163,20 +163,26 @@
     document.addEventListener("DOMContentLoaded", function() {
       // Accordion setup
       const accButtons = document.getElementsByClassName("accordion-button");
+
+      const togglePanel = (button) => {
+        const panel = button.nextElementSibling;
+        const isExpanded = button.getAttribute("aria-expanded") === "true";
+        const newState = !isExpanded;
+
+        button.setAttribute("aria-expanded", String(newState));
+        button.classList.toggle("active", newState);
+        panel.setAttribute("aria-hidden", String(!newState));
+
+        if (newState) {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        } else {
+          panel.style.maxHeight = null;
+        }
+      };
+
       Array.from(accButtons).forEach(button => {
         button.addEventListener("click", function() {
-          // Toggle active state and aria-expanded attribute
-          const isExpanded = this.getAttribute("aria-expanded") === "true";
-          this.setAttribute("aria-expanded", !isExpanded);
-          this.classList.toggle("active");
-  
-          // Toggle the corresponding panel's max-height for smooth animation
-          const panel = this.nextElementSibling;
-          if (panel.style.maxHeight) {
-            panel.style.maxHeight = null;
-          } else {
-            panel.style.maxHeight = panel.scrollHeight + "px";
-          }
+          togglePanel(this);
         });
       });
   
