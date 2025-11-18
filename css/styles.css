@@ -77,10 +77,27 @@ header {
   font-weight: bold;
   letter-spacing: 1px;
   transition: color var(--transition-speed);
+  position: relative;
+  padding-bottom: 0.75rem;
+  display: inline-block;
 }
 
 .nav-list a:hover {
   color: var(--color-primary);
+}
+
+.nav-list a.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  width: 132%;
+  max-width: 232px;
+  height: 12px;
+  background: url("/images/bdline.gif") no-repeat center;
+  background-size: contain;
+  pointer-events: none;
 }
 
 /* ============================================
@@ -140,7 +157,7 @@ h1 a, p a {
 .bio-divider {
   display: flex;
   justify-content: center;
-  margin: 3rem auto;
+  margin: 1.5rem auto 2rem;
 }
 
 .bio-divider img {
