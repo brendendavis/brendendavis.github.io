@@ -5,23 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="BRENDEN DAVIS - Contemporary Artist Portfolio featuring works, prints, CV, biography, and exhibitions." />
   <title>BRENDEN DAVIS</title>
-  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/clash-display.css" />
-  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preload" href="/fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/clash-display.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
   <!-- Optionally add a favicon here -->
-  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" /> 
 </head>
 <body>
   <header>
-    <h1><a href="/home/">BRENDEN DAVIS</a></h1>
-    <nav>
-      <ul class="nav-list">
-        <li><a href="/home/">Home</a></li>
-        <li><a href="/works/" class="active" aria-current="page">Works</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/cv/">CV</a></li>
-      </ul>
-    </nav>
+    <div class="header-container">
+      <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="/home/">Home</a></li>
+          <li><a href="/works/" class="active" aria-current="page">Works</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/cv/">CV</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <main>
@@ -29,92 +31,93 @@
         <h2>Artistic Works</h2>
       
         <!-- Paintings Section -->
-        <button class="accordion-button" aria-expanded="false" aria-controls="paintings-panel">
+        <button class="accordion-button" id="paintings-button" aria-label="Toggle Paintings gallery" aria-expanded="false" aria-controls="paintings-panel">
           PAINTINGS
         </button>
         <div class="panel" id="paintings-panel" role="region" aria-labelledby="paintings-button">
           <div class="gallery">
             <div class="work-item">
-              <img src="../images/theoffice.png" alt="Painting work: mixed media painting and assemblage" />
+              <img src="/images/theoffice.png" alt="Painting work: mixed media painting and assemblage" />
             </div>
             <div class="work-item">
-              <img src="../images/starfish.png" alt="Painting work: mixed media painting and assemblage" />
+              <img src="/images/starfish.png" alt="Painting work: mixed media painting and assemblage" />
             </div>
             <div class="work-item">
-              <img src="../images/downloads.PNG" alt="Painting work: mixed media painting and assemblage" />
-            </div>
-              <img src="../images/the+adversary+1.png" alt="Painting work: abstract figure painting" />
+              <img src="/images/downloads.PNG" alt="Painting work: mixed media painting and assemblage" />
             </div>
             <div class="work-item">
-              <img src="../images/the+adversary+2.png" alt="Painting work: abstract pattern" />
+              <img src="/images/the+adversary+1.png" alt="Painting work: abstract figure painting" />
             </div>
             <div class="work-item">
-              <img src="../images/6daysinthedark.png" alt="Painting work: abstract pattern" />
+              <img src="/images/the+adversary+2.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/brickbybrickselfportrait.png" alt="Painting work: abstract pattern" />
+              <img src="/images/6daysinthedark.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/good afternoon.png" alt="Painting work: abstract figure" />
+              <img src="/images/brickbybrickselfportrait.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/LateShift.png" alt="Painting work: abstract figure" />
+              <img src="/images/good afternoon.png" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/SERVICE.png" alt="Painting work: abstract figure" />
+              <img src="/images/LateShift.png" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/siren+sound.png" alt="Painting work: abstract figure" />
+              <img src="/images/SERVICE.png" alt="Painting work: abstract figure" />
+            </div>
+            <div class="work-item">
+              <img src="/images/siren+sound.png" alt="Painting work: abstract figure" />
             </div>
             <!-- Add more painting images as needed -->
           </div>
         </div>
       
         <!-- Graphic Design Section -->
-        <button class="accordion-button" aria-expanded="false" aria-controls="graphic-design-panel">
+        <button class="accordion-button" id="graphic-design-button" aria-label="Toggle Graphic Design gallery" aria-expanded="false" aria-controls="graphic-design-panel">
           GRAPHIC DESIGN
         </button>
         <div class="panel" id="graphic-design-panel" role="region" aria-labelledby="graphic-design-button">
           <div class="gallery">
             <div class="work-item">
-              <img src="../images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Painting work: abstract figure painting" />
+              <img src="/images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Painting work: abstract figure painting" />
             </div>
             <div class="work-item">
-              <img src="../images/birdisthewordad.png" alt="Painting work: abstract pattern" />
+              <img src="/images/birdisthewordad.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/BYOB-2.png" alt="Painting work: abstract pattern" />
+              <img src="/images/BYOB-2.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/bookclubposterFINAL-2.png" alt="Painting work: abstract pattern" />
+              <img src="/images/bookclubposterFINAL-2.png" alt="Painting work: abstract pattern" />
             </div>
             <div class="work-item">
-              <img src="../images/galleryopensignedit11-04-2.png" alt="Painting work: abstract figure" />
+              <img src="/images/galleryopensignedit11-04-2.png" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/ThickSkull-motionlogo-2.gif" alt="Painting work: abstract figure" />
+              <img src="/images/ThickSkull-motionlogo-2.gif" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/MMA_VGMD_1024x768_3update-2.png" alt="Painting work: abstract figure" />
+              <img src="/images/MMA_VGMD_1024x768_3update-2.png" alt="Painting work: abstract figure" />
             </div>
             <div class="work-item">
-              <img src="../images/family-day-square---animated.gif" alt="Painting work: abstract figure" />
+              <img src="/images/family-day-square---animated.gif" alt="Painting work: abstract figure" />
             </div>
             <!-- Add more graphic design images as needed -->
           </div>
         </div>
       
         <!-- Animation Section -->
-        <button class="accordion-button" aria-expanded="false" aria-controls="animation-panel">
+        <button class="accordion-button" id="animation-button" aria-label="Toggle Animation gallery" aria-expanded="false" aria-controls="animation-panel">
           ANIMATION
         </button>
         <div class="panel" id="animation-panel" role="region" aria-labelledby="animation-button">
           <div class="gallery">
             <div class="work-item" id="videoworks">
-              <iframe src="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview" width="640" height="480" allow="autoplay"></iframe>
+              <iframe src="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview" width="640" height="480" allow="autoplay" title="Animation reel clip 1"></iframe>
             </div>
             <div class="work-item">
-              <iframe src="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview" width="640" height="480" allow="autoplay"></iframe>
+              <iframe src="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview" width="640" height="480" allow="autoplay" title="Animation reel clip 2"></iframe>
             </div>
             <!-- <div class="work-item"> 
               <iframe src="https://drive.google.com/file/d/1mzk3YFVffkds9eocvC9xx7Q_1pmT1_fw/preview" width="640" height="480" allow="autoplay"></iframe> -->
@@ -124,19 +127,19 @@
         </div>
       
         <!-- Sculptural Work Section -->
-        <button class="accordion-button" aria-expanded="false" aria-controls="sculptural-panel">
+        <button class="accordion-button" id="sculptural-button" aria-label="Toggle Sculptural Work gallery" aria-expanded="false" aria-controls="sculptural-panel">
           SCULPTURAL WORK
         </button>
         <div class="panel" id="sculptural-panel" role="region" aria-labelledby="sculptural-button">
           <div class="gallery">
             <div class="work-item">
-              <img src="../images/indownloader.app_picture_0789171001738733775.jpg" alt="Sculptural work: vibrant form study" />
+              <img src="/images/indownloader.app_picture_0789171001738733775.jpg" alt="Sculptural work: vibrant form study" />
             </div>
             <div class="work-item">
-              <img src="../images/indownloader.app_picture_0873764001738733770.jpg" alt="Sculptural work: dynamic structure detail" />
+              <img src="/images/indownloader.app_picture_0873764001738733770.jpg" alt="Sculptural work: dynamic structure detail" />
             </div>
             <div class="work-item">
-              <img src="../images/case+open.png" alt="Sculptural work: dynamic structure detail" />
+              <img src="/images/case+open.png" alt="Sculptural work: dynamic structure detail" />
             </div>
             <!-- Add more sculptural work images as needed -->
           </div>
