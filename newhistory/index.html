@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="NEW HISTORY - An exhibition featuring emerging Mississippi-based artists exploring Black American experience through various mediums." />
   <title>BRENDEN DAVIS - NEW HISTORY Exhibition</title>
-  <link rel="preload" href="fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/clash-display.css" />
+  <link rel="preload" href="/fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/clash-display.css" />
   <link rel="stylesheet" href="/css/styles.css" />
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
   
   <!-- Page-specific styles -->
   <style>
@@ -99,6 +99,7 @@
       <h1><a href="/home/">BRENDEN DAVIS</a></h1>
       <nav aria-label="Primary Navigation">
         <ul class="nav-list">
+          <li><a href="/home/">Home</a></li>
           <li><a href="/works/">Works</a></li>
           <li><a href="/contact/">Contact</a></li>
           <li><a href="/cv/">CV</a></li>
@@ -110,18 +111,22 @@
   <main>
     <div class="artist-bio-container">
       <!-- Exhibition Image Section -->
-      <section class="exhibition-hero" aria-labelledby="hero-heading">
+      <section class="exhibition-hero" aria-labelledby="hero-heading-map">
+        <h2 id="hero-heading-map" class="visually-hidden">Hall Gallery installation map</h2>
         <img 
           src="/images/hallgallerymap.png" 
           alt="Featured artwork from NEW HISTORY exhibition" 
           class="exhibition-hero-image" 
+          loading="lazy"
         />
       </section>
-      <section class="exhibition-hero" aria-labelledby="hero-heading">
+      <section class="exhibition-hero" aria-labelledby="hero-heading-list">
+        <h2 id="hero-heading-list" class="visually-hidden">List of works for NEW HISTORY</h2>
         <img 
           src="/images/workslist.png" 
           alt="Featured artwork from NEW HISTORY exhibition" 
           class="exhibition-hero-image" 
+          loading="lazy"
         />
       </section>
     </div>
@@ -130,10 +135,10 @@
     <section class="featured-artists" aria-labelledby="artists-heading">
       <!-- Curatorial Statement Section -->
       <section class="biography" aria-labelledby="statement-heading">
-        <h2 id="statement-heading" style="color: #121212;">NEW HISTORY</h2>
+        <h2 id="statement-heading" class="visually-hidden">NEW HISTORY</h2>
         <h2>Curatorial Statement</h2>
         <div class="statement-text">
-          <p><br>In an era where the contemplation of Black American experience demands both historical accountability and radical imagination, NEW HISTORY brings together four emerging Mississippi-based artists whose work challenges us to reimagine the narrative of Black life in America—past, present, and future.</p>
+          <p>In an era where the contemplation of Black American experience demands both historical accountability and radical imagination, NEW HISTORY brings together four emerging Mississippi-based artists whose work challenges us to reimagine the narrative of Black life in America—past, present, and future.</p>
           
           <p>Jonathan Buckley (JBUCK) explores identity and history through a vibrant visual language influenced by masters from Matisse to Basquiat, while Kwasi Butler's paintings serve as emotional documents of the artist's journey, using color as a vehicle for vulnerability and connection. Ava Davis delves into the deep interconnectedness of Black relationships across physical and spiritual realms, examining heritage and collective memory through painting, sculpture, and mixed media. Brenden Davis's multidisciplinary practice constructs surreal dreamscapes that reframe societal perceptions through abstract figures and imaginative worlds.</p>
           
