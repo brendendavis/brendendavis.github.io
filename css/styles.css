@@ -157,15 +157,16 @@ h1 a, p a {
 .bio-divider {
   display: flex;
   justify-content: center;
-  margin: 1.5rem auto 2rem;
+  margin: 1.5rem auto 0.50rem;
 }
 
 .bio-divider img {
   display: block;
   width: 100%;
-  max-width: 1100px;
+  max-width: 900px;
   height: auto;
   opacity: 0.9;
+  padding-top: 10%;
 }
 
 /* ============================================
