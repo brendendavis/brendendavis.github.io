@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="NEW HISTORY - An exhibition featuring emerging Mississippi-based artists exploring Black American experience through various mediums." />
   <title>BRENDEN DAVIS - Memory Corrupted Exhibition</title>
-  <link rel="preload" href="fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/clash-display.css" />
+  <link rel="preload" href="/fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/clash-display.css" />
   <link rel="stylesheet" href="/css/styles.css" />
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
   
   <!-- Page-specific styles -->
   <style>
@@ -108,6 +108,7 @@
       <h1><a href="/home/">BRENDEN DAVIS</a></h1>
       <nav aria-label="Primary Navigation">
         <ul class="nav-list">
+          <li><a href="/home/">Home</a></li>
           <li><a href="/works/">Works</a></li>
           <li><a href="/contact/">Contact</a></li>
           <li><a href="/cv/">CV</a></li>
@@ -118,11 +119,13 @@
 
   <main>
     <div class="artist-bio-container">
-      <section class="exhibition-hero" aria-labelledby="hero-heading">
+      <section class="exhibition-hero" aria-labelledby="hero-heading-memory">
+        <h2 id="hero-heading-memory" class="visually-hidden">Memory Corrupted exhibition overview graphic</h2>
         <img
           src="/images/memorycorruptbioheader.png"
           alt="Memory Corrupted exhibition header and artist bio"
           class="exhibition-hero-image"
+          loading="lazy"
         />
       </section>
     </div>
@@ -131,10 +134,12 @@
     <section class="featured-artists" aria-labelledby="artists-heading">
       <!-- Curatorial Statement Section -->
       <section class="biography" aria-labelledby="statement-heading">
-        <h2 id="statement-heading" style="color: #121212;">NEW HISTORY</h2>
+        <h2 id="statement-heading" class="visually-hidden">Memory Corrupted</h2>
         <h2>Artist's Statement</h2>
         <div class="statement-text">
-          <p><br>MEMORY CORRUPTED is an evolving archive of my shifting perceptions over the past eight years. Drawing inspiration from the fluidity of memory, Black surrealist traditions, and everyday textures of life, I embrace a chaotic and instinctive process, working with paint, clay, paper, and digital media to capture moments as fragmented time capsules. <br>Influenced by artists such as Betye Saar, Jean-Michel Basquiat, and David Hammons, I layer symbolism and found materials to explore identity, social critique, and the fallibility of recollection. <br>This exhibition is both a deeply personal offering and an open invitation for viewers to locate their own stories within the blur of past and present.</p>
+          <p>MEMORY CORRUPTED is an evolving archive of my shifting perceptions over the past eight years. Drawing inspiration from the fluidity of memory, Black surrealist traditions, and everyday textures of life, I embrace a chaotic and instinctive process, working with paint, clay, paper, and digital media to capture moments as fragmented time capsules.</p>
+          <p>Influenced by artists such as Betye Saar, Jean-Michel Basquiat, and David Hammons, I layer symbolism and found materials to explore identity, social critique, and the fallibility of recollection.</p>
+          <p>This exhibition is both a deeply personal offering and an open invitation for viewers to locate their own stories within the blur of past and present.</p>
         </div>
       </section>
    <!-- Artists and Video Container -->
@@ -144,6 +149,7 @@
         src="/images/memcorrupted_selectedworks.gif"
         alt="Featured artwork"
         class="exhibition-side-image"
+        loading="lazy"
       />
     </div>
 
@@ -152,7 +158,8 @@
         src="/images/my%20network2.MP4"
         class="exhibition-video"
         controls
-        autoplay muted>
+        autoplay muted
+        preload="metadata">
         Your browser does not support the video element.
       </video>
     </div>
@@ -164,7 +171,9 @@
       src="https://drive.google.com/file/d/14zPWoWSZpl8qlZwOgQ0BLLvp1pB86ZRs/preview" 
       width="960" 
       height="540" 
-      allow="autoplay">
+      allow="autoplay"
+      loading="lazy"
+      title="Guided discussion video player">
     </iframe>
     </div>
   </section>
