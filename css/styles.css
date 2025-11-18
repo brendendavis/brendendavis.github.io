@@ -60,6 +60,14 @@ header {
   padding: var(--padding-base) 2rem;
 }
 
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .nav-list {
   background-color: var(--color-background);  /* Using dark background for nav */
   list-style: none;
@@ -93,7 +101,7 @@ header {
   bottom: -6px;
   transform: translateX(-50%);
   width: 132%;
-  max-width: 232px;
+  max-width: 132px;
   height: 12px;
   background: url("/images/bdline.gif") no-repeat center;
   background-size: contain;
@@ -152,6 +160,13 @@ h1 a, p a {
 
 .artist-bio-container .biography h2 {
   text-align: left;
+}
+
+.biography p {
+  padding-top: 1rem;
+  font-size: 2.5rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
 }
 
 .bio-divider {
@@ -503,5 +518,15 @@ footer {
     }
     .hero p {
       font-size: 1.2rem;
+    }
+    .header-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .nav-list {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      padding-left: 0;
     }
   }
