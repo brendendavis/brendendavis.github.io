@@ -60,14 +60,6 @@ header {
   padding: var(--padding-base) 2rem;
 }
 
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
 .nav-list {
   background-color: var(--color-background);  /* Using dark background for nav */
   list-style: none;
@@ -85,27 +77,10 @@ header {
   font-weight: bold;
   letter-spacing: 1px;
   transition: color var(--transition-speed);
-  position: relative;
-  padding-bottom: 0.75rem;
-  display: inline-block;
 }
 
 .nav-list a:hover {
   color: var(--color-primary);
-}
-
-.nav-list a.active::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  transform: translateX(-50%);
-  width: 132%;
-  max-width: 132px;
-  height: 12px;
-  background: url("/images/bdline.gif") no-repeat center;
-  background-size: contain;
-  pointer-events: none;
 }
 
 /* ============================================
@@ -160,41 +135,6 @@ h1 a, p a {
 
 .artist-bio-container .biography h2 {
   text-align: left;
-}
-
-.biography p {
-  padding-top: 1rem;
-  font-size: 2.5rem;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-.bio-divider {
-  display: flex;
-  justify-content: center;
-  margin: 1.5rem auto 0.50rem;
-}
-
-.bio-divider img {
-  display: block;
-  width: 100%;
-  max-width: 900px;
-  height: auto;
-  opacity: 0.9;
-  padding-top: 10%;
-}
-
-.exhibitions-bookend {
-  display: flex;
-  justify-content: center;
-  margin: 2rem auto 0;
-}
-
-.exhibitions-bookend img {
-  display: block;
-  width: 100%;
-  max-width: 420px;
-  height: auto;
 }
 
 /* ============================================
@@ -327,61 +267,106 @@ footer {
 }
 
 /* ============================================
-   Accordion Styles for Works Page
+   Works Page (Option A: Filter Chips + Unified Gallery)
    ============================================ */
-.accordion-button {
-  background-color: var(--color-text);
-  color: var(--color-background);
-  cursor: pointer;
-  padding: var(--padding-base);
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 1.5rem;
-  transition: background-color var(--transition-speed) ease;
-  margin-bottom: 0.5rem;
+
+/* Filter chips (works page) */
+.works-controls {
+  margin: 1.5rem 0 1.25rem;
 }
 
-.accordion-button.active,
-.accordion-button:hover {
-  background-color: var(--color-primary);
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.chip {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--color-text);
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
 }
 
-.panel {
-  padding: 0 var(--padding-base);
-  background-color: var(--color-background);
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease-out;
+.chip:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.34);
 }
 
+.chip.is-active {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Unified gallery grid */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
   padding: 1rem 0;
 }
 
-.gallery .work-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
+/* Slightly tighter on small screens */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
 }
 
-.gallery img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 520px;
-  transition: transform 0.5s;
+.work-item,
+.print-item {
+  position: relative;
+  overflow: hidden;
 }
 
-.gallery img:hover {
-  transform: scale(1.05);
+/* Modern thumbnail treatment: consistent tile ratio + subtle border */
+.gallery--works .work-item img,
+.works-grid .work-item img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  transition: transform 0.35s ease;
 }
+
+.gallery--works .work-item:hover img,
+.works-grid .work-item:hover img {
+  transform: scale(1.03);
+}
+
+/* Video tiles */
+.work-item--video {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /* ============================================
    Contact Form Styling
    ============================================ */
@@ -446,7 +431,7 @@ footer {
     background-color: var(--color-secondary);
   }
 
-  /* ============================================
+/* ============================================
    Lightbox Modal Styles
    ============================================ */
 .lightbox-modal {
@@ -462,20 +447,10 @@ footer {
   justify-content: center;
 }
 
-.lightbox-inner {
-  text-align: center;
-  padding: 0 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-height: 90vh;
-}
-
 .lightbox-content {
-  max-width: 90vw;
-  max-height: 70vh;
+  max-width: 90%;
+  max-height: 90%;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  object-fit: contain;
 }
 
 .lightbox-modal .close {
@@ -489,28 +464,6 @@ footer {
   user-select: none;
 }
 
-.lightbox-caption {
-  display: none;
-  margin-top: 1rem;
-  color: var(--color-text);
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.lightbox-title {
-  font-size: 1.2rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.lightbox-meta {
-  margin-top: 0.3rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-}
-
-
 /* ============================================
    Responsive Adjustments
    ============================================ */
@@ -520,19 +473,12 @@ footer {
       flex-direction: column;
       align-items: center;
     }
-      @media (max-width: 768px) {
-  iframe {
-    width: 80%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-}
     /* Artist image adjustments */
     .artist-image {
       width: 100%;
       max-width: 400px;
       display: block;
-      margin: 0 auto rem;
+      margin: 0 auto;
     }
   
     /* Biography text adjustments */
@@ -542,10 +488,6 @@ footer {
       text-align: left;
       margin: 0 0.5rem;
     }
-    .biography p {
-      font-size: 1.1rem;
-      margin: 0 0.5rem 1rem;
-    }
   
     /* Adjust hero text sizes */
     .hero h1 {
@@ -553,15 +495,5 @@ footer {
     }
     .hero p {
       font-size: 1.2rem;
-    }
-    .header-container {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-    .nav-list {
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      padding-left: 0;
     }
   }
