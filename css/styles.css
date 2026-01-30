@@ -331,12 +331,27 @@ footer {
 }
 
 /* Modern thumbnail treatment: consistent tile ratio + subtle border */
-.gallery--works .work-item img,
-.works-grid .work-item img {
+/* Thumbnails (no cropping): show full image inside a clean tile */
+.gallery--works .work-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.gallery--works .work-item img {
   width: 100%;
   height: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  padding: 0.5rem;
+  background: transparent;
+  transition: transform 0.35s ease;
+}
+
+.works-grid .work-item img {
+  width: 100%;
+  height: auto;
   display: block;
   border: 1px solid rgba(255, 255, 255, 0.10);
   transition: transform 0.35s ease;
@@ -344,7 +359,7 @@ footer {
 
 .gallery--works .work-item:hover img,
 .works-grid .work-item:hover img {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 /* Video tiles */
