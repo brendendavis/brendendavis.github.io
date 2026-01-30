@@ -5,322 +5,267 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="BRENDEN DAVIS - Contemporary Artist Portfolio featuring works, prints, CV, biography, and exhibitions." />
   <title>BRENDEN DAVIS</title>
-  <link rel="preload" href="/fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/clash-display.css" />
-  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/clash-display.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
   <!-- Optionally add a favicon here -->
-  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" /> 
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
+  <style>
+    /* Works page: Option A (filter chips + unified gallery) */
+    .works-controls {
+      margin: 1.5rem 0 1.25rem;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .chip {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .chip.is-active {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* Gallery tweaks so mixed work types feel intentional */
+    .gallery.gallery--works {
+      gap: 1.25rem;
+    }
+
+    .work-item {
+      position: relative;
+    }
+
+    .work-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Responsive video embeds */
+    .work-item--video {
+      cursor: default;
+    }
+
+    .video-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .video-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <div class="header-container">
-      <h1><a href="/home/">BRENDEN DAVIS</a></h1>
-      <nav aria-label="Primary Navigation">
-        <ul class="nav-list">
-          <li><a href="/home/">Home</a></li>
-          <li><a href="/works/" class="active" aria-current="page">Works</a></li>
-          <li><a href="/contact/">Contact</a></li>
-          <li><a href="/cv/">CV</a></li>
-        </ul>
-      </nav>
-    </div>
+    <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/cv/">CV</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main>
       <section class="works">
-        <h2>Artistic Works</h2>
-      
-        <!-- Paintings Section -->
-        <button class="accordion-button" id="paintings-button" aria-label="Toggle Paintings gallery" aria-expanded="false" aria-controls="paintings-panel">
-          PAINTINGS
-        </button>
-        <div class="panel" id="paintings-panel" role="region" aria-labelledby="paintings-button" aria-hidden="true">
-          <div class="gallery">
-            <div class="work-item">
-              <img 
-                src="/images/theoffice.png" 
-                alt="Office Culture cloth, photo transfer, and mixed media painting on wood board, 2025" 
-                data-title="Office Culture" 
-                data-meta="Brenden Davis — cloth, photo transfer, and mixed media painting on wood board · 2025 · 24&quot; x 24&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/starfish.png" 
-                alt="Thunder in My Ear / Starfish in My Basil mixed media assemblage on wood panel, 2025" 
-                data-title="Thunder in My Ear / Starfish in My Basil" 
-                data-meta="Brenden Davis — mixed media assemblage on wood panel · 2025 · 24&quot; x 48&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/downloads.PNG" 
-                alt="Downloads / Wireless Connection canvas, clay, photo transfer, and mixed media painting on wood board, 2025" 
-                data-title="Downloads / Wireless Connection" 
-                data-meta="Brenden Davis — canvas, clay, photo transfer, and mixed media on wood board · 2025"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/the+adversary+1.png" 
-                alt="The Adversary #1 mixed media painting on wood board, 2022" 
-                data-title="The Adversary #1" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 48&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/the+adversary+2.png" 
-                alt="The Adversary #2 mixed media painting on wood board, 2022" 
-                data-title="The Adversary #2" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 48&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/6daysinthedark.png" 
-                alt="Six Days in the Dark mixed media painting on wood board, 2023" 
-                data-title="Six Days in the Dark" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2023 · 37&quot; x 25&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/brickbybrickselfportrait.png" 
-                alt="Self-Portrait / Brick by Brick mixed media painting on wood board, 2022" 
-                data-title="Self-Portrait / Brick by Brick" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 36&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/good afternoon.png" 
-                alt="Good Afternoon mixed media painting on wood board, 2024" 
-                data-title="Good Afternoon" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2024 · 24&quot; x 24&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/LateShift.png" 
-                alt="Late Shift plywood board with oil pastel and acrylic paint, 2024" 
-                data-title="Late Shift" 
-                data-meta="Brenden Davis — plywood board, oil pastel, acrylic paint · 2024 · 24&quot; x 24&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/SERVICE.png" 
-                alt="Service mixed media painting on wood board, 2024" 
-                data-title="Service" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2024 · 24&quot; x 48&quot;"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/siren+sound.png" 
-                alt="Siren Sound mixed media painting on wood board, 2022" 
-                data-title="Siren Sound" 
-                data-meta="Brenden Davis — mixed media painting on wood board · 2022 · 24&quot; x 48&quot;"
-              />
-            </div>
-            <!-- Add more painting images as needed -->
-          </div>
+    <h2>Artistic Works</h2>
+
+    <div class="works-controls" aria-label="Works filters">
+      <div class="filter-chips" role="group" aria-label="Filter works by category">
+        <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="paintings" aria-pressed="false">Paintings</button>
+        <button class="chip" type="button" data-filter="graphic-design" aria-pressed="false">Graphic Design</button>
+        <button class="chip" type="button" data-filter="animation" aria-pressed="false">Animation</button>
+        <button class="chip" type="button" data-filter="sculptural" aria-pressed="false">Sculptural</button>
+      </div>
+    </div>
+
+    <div class="gallery gallery--works" aria-live="polite">
+      <!-- Paintings -->
+      <div class="work-item" data-category="paintings">
+        <img src="../images/the+adversary+1.png" alt="Painting work: abstract figure painting" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/the+adversary+2.png" alt="Painting work: abstract pattern" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/6daysinthedark.png" alt="Painting work: abstract pattern" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/brickbybrickselfportrait.png" alt="Painting work: abstract pattern" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/good afternoon.png" alt="Painting work: abstract figure" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/LateShift.png" alt="Painting work: abstract figure" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/SERVICE.png" alt="Painting work: abstract figure" />
+      </div>
+      <div class="work-item" data-category="paintings">
+        <img src="../images/siren+sound.png" alt="Painting work: abstract figure" />
+      </div>
+
+      <!-- Graphic Design -->
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Graphic design work: poster" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/birdisthewordad.png" alt="Graphic design work: advertisement" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/BYOB-2.png" alt="Graphic design work: event poster" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/bookclubposterFINAL-2.png" alt="Graphic design work: book club poster" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/galleryopensignedit11-04-2.png" alt="Graphic design work: sign" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/ThickSkull-motionlogo-2.gif" alt="Graphic design work: animated logo" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/MMA_VGMD_1024x768_3update-2.png" alt="Graphic design work: motion graphic still" />
+      </div>
+      <div class="work-item" data-category="graphic-design">
+        <img src="../images/family-day-square---animated.gif" alt="Graphic design work: animated social graphic" />
+      </div>
+
+      <!-- Animation (videos) -->
+      <div class="work-item work-item--video" data-category="animation" id="videoworks">
+        <div class="video-embed">
+          <iframe src="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview" allow="autoplay"></iframe>
         </div>
-      
-        <!-- Graphic Design Section -->
-        <button class="accordion-button" id="graphic-design-button" aria-label="Toggle Graphic Design gallery" aria-expanded="false" aria-controls="graphic-design-panel">
-          GRAPHIC DESIGN
-        </button>
-        <div class="panel" id="graphic-design-panel" role="region" aria-labelledby="graphic-design-button" aria-hidden="true">
-          <div class="gallery">
-            <div class="work-item">
-              <img src="/images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Painting work: abstract figure painting" />
-            </div>
-            <div class="work-item">
-              <img src="/images/birdisthewordad.png" alt="Painting work: abstract pattern" />
-            </div>
-            <div class="work-item">
-              <img src="/images/BYOB-2.png" alt="Painting work: abstract pattern" />
-            </div>
-            <div class="work-item">
-              <img src="/images/bookclubposterFINAL-2.png" alt="Painting work: abstract pattern" />
-            </div>
-            <div class="work-item">
-              <img src="/images/galleryopensignedit11-04-2.png" alt="Painting work: abstract figure" />
-            </div>
-            <div class="work-item">
-              <img src="/images/ThickSkull-motionlogo-2.gif" alt="Painting work: abstract figure" />
-            </div>
-            <div class="work-item">
-              <img src="/images/MMA_VGMD_1024x768_3update-2.png" alt="Painting work: abstract figure" />
-            </div>
-            <div class="work-item">
-              <img src="/images/family-day-square---animated.gif" alt="Painting work: abstract figure" />
-            </div>
-            <!-- Add more graphic design images as needed -->
-          </div>
+      </div>
+      <div class="work-item work-item--video" data-category="animation">
+        <div class="video-embed">
+          <iframe src="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview" allow="autoplay"></iframe>
         </div>
-      
-        <!-- Animation Section -->
-        <button class="accordion-button" id="animation-button" aria-label="Toggle Animation gallery" aria-expanded="false" aria-controls="animation-panel">
-          ANIMATION
-        </button>
-        <div class="panel" id="animation-panel" role="region" aria-labelledby="animation-button" aria-hidden="true">
-          <div class="gallery">
-            <div class="work-item" id="videoworks">
-              <iframe src="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview" width="640" height="480" allow="autoplay" title="Animation reel clip 1"></iframe>
-            </div>
-            <div class="work-item">
-              <iframe src="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview" width="640" height="480" allow="autoplay" title="Animation reel clip 2"></iframe>
-            </div>
-            <!-- <div class="work-item"> 
-              <iframe src="https://drive.google.com/file/d/1mzk3YFVffkds9eocvC9xx7Q_1pmT1_fw/preview" width="640" height="480" allow="autoplay"></iframe> -->
-            </div>
-            <!-- Add more animation images as needed -->
-          </div>
-        </div>
-      
-        <!-- Sculptural Work Section -->
-        <button class="accordion-button" id="sculptural-button" aria-label="Toggle Sculptural Work gallery" aria-expanded="false" aria-controls="sculptural-panel">
-          SCULPTURAL WORK
-        </button>
-        <div class="panel" id="sculptural-panel" role="region" aria-labelledby="sculptural-button" aria-hidden="true">
-          <div class="gallery">
-            <div class="work-item">
-              <img 
-                src="/images/indownloader.app_picture_0789171001738733775.jpg" 
-                alt="Outgrowth clay, plaster, steel wire, concrete, acrylic yarn sculpture, 2024" 
-                data-title="Outgrowth" 
-                data-meta="Brenden Davis — clay, plaster, steel wire, concrete, acrylic yarn sculpture · 2024"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/indownloader.app_picture_0873764001738733770.jpg" 
-                alt="Outgrowth clay, plaster, steel wire, concrete, acrylic yarn sculpture, 2024" 
-                data-title="Outgrowth" 
-                data-meta="Brenden Davis — clay, plaster, steel wire, concrete, acrylic yarn sculpture · 2024"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/case+open.png" 
-                alt="Candlelit Cloth mixed media assemblage of clay sculpture, found wood, and cloth, 2024" 
-                data-title="Candlelit Cloth" 
-                data-meta="Brenden Davis — mixed media assemblage of clay sculpture, found wood, and cloth · 2024"
-              />
-            </div>
-            <div class="work-item">
-              <img 
-                src="/images/networkconnection.png" 
-                alt="Network Connection mixed media installation, 2025" 
-                data-title="Network Connection" 
-                data-meta="Brenden Davis — mixed media installation · 2025"
-              />
-            </div>
-            <!-- Add more sculptural work images as needed -->
-          </div>
-        </div>
-      </section>
+      </div>
+
+      <!-- Sculptural Work -->
+      <div class="work-item" data-category="sculptural">
+        <img src="../images/indownloader.app_picture_0789171001738733775.jpg" alt="Sculptural work: vibrant form study" />
+      </div>
+      <div class="work-item" data-category="sculptural">
+        <img src="../images/indownloader.app_picture_0873764001738733770.jpg" alt="Sculptural work: dynamic structure detail" />
+      </div>
+      <div class="work-item" data-category="sculptural">
+        <img src="../images/case+open.png" alt="Sculptural work: dynamic structure detail" />
+      </div>
+    </div>
+  </section>
       
   </main>
 
   <footer>
     <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
   </footer>
-  <div id="lightbox-modal" class="lightbox-modal" aria-hidden="true">
-    <span class="close" role="button" aria-label="Close">&times;</span>
-    <div class="lightbox-inner">
-      <img class="lightbox-content" src="" alt="Expanded work" />
-      <div class="lightbox-caption" aria-live="polite">
-        <p class="lightbox-title"></p>
-        <p class="lightbox-meta"></p>
-      </div>
-    </div>
+  <div id="lightbox-modal" class="lightbox-modal">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" src="" alt="Expanded work" />
   </div>
   <script>
-    // Accordion Toggle Functionality with ARIA updates + Lightbox
-    document.addEventListener("DOMContentLoaded", function() {
-      // Accordion setup
-      const accButtons = document.getElementsByClassName("accordion-button");
+  document.addEventListener("DOMContentLoaded", function () {
+    // Filter chips
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    const items = Array.from(document.querySelectorAll(".gallery--works .work-item"));
 
-      const togglePanel = (button) => {
-        const panel = button.nextElementSibling;
-        const isExpanded = button.getAttribute("aria-expanded") === "true";
-        const newState = !isExpanded;
-
-        button.setAttribute("aria-expanded", String(newState));
-        button.classList.toggle("active", newState);
-        panel.setAttribute("aria-hidden", String(!newState));
-
-        if (newState) {
-          panel.style.maxHeight = panel.scrollHeight + "px";
-        } else {
-          panel.style.maxHeight = null;
-        }
-      };
-
-      Array.from(accButtons).forEach(button => {
-        button.addEventListener("click", function() {
-          togglePanel(this);
-        });
+    function setActiveChip(activeFilter) {
+      chips.forEach((chip) => {
+        const isActive = chip.dataset.filter === activeFilter;
+        chip.classList.toggle("is-active", isActive);
+        chip.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
-  
-      // Lightbox setup
-      const modal = document.getElementById("lightbox-modal");
-      const modalImg = document.querySelector(".lightbox-content");
-      const closeBtn = document.querySelector(".lightbox-modal .close");
-      const captionWrapper = document.querySelector(".lightbox-caption");
-      const captionTitle = document.querySelector(".lightbox-title");
-      const captionMeta = document.querySelector(".lightbox-meta");
+    }
 
-      // Open modal when any gallery image is clicked
-      document.querySelectorAll(".gallery img").forEach(img => {
-        img.addEventListener("click", function() {
-          modal.style.display = "flex";
-          modal.setAttribute("aria-hidden", "false");
-          modalImg.src = this.src;
-          modalImg.alt = this.alt || "Expanded work";
-          const title = this.dataset.title || "";
-          const meta = this.dataset.meta || "";
-          captionTitle.textContent = title;
-          captionMeta.textContent = meta;
-          captionWrapper.style.display = (title || meta) ? "block" : "none";
-        });
+    function applyFilter(filter) {
+      items.forEach((item) => {
+        const category = item.dataset.category;
+        const show = filter === "all" || category === filter;
+        item.hidden = !show;
       });
 
-      // Close modal when close button is clicked
-      closeBtn.addEventListener("click", function() {
-        modal.style.display = "none";
-        modal.setAttribute("aria-hidden", "true");
-        modalImg.src = "";
-        captionTitle.textContent = "";
-        captionMeta.textContent = "";
-      });
+      setActiveChip(filter);
+    }
 
-      // Close modal when clicking outside the image (on the overlay)
-      modal.addEventListener("click", function(e) {
-        if (e.target === modal) {
-          modal.style.display = "none";
-          modal.setAttribute("aria-hidden", "true");
-          modalImg.src = "";
-          captionTitle.textContent = "";
-          captionMeta.textContent = "";
-        }
-      });
-
-      // Optional: close on Escape key
-      document.addEventListener("keydown", function(e) {
-        if (e.key === "Escape" && modal.style.display === "flex") {
-          modal.style.display = "none";
-          modal.setAttribute("aria-hidden", "true");
-          modalImg.src = "";
-          captionTitle.textContent = "";
-          captionMeta.textContent = "";
-        }
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        applyFilter(chip.dataset.filter);
       });
     });
+
+    // Default
+    applyFilter("all");
+
+    // Lightbox (images only)
+    const modal = document.getElementById("lightbox-modal");
+    const modalImg = document.querySelector(".lightbox-content");
+    const closeBtn = document.querySelector(".lightbox-modal .close");
+
+    document.querySelectorAll(".gallery--works img").forEach((img) => {
+      img.addEventListener("click", function () {
+        modal.style.display = "flex";
+        modalImg.src = this.src;
+        modalImg.alt = this.alt || "Expanded work";
+      });
+    });
+
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+      modalImg.src = "";
+    });
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImg.src = "";
+      }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.style.display === "flex") {
+        modal.style.display = "none";
+        modalImg.src = "";
+      }
+    });
+  });
   </script>
 </body>
 </html>
