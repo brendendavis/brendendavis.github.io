@@ -66,6 +66,27 @@
       height: auto;
     }
 
+    /* Artwork labels under thumbnails */
+    .work-label {
+      margin-top: 0.6rem;
+      text-align: left;
+    }
+
+    .work-label__title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #fff;
+      margin: 0 0 0.25rem;
+    }
+
+    .work-label__meta {
+      font-size: 0.9rem;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.75);
+      margin: 0;
+    }
+
   </style>
 </head>
 <body>
@@ -129,28 +150,35 @@
             <img src="../images/siren+sound.png" alt="Painting work: abstract figure" />
           </div>
 
-          <div class="work-item" data-category="paintings">
-            <img src="../images/starfish_basil.png" alt="Painting work: Starfish in my Basil" />
+          <div class="work-item" data-category="paintings"
+               data-title="Thunder in my Ear/Starfish in my Basil"
+               data-subtitle="Mixed media and soft sculpture on wood board"
+               data-desc="24 in x 48 in • 2025">
+            <img src="../images/starfish_basil.png" alt="Thunder in my Ear/Starfish in my Basil" />
+            <div class="work-label" aria-hidden="true">
+              <div class="work-label__title">Thunder in my Ear/Starfish in my Basil</div>
+              <div class="work-label__meta">Mixed media and soft sculpture on wood board • 24 in x 48 in • 2025</div>
+            </div>
           </div>
 
           <div class="work-item" data-category="paintings">
             <picture>
               <source srcset="../images/IMG_7251.png" type="image/png" />
-              <img src="../images/IMG_7251.jpeg" alt="Painting work: IMG 7251" />
+              <img src="../images/IMG_7251.png" alt="Painting work: IMG 7251" />
             </picture>
           </div>
 
           <div class="work-item" data-category="paintings">
             <picture>
               <source srcset="../images/IMG_7255.png" type="image/png" />
-              <img src="../images/IMG_7255.jpeg" alt="Painting work: IMG 7255" />
+              <img src="../images/IMG_7255.png" alt="Painting work: IMG 7255" />
             </picture>
           </div>
 
           <div class="work-item" data-category="paintings">
             <picture>
               <source srcset="../images/IMG_6369.png" type="image/png" />
-              <img src="../images/IMG_6369.jpeg" alt="Painting work: IMG 6369" />
+              <img src="../images/IMG_6369.png" alt="Painting work: IMG 6369" />
             </picture>
           </div>
         </div>
@@ -174,15 +202,29 @@
             <img src="../images/case+open.png" alt="Sculptural work: dynamic structure detail" />
           </div>
 
-          <div class="work-item" data-category="sculptural">
-            <img src="../images/document_declaration.png" alt="Sculptural work: Document Declaration" />
+          <div class="work-item" data-category="sculptural"
+               data-title="Skin Document/Declaration"
+               data-subtitle="Dyed canvas, polyester yarn, and wood"
+               data-desc="Wall panel 24 in x 48 in • 2025">
+            <img src="../images/document_declaration.png" alt="Skin Document/Declaration" />
+            <div class="work-label" aria-hidden="true">
+              <div class="work-label__title">Skin Document/Declaration</div>
+              <div class="work-label__meta">Dyed canvas, polyester yarn, and wood • Wall panel 24 in x 48 in • 2025</div>
+            </div>
           </div>
 
-          <div class="work-item" data-category="sculptural">
+          <div class="work-item" data-category="sculptural"
+               data-title="Network Connection"
+               data-subtitle="Mixed media assemblage/installation, yarn"
+               data-desc="Dimensions variable • 2025">
             <picture>
               <source srcset="../images/connection.png" type="image/png" />
-              <img src="../images/connection.jpeg" alt="Sculptural work: Connection" />
+              <img src="../images/connection.jpeg" alt="Network Connection" />
             </picture>
+            <div class="work-label" aria-hidden="true">
+              <div class="work-label__title">Network Connection</div>
+              <div class="work-label__meta">Mixed media assemblage/installation, yarn • Dimensions variable • 2025</div>
+            </div>
           </div>
         </div>
       </div>
