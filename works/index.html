@@ -216,6 +216,19 @@
               <div class="video-thumb__play" aria-hidden="true">▶</div>
             </div>
           </div>
+          <!-- Broadcast Motion (external link) -->
+          <div class="work-item" data-category="graphic-design" data-title="Studio 3 Segment Intro Animation (WLBT, 2024)" data-subtitle="" data-desc="Broadcast intro animation for WLBT Studio 3 segment; motion design and timing for on-air package." data-external="true">
+            <a class="work-link" href="https://www.wlbt.com/video/2024/03/29/nandys-candy/" target="_blank" rel="noopener noreferrer" aria-label="Open WLBT Studio 3 segment page in a new tab">
+              <div class="video-thumb">
+                <img class="video-thumb__img" src="../images/tastems.png" alt="WLBT Studio 3 segment intro animation thumbnail" />
+                <div class="video-thumb__overlay" aria-hidden="true"></div>
+                <div class="video-thumb__play" aria-hidden="true">↗</div>
+              </div>
+            </a>
+            <div class="work-meta">
+              <p class="work-subtitle">Studio 3 Segment Intro Animation (WLBT, 2024) | Broadcast intro motion for Studio 3.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -463,6 +476,8 @@
     images.forEach((img) => {
       img.addEventListener("click", function () {
         const parent = this.closest(".work-item");
+        // If the thumbnail is inside a normal link (external case-study), let the browser navigate
+        if (this.closest("a")) return;
         setCaptionFromItem(parent);
         // If this image is inside a featured video item, let the video handler open the lightbox
         if (parent && parent.dataset && parent.dataset.video) {
