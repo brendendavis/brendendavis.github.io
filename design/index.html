@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BRENDEN DAVIS - Graphic design and motion portfolio featuring systems, campaigns, and deliverables." />
+  <title>BRENDEN DAVIS | Design</title>
+  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/clash-display.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <!-- Optionally add a favicon here -->
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
+  <style>
+    /* Works page: Option A (filter chips + unified gallery) */
+    .works-controls {
+      margin: 1.5rem 0 1.25rem;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .chip {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .chip.is-active {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* Gallery tweaks so mixed work types feel intentional */
+    .gallery.gallery--works {
+      gap: 1.25rem;
+    }
+
+    .work-item {
+      position: relative;
+    }
+
+    .work-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Responsive video embeds */
+    .work-item--video {
+      cursor: default;
+    }
+
+    /* Featured video thumbnail (image tile + subtle play overlay) */
+    .work-item--video.work-item--featured {
+      cursor: pointer;
+    }
+
+    .video-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      padding: 2rem;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-sizing: border-box;
+    }
+
+    .video-thumb__img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      transform: scale(1);
+      transition: transform 220ms ease;
+    }
+
+    .video-thumb__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .video-thumb__play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.98);
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      font-size: 28px;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .work-item--video.work-item--featured:hover .video-thumb__overlay,
+    .work-item--video.work-item--featured:focus-within .video-thumb__overlay {
+      opacity: 1;
+    }
+
+    .work-item--video.work-item--featured:hover .video-thumb__play,
+    .work-item--video.work-item--featured:focus-within .video-thumb__play {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .work-item--video.work-item--featured:hover .video-thumb__img {
+      transform: scale(1.02);
+    }
+
+    .video-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .video-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/art/">Art</a></li>
+        <li><a href="/cv/">CV</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+      <section class="works">
+    <h2>Design</h2>
+
+    <div class="works-controls" aria-label="Works filters">
+      <div class="filter-chips" role="group" aria-label="Filter works by category">
+        <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="graphic-design" aria-pressed="false">Graphic Design</button>
+        <button class="chip" type="button" data-filter="animation" aria-pressed="false">Motion</button>
+      </div>
+    </div>
+
+    <div class="gallery gallery--works" aria-live="polite">
+
+      <!-- Graphic Design Systems (Featured) -->
+      <div class="gallery-block" data-block="graphic-design-systems">
+        <div class="gallery-block__header">
+          <h3>Graphic Design Systems</h3>
+          <p>Multi-asset projects that show strategy, consistency, and execution across formats (carousels, event campaigns, motion).</p>
+        </div>
+        <div class="gallery-block__grid">
+          <!-- Featured Carousel Project: Legislative Update Series -->
+          <div class="work-item work-item--carousel" data-category="graphic-design" data-title="Legislative Update Series (2026)" data-subtitle="" data-desc="Weekly social carousel translating legislative developments into clear, accessible public updates." data-carousel="../images/legupdate1.png,../images/legupdate2.png,../images/legupdate3.png,../images/legupdate4.png,../images/legupdate5.png,../images/legupdate6.png,../images/legupdate7.png">
+            <img src="../images/legupdate1.png" alt="MS Votes Legislative Update Carousel Series cover slide" />
+            <div class="work-meta">
+              <p class="work-subtitle">Legislative Update Series (2026) | Weekly social carousel translating legislative developments into clear, accessible public updates.</p>
+            </div>
+          </div>
+
+          <!-- Featured Carousel Project: Second Chances Carousel -->
+          <div class="work-item work-item--carousel" data-category="graphic-design" data-title="Second Chances Campaign (2026)" data-subtitle="" data-desc="Informational event carousel promoting voting rights restoration advocacy and Capitol day logistics." data-carousel="../images/secondchance1.png,../images/secondchance2.png,../images/secondchance3.png,../images/secondchance4.png">
+            <img src="../images/secondchance1.png" alt="Second Chances advocacy carousel cover slide" />
+            <div class="work-meta">
+              <p class="work-subtitle">Second Chances Campaign (2026) | Informational event carousel promoting voting rights restoration advocacy and Capitol day logistics.</p>
+            </div>
+          </div>
+
+          <!-- Featured Motion Project: Voting Process Explainer -->
+          <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="graphic-design" data-title="Voting Process Explainer Animation (2025)" data-subtitle="" data-desc="45-second educational motion graphic explaining the Mississippi voting process in a clear, accessible format." data-video="https://drive.google.com/file/d/11SWjAVafmIBl70mndNzovWIlN5-ZUH8F/preview">
+            <div class="video-thumb" aria-label="Play Voting Process Explainer Animation">
+              <img class="video-thumb__img" src="../images/votetoday.png" alt="Voting Process Explainer Animation thumbnail" />
+              <div class="video-thumb__overlay" aria-hidden="true"></div>
+              <div class="video-thumb__play" aria-hidden="true">▶</div>
+            </div>
+          </div>
+          <!-- Broadcast Motion (external link) -->
+          <div class="work-item" data-category="graphic-design" data-title="Studio 3 Segment Intro Animation (WLBT, 2024)" data-subtitle="" data-desc="Broadcast intro animation for WLBT Studio 3 segment; motion design and timing for on-air package." data-external="true">
+            <a class="work-link" href="https://www.wlbt.com/video/2024/03/29/nandys-candy/" target="_blank" rel="noopener noreferrer" aria-label="Open WLBT Studio 3 segment page in a new tab">
+              <div class="video-thumb">
+                <img class="video-thumb__img" src="../images/tastems.png" alt="WLBT Studio 3 segment intro animation thumbnail" />
+                <div class="video-thumb__overlay" aria-hidden="true"></div>
+                <div class="video-thumb__play" aria-hidden="true">↗</div>
+              </div>
+            </a>
+            <div class="work-meta">
+              <p class="work-subtitle">Studio 3 Segment Intro Animation (WLBT, 2024) | Broadcast intro motion for Studio 3.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graphic Design Deliverables -->
+      <div class="gallery-block" data-block="graphic-design">
+        <div class="gallery-block__header">
+          <h3>Graphic Design Deliverables</h3>
+          <p>Single assets and posters — layout, typography, event promo, and brand-aligned variations.</p>
+        </div>
+        <div class="gallery-block__grid">
+          <div class="work-item" data-category="graphic-design">
+            <img src="../images/EoAM+JXNology+Benefit+Show+poster.jpg" alt="Graphic design work: poster" />
+          </div>
+          <div class="work-item" data-category="graphic-design">
+            <img src="../images/birdisthewordad.png" alt="Graphic design work: advertisement" />
+          </div>
+          <div class="work-item" data-category="graphic-design">
+            <img src="../images/BYOB-2.png" alt="Graphic design work: event poster" />
+          </div>
+          <div class="work-item" data-category="graphic-design">
+            <img src="../images/bookclubposterFINAL-2.png" alt="Graphic design work: book club poster" />
+          </div>
+          <div class="work-item" data-category="graphic-design">
+            <img src="../images/galleryopensignedit11-04-2.png" alt="Graphic design work: sign" />
+          </div>
+          <div class="work-item" data-category="graphic-design">
+            <img src="../images/ThickSkull-motionlogo-2.gif" alt="Graphic design work: animated logo" />
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Animation (videos) -->
+      <div class="gallery-block" data-block="animation">
+        <div class="gallery-block__header">
+          <h3>Animation</h3>
+          <p>Motion work and short animations.</p>
+        </div>
+        <div class="gallery-block__grid">
+          <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" id="videoworks" data-title="Motion Snippet 01" data-subtitle="" data-desc="Short motion piece (Google Drive embed opens in lightbox)." data-video="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview">
+            <div class="video-thumb" aria-label="Play Motion Snippet 01">
+              <img class="video-thumb__img" src="https://drive.google.com/thumbnail?id=1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB&sz=w1200" alt="Motion Snippet 01 thumbnail" loading="lazy" decoding="async" />
+              <div class="video-thumb__overlay" aria-hidden="true"></div>
+              <div class="video-thumb__play" aria-hidden="true">▶</div>
+            </div>
+          </div>
+
+          <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" data-title="Motion Snippet 02" data-subtitle="" data-desc="Short motion piece (Google Drive embed opens in lightbox)." data-video="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview">
+            <div class="video-thumb" aria-label="Play Motion Snippet 02">
+              <img class="video-thumb__img" src="https://drive.google.com/thumbnail?id=1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN&sz=w1200" alt="Motion Snippet 02 thumbnail" loading="lazy" decoding="async" />
+              <div class="video-thumb__overlay" aria-hidden="true"></div>
+              <div class="video-thumb__play" aria-hidden="true">▶</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+      
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+  <div id="lightbox-modal" class="lightbox-modal">
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous slide">&#10094;</button>
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Next slide">&#10095;</button>
+    <div class="lightbox-counter" aria-live="polite"></div>
+    <span class="close" aria-label="Close">&times;</span>
+    <img class="lightbox-content" src="" alt="Expanded work" />
+    <div class="lightbox-video" aria-live="polite" aria-hidden="true">
+      <div class="lightbox-video__frame">
+        <iframe class="lightbox-video__iframe" src="" allow="autoplay; fullscreen" title="Expanded video"></iframe>
+      </div>
+    </div>
+    <div class="lightbox-caption" aria-live="polite">
+      <div class="lightbox-title"></div>
+      <div class="lightbox-subtitle"></div>
+      <div class="lightbox-desc"></div>
+    </div>
+  </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Filter chips
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    const items = Array.from(document.querySelectorAll(".gallery--works .work-item"));
+    const blocks = Array.from(document.querySelectorAll(".gallery--works .gallery-block"));
+
+    function setActiveChip(activeFilter) {
+      chips.forEach((chip) => {
+        const isActive = chip.dataset.filter === activeFilter;
+        chip.classList.toggle("is-active", isActive);
+        chip.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    }
+
+    function applyFilter(filter) {
+      items.forEach((item) => {
+        const category = item.dataset.category;
+        const show = filter === "all" || category === filter;
+        item.hidden = !show;
+      });
+
+      // Hide section blocks that have no visible items under the current filter
+      blocks.forEach((block) => {
+        const blockItems = Array.from(block.querySelectorAll(".work-item"));
+        const anyVisible = blockItems.some((it) => !it.hidden);
+        block.hidden = !anyVisible;
+      });
+
+      setActiveChip(filter);
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        applyFilter(chip.dataset.filter);
+      });
+    });
+
+    // Default
+    applyFilter("all");
+
+    // Lightbox (images only)
+    const modal = document.getElementById("lightbox-modal");
+    const modalImg = document.querySelector(".lightbox-content");
+    const closeBtn = document.querySelector(".lightbox-modal .close");
+    const prevBtn = document.querySelector(".lightbox-prev");
+    const nextBtn = document.querySelector(".lightbox-next");
+    const counterEl = document.querySelector(".lightbox-counter");
+
+    const captionEl = document.querySelector(".lightbox-caption");
+    const captionTitle = document.querySelector(".lightbox-title");
+    const captionSubtitle = document.querySelector(".lightbox-subtitle");
+    const captionDesc = document.querySelector(".lightbox-desc");
+
+    function setCaptionFromItem(itemEl) {
+      const t = itemEl?.dataset?.title || "";
+      const st = itemEl?.dataset?.subtitle || "";
+      const d = itemEl?.dataset?.desc || "";
+      captionTitle.textContent = t;
+      captionSubtitle.textContent = st;
+      captionDesc.textContent = d;
+      const hasAny = Boolean(t || st || d);
+      captionEl.style.display = hasAny ? "block" : "none";
+    }
+
+    const images = document.querySelectorAll(".gallery--works img");
+    // Performance: lazy-load thumbnails and decode asynchronously
+    images.forEach((img) => {
+      // Keep explicitly styled video thumbs clickable; lazy-loading is safe for all gallery images
+      if (!img.hasAttribute("loading")) img.setAttribute("loading", "lazy");
+      img.setAttribute("decoding", "async");
+    });
+    const videoItems = document.querySelectorAll(".gallery--works .work-item[data-video]");
+    const modalVideoWrap = document.querySelector(".lightbox-video");
+    const modalVideoIframe = document.querySelector(".lightbox-video__iframe");
+
+    let carouselImages = [];
+    let carouselIndex = 0;
+
+    function updateCarouselUI() {
+      const isCarousel = carouselImages.length > 1;
+      prevBtn.style.display = isCarousel ? "block" : "none";
+      nextBtn.style.display = isCarousel ? "block" : "none";
+      counterEl.style.display = isCarousel ? "block" : "none";
+
+      if (isCarousel) {
+        counterEl.textContent = `${carouselIndex + 1} / ${carouselImages.length}`;
+      } else {
+        counterEl.textContent = "";
+      }
+    }
+
+    function showCarouselImage(index) {
+      if (!carouselImages.length) {
+        updateCarouselUI();
+        return;
+      }
+      carouselIndex = (index + carouselImages.length) % carouselImages.length;
+      modalImg.src = carouselImages[carouselIndex].trim();
+      updateCarouselUI();
+    }
+
+    prevBtn.addEventListener("click", function () {
+      showCarouselImage(carouselIndex - 1);
+    });
+
+    nextBtn.addEventListener("click", function () {
+      showCarouselImage(carouselIndex + 1);
+    });
+
+    images.forEach((img) => {
+      img.addEventListener("click", function () {
+        const parent = this.closest(".work-item");
+        // If the thumbnail is inside a normal link (external case-study), let the browser navigate
+        if (this.closest("a")) return;
+        setCaptionFromItem(parent);
+        // If this image is inside a featured video item, let the video handler open the lightbox
+        if (parent && parent.dataset && parent.dataset.video) {
+          return;
+        }
+
+        const carouselData = parent.dataset.carousel;
+
+        modal.style.display = "flex";
+        // Image mode
+        modalImg.style.display = "block";
+        if (modalVideoWrap) modalVideoWrap.style.display = "none";
+        if (modalVideoIframe) modalVideoIframe.src = "";
+
+        if (carouselData) {
+          carouselImages = carouselData.split(",").map((s) => s.trim());
+          carouselIndex = 0;
+          showCarouselImage(carouselIndex);
+
+          // Arrow navigation
+          document.onkeydown = function (e) {
+            if (e.key === "ArrowRight") showCarouselImage(carouselIndex + 1);
+            if (e.key === "ArrowLeft") showCarouselImage(carouselIndex - 1);
+            if (e.key === "Escape") closeLightbox();
+          };
+        } else {
+          carouselImages = [];
+          modalImg.src = this.src;
+          updateCarouselUI();
+        }
+      });
+    });
+
+    // Lightbox (featured videos)
+    videoItems.forEach((item) => {
+      const openVideo = () => {
+        setCaptionFromItem(item);
+        modal.style.display = "flex";
+
+        // Video mode
+        modalImg.style.display = "none";
+        carouselImages = [];
+        updateCarouselUI();
+
+        if (modalVideoWrap) modalVideoWrap.style.display = "block";
+        if (modalVideoIframe) {
+          modalVideoIframe.src = item.dataset.video;
+          modalVideoIframe.title = item.dataset.title || "Expanded video";
+        }
+
+        document.onkeydown = function (e) {
+          if (e.key === "Escape") closeLightbox();
+        };
+      };
+
+      item.addEventListener("click", openVideo);
+      item.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openVideo();
+        }
+      });
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleSwipe() {
+      if (carouselImages.length <= 1) return;
+      const dx = touchEndX - touchStartX;
+      if (Math.abs(dx) < 40) return; // threshold
+      if (dx < 0) showCarouselImage(carouselIndex + 1);
+      if (dx > 0) showCarouselImage(carouselIndex - 1);
+    }
+
+    modal.addEventListener("touchstart", function (e) {
+      if (!e.touches || !e.touches.length) return;
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    modal.addEventListener("touchend", function (e) {
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }, { passive: true });
+
+    function closeLightbox() {
+      modal.style.display = "none";
+      modalImg.src = "";
+      // Stop any playing video
+      if (modalVideoIframe) modalVideoIframe.src = "";
+      if (modalVideoWrap) modalVideoWrap.style.display = "none";
+      modalImg.style.display = "block";
+      carouselImages = [];
+      updateCarouselUI();
+
+      captionTitle.textContent = "";
+      captionSubtitle.textContent = "";
+      captionDesc.textContent = "";
+      captionEl.style.display = "none";
+
+      document.onkeydown = null;
+    }
+
+    closeBtn.addEventListener("click", function () {
+      closeLightbox();
+    });
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        closeLightbox();
+      }
+    });
+
+  });
+  </script>
+</body>
+</html>

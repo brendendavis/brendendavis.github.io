@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BRENDEN DAVIS - Contemporary Artist Portfolio featuring works, prints, CV, biography, and exhibitions." />
+  <title>BRENDEN DAVIS</title>
+  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/clash-display.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <!-- Optionally add a favicon here -->
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
+  <style>
+    /* Works page: Option A (filter chips + unified gallery) */
+    .works-controls {
+      margin: 1.5rem 0 1.25rem;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .chip {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .chip.is-active {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* Gallery tweaks so mixed work types feel intentional */
+    .gallery.gallery--works {
+      gap: 1.25rem;
+    }
+
+    .work-item {
+      position: relative;
+    }
+
+    .work-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/art/">Art</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/cv/">CV</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+      <section class="works">
+    <h2>Fine Art</h2>
+
+    <div class="works-controls" aria-label="Works filters">
+      <div class="filter-chips" role="group" aria-label="Filter works by category">
+        <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="paintings" aria-pressed="false">Paintings</button>
+        <button class="chip" type="button" data-filter="sculptural" aria-pressed="false">Sculptural</button>
+      </div>
+    </div>
+
+    <div class="gallery gallery--works" aria-live="polite">
+
+
+      <!-- Paintings -->
+      <div class="gallery-block" data-block="paintings">
+        <div class="gallery-block__header">
+          <h3>Paintings</h3>
+          <p>selected studio works.</p>
+        </div>
+        <div class="gallery-block__grid">
+          <div class="work-item" data-category="paintings">
+            <img src="../images/the+adversary+1.png" alt="Painting work: abstract figure painting" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/the+adversary+2.png" alt="Painting work: abstract pattern" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/6daysinthedark.png" alt="Painting work: abstract pattern" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/brickbybrickselfportrait.png" alt="Painting work: abstract pattern" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/good afternoon.png" alt="Painting work: abstract figure" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/LateShift.png" alt="Painting work: abstract figure" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/SERVICE.png" alt="Painting work: abstract figure" />
+          </div>
+          <div class="work-item" data-category="paintings">
+            <img src="../images/siren+sound.png" alt="Painting work: abstract figure" />
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Sculptural Work -->
+      <div class="gallery-block" data-block="sculptural">
+        <div class="gallery-block__header">
+          <h3>Sculptural</h3>
+          <p>Installation and object-based work.</p>
+        </div>
+        <div class="gallery-block__grid">
+          <div class="work-item" data-category="sculptural">
+            <img src="../images/indownloader.app_picture_0789171001738733775.jpg" alt="Sculptural work: vibrant form study" />
+          </div>
+          <div class="work-item" data-category="sculptural">
+            <img src="../images/indownloader.app_picture_0873764001738733770.jpg" alt="Sculptural work: dynamic structure detail" />
+          </div>
+          <div class="work-item" data-category="sculptural">
+            <img src="../images/case+open.png" alt="Sculptural work: dynamic structure detail" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+      
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+  <div id="lightbox-modal" class="lightbox-modal">
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous slide">&#10094;</button>
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Next slide">&#10095;</button>
+    <div class="lightbox-counter" aria-live="polite"></div>
+    <span class="close" aria-label="Close">&times;</span>
+    <img class="lightbox-content" src="" alt="Expanded work" />
+    <div class="lightbox-caption" aria-live="polite">
+      <div class="lightbox-title"></div>
+      <div class="lightbox-subtitle"></div>
+      <div class="lightbox-desc"></div>
+    </div>
+  </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Filter chips
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    const items = Array.from(document.querySelectorAll(".gallery--works .work-item"));
+    const blocks = Array.from(document.querySelectorAll(".gallery--works .gallery-block"));
+
+    function setActiveChip(activeFilter) {
+      chips.forEach((chip) => {
+        const isActive = chip.dataset.filter === activeFilter;
+        chip.classList.toggle("is-active", isActive);
+        chip.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    }
+
+    function applyFilter(filter) {
+      items.forEach((item) => {
+        const category = item.dataset.category;
+        const show = filter === "all" || category === filter;
+        item.hidden = !show;
+      });
+
+      // Hide section blocks that have no visible items under the current filter
+      blocks.forEach((block) => {
+        const blockItems = Array.from(block.querySelectorAll(".work-item"));
+        const anyVisible = blockItems.some((it) => !it.hidden);
+        block.hidden = !anyVisible;
+      });
+
+      setActiveChip(filter);
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        applyFilter(chip.dataset.filter);
+      });
+    });
+
+    // Default
+    applyFilter("all");
+
+    // Lightbox (images only)
+    const modal = document.getElementById("lightbox-modal");
+    const modalImg = document.querySelector(".lightbox-content");
+    const closeBtn = document.querySelector(".lightbox-modal .close");
+    const prevBtn = document.querySelector(".lightbox-prev");
+    const nextBtn = document.querySelector(".lightbox-next");
+    const counterEl = document.querySelector(".lightbox-counter");
+
+    const captionEl = document.querySelector(".lightbox-caption");
+    const captionTitle = document.querySelector(".lightbox-title");
+    const captionSubtitle = document.querySelector(".lightbox-subtitle");
+    const captionDesc = document.querySelector(".lightbox-desc");
+
+    function setCaptionFromItem(itemEl) {
+      const t = itemEl?.dataset?.title || "";
+      const st = itemEl?.dataset?.subtitle || "";
+      const d = itemEl?.dataset?.desc || "";
+      captionTitle.textContent = t;
+      captionSubtitle.textContent = st;
+      captionDesc.textContent = d;
+      const hasAny = Boolean(t || st || d);
+      captionEl.style.display = hasAny ? "block" : "none";
+    }
+
+    const images = document.querySelectorAll(".gallery--works img");
+    // Performance: lazy-load thumbnails and decode asynchronously
+    images.forEach((img) => {
+      // Keep explicitly styled video thumbs clickable; lazy-loading is safe for all gallery images
+      if (!img.hasAttribute("loading")) img.setAttribute("loading", "lazy");
+      img.setAttribute("decoding", "async");
+    });
+
+    let carouselImages = [];
+    let carouselIndex = 0;
+
+    function updateCarouselUI() {
+      const isCarousel = carouselImages.length > 1;
+      prevBtn.style.display = isCarousel ? "block" : "none";
+      nextBtn.style.display = isCarousel ? "block" : "none";
+      counterEl.style.display = isCarousel ? "block" : "none";
+
+      if (isCarousel) {
+        counterEl.textContent = `${carouselIndex + 1} / ${carouselImages.length}`;
+      } else {
+        counterEl.textContent = "";
+      }
+    }
+
+    function showCarouselImage(index) {
+      if (!carouselImages.length) {
+        updateCarouselUI();
+        return;
+      }
+      carouselIndex = (index + carouselImages.length) % carouselImages.length;
+      modalImg.src = carouselImages[carouselIndex].trim();
+      updateCarouselUI();
+    }
+
+    prevBtn.addEventListener("click", function () {
+      showCarouselImage(carouselIndex - 1);
+    });
+
+    nextBtn.addEventListener("click", function () {
+      showCarouselImage(carouselIndex + 1);
+    });
+
+    images.forEach((img) => {
+      img.addEventListener("click", function () {
+        const parent = this.closest(".work-item");
+        // If the thumbnail is inside a normal link (external case-study), let the browser navigate
+        if (this.closest("a")) return;
+        setCaptionFromItem(parent);
+
+        const carouselData = parent.dataset.carousel;
+
+        modal.style.display = "flex";
+        // Image mode
+        modalImg.style.display = "block";
+
+        if (carouselData) {
+          carouselImages = carouselData.split(",").map((s) => s.trim());
+          carouselIndex = 0;
+          showCarouselImage(carouselIndex);
+
+          // Arrow navigation
+          document.onkeydown = function (e) {
+            if (e.key === "ArrowRight") showCarouselImage(carouselIndex + 1);
+            if (e.key === "ArrowLeft") showCarouselImage(carouselIndex - 1);
+            if (e.key === "Escape") closeLightbox();
+          };
+        } else {
+          carouselImages = [];
+          modalImg.src = this.src;
+          updateCarouselUI();
+        }
+      });
+    });
+
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleSwipe() {
+      if (carouselImages.length <= 1) return;
+      const dx = touchEndX - touchStartX;
+      if (Math.abs(dx) < 40) return; // threshold
+      if (dx < 0) showCarouselImage(carouselIndex + 1);
+      if (dx > 0) showCarouselImage(carouselIndex - 1);
+    }
+
+    modal.addEventListener("touchstart", function (e) {
+      if (!e.touches || !e.touches.length) return;
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    modal.addEventListener("touchend", function (e) {
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }, { passive: true });
+
+    function closeLightbox() {
+      modal.style.display = "none";
+      modalImg.src = "";
+      modalImg.style.display = "block";
+      carouselImages = [];
+      updateCarouselUI();
+
+      captionTitle.textContent = "";
+      captionSubtitle.textContent = "";
+      captionDesc.textContent = "";
+      captionEl.style.display = "none";
+
+      document.onkeydown = null;
+    }
+
+    closeBtn.addEventListener("click", function () {
+      closeLightbox();
+    });
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        closeLightbox();
+      }
+    });
+
+  });
+  </script>
+</body>
+</html>
