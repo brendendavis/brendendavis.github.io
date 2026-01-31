@@ -244,12 +244,6 @@
           <div class="work-item" data-category="graphic-design">
             <img src="../images/ThickSkull-motionlogo-2.gif" alt="Graphic design work: animated logo" />
           </div>
-          <div class="work-item" data-category="graphic-design">
-            <img src="../images/MMA_VGMD_1024x768_3update-2.png" alt="Graphic design work: motion graphic still" />
-          </div>
-          <div class="work-item" data-category="graphic-design">
-            <img src="../images/family-day-square---animated.gif" alt="Graphic design work: animated social graphic" />
-          </div>
         </div>
       </div>
 
@@ -294,14 +288,19 @@
           <p>Motion work and short animations.</p>
         </div>
         <div class="gallery-block__grid">
-          <div class="work-item work-item--video" data-category="animation" id="videoworks">
-            <div class="video-embed">
-              <iframe src="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview" allow="autoplay"></iframe>
+          <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" id="videoworks" data-title="Animation Reel 01" data-subtitle="" data-desc="Short motion piece (Google Drive embed opens in lightbox)." data-video="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview">
+            <div class="video-thumb" aria-label="Play Animation Reel 01">
+              <img class="video-thumb__img" src="../images/MMA_VGMD_1024x768_3update-2.png" alt="Animation Reel 01 thumbnail" />
+              <div class="video-thumb__overlay" aria-hidden="true"></div>
+              <div class="video-thumb__play" aria-hidden="true">▶</div>
             </div>
           </div>
-          <div class="work-item work-item--video" data-category="animation">
-            <div class="video-embed">
-              <iframe src="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview" allow="autoplay"></iframe>
+
+          <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" data-title="Animation Reel 02" data-subtitle="" data-desc="Short motion piece (Google Drive embed opens in lightbox)." data-video="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview">
+            <div class="video-thumb" aria-label="Play Animation Reel 02">
+              <img class="video-thumb__img" src="../images/family-day-square---animated.gif" alt="Animation Reel 02 thumbnail" />
+              <div class="video-thumb__overlay" aria-hidden="true"></div>
+              <div class="video-thumb__play" aria-hidden="true">▶</div>
             </div>
           </div>
         </div>
@@ -417,6 +416,12 @@
     }
 
     const images = document.querySelectorAll(".gallery--works img");
+    // Performance: lazy-load thumbnails and decode asynchronously
+    images.forEach((img) => {
+      // Keep explicitly styled video thumbs clickable; lazy-loading is safe for all gallery images
+      if (!img.hasAttribute("loading")) img.setAttribute("loading", "lazy");
+      img.setAttribute("decoding", "async");
+    });
     const videoItems = document.querySelectorAll(".gallery--works .work-item[data-video]");
     const modalVideoWrap = document.querySelector(".lightbox-video");
     const modalVideoIframe = document.querySelector(".lightbox-video__iframe");
