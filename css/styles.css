@@ -324,6 +324,71 @@ section h2 {
   border-bottom: 1px solid var(--color-secondary);
   color: var(--color-text);
 }
+
+/* ============================================
+   CV Bio "Read more" Toggle
+   ============================================ */
+
+.bio-snippet {
+  margin-bottom: 0.75rem;
+}
+
+.bio-full p {
+  margin: 0 0 0.9rem;
+}
+
+.bio-full p:last-child {
+  margin-bottom: 0;
+}
+
+.bio-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-family: var(--font-base);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+}
+
+.bio-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+
+.bio-toggle:active {
+  transform: translateY(0);
+}
+
+.bio-toggle:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.28);
+  outline-offset: 2px;
+}
+
+/* Add a subtle chevron via CSS so you don't need extra markup */
+.bio-toggle::after {
+  content: "›";
+  font-size: 1.25em;
+  line-height: 1;
+  opacity: 0.85;
+  transform: translateY(-0.02em);
+  transition: transform 150ms ease;
+}
+
+.bio-toggle:hover::after {
+  transform: translateY(-0.02em) translateX(1px);
+}
 /* Link Styling*/
 a {
   color:#F5F5F5;
