@@ -5,47 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="BRENDEN DAVIS - Contemporary Artist Portfolio featuring works, prints, CV, biography, and exhibitions." />
   <title>BRENDEN DAVIS - CV</title>
-  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/clash-display.css" />
-  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preload" href="/fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/clash-display.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
   <!-- Optionally, add a favicon -->
-  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <header>
     <div class="header-container">
       <h1><a href="/home/">BRENDEN DAVIS</a></h1>
       <nav aria-label="Primary Navigation">
         <ul class="nav-list">
           <li><a href="/home/">Home</a></li>
-          <li><a href="/works/">Works</a></li> <!-- Updated link -->
-          <li><a href="/contact/">Contact</a></li> <!-- Updated link -->
-           <li><a href="/cv/" class="active" aria-current="page">CV</a></li>
+          <li><a href="/works/">Works</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/cv/" class="active" aria-current="page">CV</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section class="cv" aria-labelledby="cv-heading">
       <h2 id="cv-heading">Curriculum Vitae</h2>
 
       <article>
         <h3>Biography</h3>
-        <p>
-          Brenden Davis is a multidisciplinary artist based in Jackson, Mississippi, specializing in painting, graphic design, and animation. Their work delves into themes of surrealism, abstraction, and the Black experience, focusing on self-perception and social dynamics. Inspired by personal experiences and cultural influences, Davis crafts abstract and surreal figures and dreamscapes that challenge societal perceptions and invite viewers into alternate worlds. Their art aims to captivate visually, spark thoughtful conversations, and inspire meaningful dialogue.
+        <p class="bio-snippet">
+          Brenden Davis is a contemporary visual artist based in Jackson, Mississippi, working across the mediums of painting, mixed media, animation, and sculptural installation. His practice explores interior emotional landscapes alongside the constructed environments that shape daily life, drawing connections between the body, technology, and the social fabric that surrounds them.
         </p>
+
+        <div class="bio-full" style="display: none;">
+          <p>
+            Rooted in Black experience and influenced by Afrofuturism, Davis’s work considers how identity is formed and negotiated within systems of power, expectation, and visibility. By blending digital and physical media, his practice mirrors the ways contemporary life shifts between interior thought and external influence, inviting viewers to reflect on their own relationship to technology, community, and self.
+          </p>
+          <p>
+            Through layered materials such as acrylic, oil pastel, graphite, fabric, clay, digital imagery, and projection, Davis builds fluid, interconnected dreamscapes that merge architecture, infrastructure, and abstract figures. Roads, buildings, screens, clouds, and symbolic forms appear as both physical spaces and psychological states, reflecting themes of surveillance, constraint, communication, and movement.
+          </p>
+        </div>
+
+        <button class="bio-toggle" onclick="toggleBio()">Read more</button>
       </article>
 
       <article>
         <h3>Exhibitions</h3>
-        <br>
-        <h4>Memory Corrupted: An Exploration of Time and Perception</h4>
-        <h5>Arts Center of Mississippi - Jackson, MS</h5>
-        <h5 class='date'>2025</h5>
-        <p>
-          MEMORY CORRUPTED showcases the surreal and evocative work of Mississippi-based artist Brenden Davis, exploring how perception reshapes our understanding of time and identity. Through bold abstraction, vibrant palettes, and distorted forms, Davis invites viewers into a compelling dialogue about the fluidity and fallibility of memory. Each piece acts as a fragment of recollection, distorted yet deeply resonant, challenging us to reconsider how our past shapes our present selves and future narratives.
-        </p>
         <br>
         <h4>NEW HISTORY</h4>
         <h5>Hall Gallery - Jackson, MS</h5>
@@ -147,4 +152,18 @@
     <p>&copy; 2025 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
   </footer>
 </body>
+<script>
+  function toggleBio() {
+    const fullBio = document.querySelector('.bio-full');
+    const button = document.querySelector('.bio-toggle');
+
+    if (fullBio.style.display === 'none') {
+      fullBio.style.display = 'block';
+      button.textContent = 'Read less';
+    } else {
+      fullBio.style.display = 'none';
+      button.textContent = 'Read more';
+    }
+  }
+</script>
 </html>
