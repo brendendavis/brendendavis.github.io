@@ -52,8 +52,14 @@ body {
   background-color: var(--color-background);
 }
 
-li a { text-decoration: none; }
-li a:hover { text-decoration: underline; }
+li a { 
+  text-decoration: none; 
+}
+
+li a:hover { 
+  text-decoration: underline; 
+}
+
 /* ============================================
    Header & Navigation
    ============================================ */
