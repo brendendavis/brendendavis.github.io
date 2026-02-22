@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BRENDEN DAVIS — Graphic Design Portfolio. Visual Artist & Graphic Designer specializing in civic, cultural, and broadcast design." />
+  <title>BRENDEN DAVIS | Portfolio</title>
+  <link rel="preload" href="../fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/clash-display.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       PORTFOLIO-SPECIFIC OVERRIDES
+       All base styles (dark bg, font, nav,
+       footer, work-item tiles) come from
+       styles.css. This sheet only adds what
+       doesn't already exist there.
+    ───────────────────────────────────────── */
+
+    /* wrapper — matches main > .biography max-width pattern */
+    .portfolio-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── toolbar (print button) ── */
+    .port-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+
+    /* reuse .chip from styles.css for the print button */
+    .print-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--color-text);
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      font-family: var(--font-base);
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .print-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.34);
+    }
+
+    /* ── horizontal rule shared across sections ── */
+    .port-rule {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin: 0;
+    }
+
+    /* ─────────────────────────────────────────
+       COVER
+    ───────────────────────────────────────── */
+    .port-cover {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .port-cover__eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    /* inherits --font-base (ClashDisplay) from body */
+    .port-cover__name {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      line-height: 0.95;
+      color: var(--color-text);
+      letter-spacing: -0.01em;
+      margin-bottom: 2rem;
+    }
+
+    .port-cover__meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .port-cover__meta-rule {
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+    }
+
+    .port-cover__subtitle {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      opacity: 0.45;
+    }
+
+    .port-cover__contacts {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .port-cover__contact-label {
+      display: block;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 0.85;
+      margin-bottom: 3px;
+    }
+
+    .port-cover__contact-value {
+      font-size: 0.82rem;
+      color: var(--color-text);
+      opacity: 0.75;
+    }
+
+    /* ─────────────────────────────────────────
+       DESIGNER'S STATEMENT
+    ───────────────────────────────────────── */
+    .port-statement {
+      padding: 3rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .port-statement__label {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 0.9;
+      padding-top: 4px;
+    }
+
+    .port-statement__text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      opacity: 0.82;
+    }
+
+    /* ─────────────────────────────────────────
+       CASE STUDY SHARED
+    ───────────────────────────────────────── */
+    .port-cs {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .port-cs__header {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .port-cs__num {
+      font-family: var(--font-base);
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(255,255,255,0.06);
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .port-cs__eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .port-cs__title {
+      font-family: var(--font-base);
+      font-size: 1.8rem;
+      color: var(--color-text);
+      line-height: 1.1;
+    }
+
+    /* sub-section labels within a case study */
+    .port-cs__sub {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      opacity: 0.35;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 0.6rem;
+      margin: 2rem 0 1rem;
+    }
+
+    /* ─────────────────────────────────────────
+       IMAGE GRIDS
+       Reuse .gallery--works tile treatment
+       from styles.css where possible
+    ───────────────────────────────────────── */
+    .port-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .port-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .port-sidebar {
+      display: grid;
+      grid-template-columns: 1fr 190px;
+      gap: 1.5rem;
+      margin-bottom: 0.5rem;
+      align-items: start;
+    }
+
+    .port-sidebar__aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* tile — inherits .gallery--works .work-item style from styles.css */
+    .port-tile {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      overflow: hidden;
+    }
+
+    .port-tile img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      padding: 0.5rem;
+      transition: transform 0.35s ease;
+    }
+
+    .port-tile img.is-landscape { aspect-ratio: 16 / 9; }
+    .port-tile img.is-square    { aspect-ratio: 1; }
+    .port-tile img.is-portrait  { aspect-ratio: 4 / 5; }
+
+    .port-tile:hover img { transform: scale(1.02); }
+
+    .port-img-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      opacity: 0.35;
+      margin-top: 0.5rem;
+    }
+
+    /* aside intent note */
+    .port-aside-note {
+      border-left: 2px solid var(--color-primary);
+      padding-left: 1rem;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      opacity: 0.65;
+    }
+
+    .port-aside-note strong {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ─────────────────────────────────────────
+       BRIEF BOX
+    ───────────────────────────────────────── */
+    .port-brief {
+      border-left: 2px solid var(--color-primary);
+      padding: 1.1rem 1.4rem;
+      margin-top: 2rem;
+      background: rgba(114, 135, 158, 0.06);
+    }
+
+    .port-brief__label {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 0.65rem;
+      opacity: 0.9;
+    }
+
+    .port-brief__text {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--color-text);
+      opacity: 0.7;
+    }
+
+    /* ─────────────────────────────────────────
+       ADDITIONAL WORK
+    ───────────────────────────────────────── */
+    .port-additional {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .port-additional__section {
+      margin-bottom: 2.5rem;
+    }
+
+    .port-additional__section:last-child { margin-bottom: 0; }
+
+    .port-additional__header {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      opacity: 0.35;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .port-motion-note {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--color-text);
+      opacity: 0.4;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    /* ─────────────────────────────────────────
+       CONTACT FOOTER
+    ───────────────────────────────────────── */
+    .port-contact {
+      padding: 3.5rem 0 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .port-contact__eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+
+    .port-contact__headline {
+      font-family: var(--font-base);
+      font-size: 2.8rem;
+      line-height: 1.05;
+      color: var(--color-text);
+      margin-bottom: 2rem;
+    }
+
+    .port-contact__items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .port-contact__item-label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 0.85;
+      margin-bottom: 3px;
+    }
+
+    .port-contact__item-value {
+      font-size: 0.88rem;
+      color: var(--color-text);
+      opacity: 0.72;
+    }
+
+    .port-contact__right {
+      border-left: 1px solid rgba(255,255,255,0.08);
+      padding-left: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .port-contact__reel-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      opacity: 0.9;
+    }
+
+    .port-contact__reel-url {
+      font-family: var(--font-base);
+      font-size: 1.6rem;
+      color: var(--color-text);
+    }
+
+    .port-contact__reel-note {
+      font-size: 0.88rem;
+      color: var(--color-text);
+      opacity: 0.45;
+      line-height: 1.65;
+    }
+
+    /* ─────────────────────────────────────────
+       PRINT STYLES
+    ───────────────────────────────────────── */
+    @media print {
+      body {
+        background: white !important;
+        color: #111 !important;
+      }
+
+      header,
+      footer,
+      .port-toolbar { display: none !important; }
+
+      /* reset dark-theme colors for print */
+      .port-cover__name,
+      .port-cs__title,
+      .port-contact__headline,
+      .port-contact__reel-url { color: #111 !important; }
+
+      .port-cover__eyebrow,
+      .port-cs__eyebrow,
+      .port-statement__label,
+      .port-brief__label,
+      .port-additional__header,
+      .port-cs__sub,
+      .port-contact__eyebrow,
+      .port-contact__reel-label,
+      .port-aside-note strong,
+      .port-contact__item-label { color: #5a7a94 !important; }
+
+      .port-statement__text,
+      .port-brief__text,
+      .port-contact__item-value,
+      .port-contact__reel-note,
+      .port-aside-note,
+      .port-cover__contact-value,
+      .port-cover__subtitle,
+      .port-motion-note { color: #444 !important; opacity: 1 !important; }
+
+      .port-tile {
+        background: #f4f4f4 !important;
+        border-color: #ddd !important;
+      }
+
+      .port-brief {
+        background: #f0f4f7 !important;
+        border-color: #5a7a94 !important;
+      }
+
+      .port-aside-note {
+        border-color: #5a7a94 !important;
+      }
+
+      .port-rule,
+      .port-cover,
+      .port-statement,
+      .port-cs,
+      .port-additional,
+      .port-contact { border-color: #ddd !important; }
+
+      .port-cs__num { color: #eee !important; }
+
+      /* page breaks */
+      .port-cs          { page-break-before: always; }
+      .port-additional  { page-break-before: always; }
+      .port-contact     { page-break-before: always; }
+      .port-cover,
+      .port-statement   { page-break-inside: avoid; }
+      .port-grid-2,
+      .port-grid-4,
+      .port-sidebar,
+      .port-brief       { page-break-inside: avoid; }
+
+      img { max-width: 100% !important; }
+      a[href]::after { content: none !important; }
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .port-cover__name   { font-size: 2.8rem; }
+      .port-statement     { grid-template-columns: 1fr; gap: 0.75rem; }
+      .port-grid-2        { grid-template-columns: 1fr; }
+      .port-grid-4        { grid-template-columns: 1fr 1fr; }
+      .port-sidebar       { grid-template-columns: 1fr; }
+      .port-contact       { grid-template-columns: 1fr; }
+      .port-contact__right {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding-top: 2rem;
+      }
+      .port-cs__num { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── SITE HEADER — identical markup to rest of site ── -->
+  <header>
+    <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/art/">Art</a></li>
+        <li><a href="/cv/">CV</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/portfolio/" style="color: var(--color-primary);">Portfolio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="portfolio-wrap">
+
+      <!-- print button -->
+      <div class="port-toolbar">
+        <button class="print-btn" onclick="window.print()">Save as PDF ↓</button>
+      </div>
+
+      <!-- ══ COVER ══ -->
+      <div class="port-cover">
+        <div class="port-cover__eyebrow">Graphic Design Portfolio — 2026</div>
+        <h1 class="port-cover__name">BRENDEN<br>DAVIS</h1>
+        <div class="port-cover__meta">
+          <div class="port-cover__meta-rule"></div>
+          <span class="port-cover__subtitle">Visual Artist &amp; Graphic Designer</span>
+        </div>
+        <div class="port-cover__contacts">
+          <div>
+            <span class="port-cover__contact-label">Web</span>
+            <span class="port-cover__contact-value">brendendavis.com</span>
+          </div>
+          <div>
+            <span class="port-cover__contact-label">Email</span>
+            <span class="port-cover__contact-value">brendenedesign@gmail.com</span>
+          </div>
+          <div>
+            <span class="port-cover__contact-label">Phone</span>
+            <span class="port-cover__contact-value">601-769-7000</span>
+          </div>
+          <div>
+            <span class="port-cover__contact-label">LinkedIn</span>
+            <span class="port-cover__contact-value">linkedin.com/in/brenden-davis-2b9040a9</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DESIGNER'S STATEMENT ══ -->
+      <div class="port-statement">
+        <div class="port-statement__label">Designer's<br>Statement</div>
+        <p class="port-statement__text">
+          I am a multi-disciplinary visual artist and designer dedicated to crafting impactful, purpose-driven visuals. My practice is rooted in strategic storytelling, blending thoughtful concept development with striking aesthetics to engage and inspire across print, digital, and motion platforms. From distilling complex policy for civic organizations to building atmospheric identities for cultural institutions, I create cohesive visual experiences that resonate with intent and clarity.
+        </p>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           CASE STUDY 01 — BOOK JACKET DESIGN
+      ═══════════════════════════════════════ -->
+      <section class="port-cs">
+        <div class="port-cs__header">
+          <div class="port-cs__num">01</div>
+          <div>
+            <div class="port-cs__eyebrow">Case Study — Spec Work</div>
+            <h2 class="port-cs__title">Book Jacket Design</h2>
+          </div>
+        </div>
+
+        <div class="port-cs__sub">Catwings — Ursula K. Le Guin</div>
+        <div class="port-sidebar">
+          <div class="port-tile">
+            <img src="../images/BD_Catwings_Book-Mockups.png" class="is-landscape" alt="Catwings — speculative book jacket redesign, 3D mockup and flat spread" loading="lazy" />
+          </div>
+          <div class="port-sidebar__aside">
+            <div class="port-aside-note">
+              <strong>Design Intent</strong>
+              Warm, illustration-forward, and grounded in Le Guin's blend of whimsy and gravity. A watercolor background and burnt orange palette create atmosphere without sentiment. Full jacket: front, spine, and back.
+            </div>
+          </div>
+        </div>
+
+        <div class="port-cs__sub">Classic American Ghost Stories — Deborah L. Downer</div>
+        <div class="port-sidebar">
+          <div class="port-tile">
+            <img src="../images/BD_Classic_American_Ghost Stories_Book-Mockups.png" class="is-landscape" alt="Classic American Ghost Stories — speculative book jacket redesign, 3D mockup and flat spread" loading="lazy" />
+          </div>
+          <div class="port-sidebar__aside">
+            <div class="port-aside-note">
+              <strong>Design Intent</strong>
+              Archival and atmospheric — layering photography and road map texture to evoke place and unease across 200 years of American ghost lore. Full jacket: front, spine, and back.
+            </div>
+          </div>
+        </div>
+
+        <div class="port-brief">
+          <div class="port-brief__label">Objective</div>
+          <p class="port-brief__text">Two speculative redesigns exploring how typography, image, and color work together to signal a book's world before a single word is read. Both demonstrate an understanding of print production, typographic hierarchy, and the full jacket as a unified design object.</p>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════
+           CASE STUDY 02 — MISSISSIPPI VOTES
+      ═══════════════════════════════════════ -->
+      <section class="port-cs">
+        <div class="port-cs__header">
+          <div class="port-cs__num">02</div>
+          <div>
+            <div class="port-cs__eyebrow">Case Study — Civic Systems</div>
+            <h2 class="port-cs__title">Mississippi Votes</h2>
+          </div>
+        </div>
+
+        <div class="port-cs__sub">Legislative Update Series (2026)</div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/legupdate1.png" class="is-portrait" alt="MS Votes Legislative Update — slide 1" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/legupdate2.png" class="is-portrait" alt="MS Votes Legislative Update — slide 2" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/legupdate3.png" class="is-portrait" alt="MS Votes Legislative Update — slide 3" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/legupdate4.png" class="is-portrait" alt="MS Votes Legislative Update — slide 4" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/legupdate5.png" class="is-portrait" alt="MS Votes Legislative Update — slide 5" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/legupdate6.png" class="is-portrait" alt="MS Votes Legislative Update — slide 6" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/legupdate7.png" class="is-portrait" alt="MS Votes Legislative Update — slide 7" loading="lazy" /></div>
+        </div>
+
+        <div class="port-cs__sub">Second Chances Campaign (2026)</div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/secondchance1.png" class="is-portrait" alt="Second Chances campaign — slide 1" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/secondchance2.png" class="is-portrait" alt="Second Chances campaign — slide 2" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/secondchance3.png" class="is-portrait" alt="Second Chances campaign — slide 3" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/secondchance4.png" class="is-portrait" alt="Second Chances campaign — slide 4" loading="lazy" /></div>
+        </div>
+
+        <div class="port-cs__sub">Youth Civic Engagement Day — Apparel Design (2026)</div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/YCE_Day_shirt_mockup.png" class="is-landscape" alt="YCE Day 2026 t-shirt mockup — MS Votes screen-print apparel" loading="lazy" /></div>
+          <div></div>
+        </div>
+
+        <div class="port-brief">
+          <div class="port-brief__label">Objective</div>
+          <p class="port-brief__text">From weekly legislative carousels to voting rights advocacy campaigns to apparel design, this case study demonstrates a sustained visual language across every touchpoint of a civic engagement organization. Each piece translates complex or urgent information into accessible, brand-consistent content — designed for the communities most affected by the issues at stake.</p>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════
+           CASE STUDY 03 — MMA
+      ═══════════════════════════════════════ -->
+      <section class="port-cs">
+        <div class="port-cs__header">
+          <div class="port-cs__num">03</div>
+          <div>
+            <div class="port-cs__eyebrow">Case Study — Institutional Identity</div>
+            <h2 class="port-cs__title">Mississippi Museum of Art</h2>
+          </div>
+        </div>
+
+        <div class="port-cs__sub">Exhibition Campaign — Van Gogh, Monet, Degas and Their Times</div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/MMA_VGMD.png" class="is-portrait" alt="MMA — Van Gogh Monet Degas exhibition ad, variant A" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/MMA_VGMD_1024x768_3update-2.png" class="is-portrait" alt="MMA — Van Gogh Monet Degas exhibition ad, variant B" loading="lazy" /></div>
+        </div>
+
+        <div class="port-cs__sub">Gallery Signage</div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/general_registration.png" class="is-portrait" alt="MMA — registration sign" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/galleryopensignedit.png" class="is-portrait" alt="MMA — galleries open" loading="lazy" /></div>
+        </div>
+
+        <div class="port-cs__sub">Digital Platform — MMA App Promotion</div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/mmaapp.png" class="is-portrait" alt="MMA — app promotion graphic" loading="lazy" /></div>
+          <div></div>
+        </div>
+
+        <div class="port-brief">
+          <div class="port-brief__label">Objective</div>
+          <p class="port-brief__text">Maintain brand integrity across a major fine art exhibition campaign and community programming. Each piece serves a different audience while remaining visually coherent within the institution's established identity.</p>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════
+           CASE STUDY 04 — COFFEE PROSE
+      ═══════════════════════════════════════ -->
+      <section class="port-cs">
+        <div class="port-cs__header">
+          <div class="port-cs__num">04</div>
+          <div>
+            <div class="port-cs__eyebrow">Case Study — Typographic Identity</div>
+            <h2 class="port-cs__title">Coffee Prose</h2>
+          </div>
+        </div>
+
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/BYOB-2.png" class="is-portrait" alt="Coffee Prose — BYOB Game Night poster" loading="lazy" /></div>
+          <div class="port-tile"><img src="../images/bookclubposterFINAL-2.png" class="is-portrait" alt="Coffee Prose — Prose Picks Book Club poster" loading="lazy" /></div>
+        </div>
+        <div class="port-grid-2">
+          <div class="port-tile"><img src="../images/CPbookstack_shirt.png" class="is-portrait" alt="Coffee Prose — Book stack concept shirt" loading="lazy" /></div>
+        
+        </div>
+
+        <div class="port-brief">
+          <div class="port-brief__label">Objective</div>
+          <p class="port-brief__text">Build a recurring, typographically driven event identity for a neighborhood gathering space. Each piece is distinct in energy but unified by a playful, poster-forward visual language that gave the brand a consistent and recognizable presence.</p>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════
+           CASE STUDY 05 — ONE GIRL ONE VOTE
+      ═══════════════════════════════════════ 
+      <section class="port-cs">
+        <div class="port-cs__header">
+          <div class="port-cs__num">05</div>
+          <div>
+            <div class="port-cs__eyebrow">Case Study — Editorial Design</div>
+            <h2 class="port-cs__title">One Girl, One Vote</h2>
+          </div>
+        </div>
+
+        <div class="port-sidebar">
+          <div class="port-tile">
+            <img src="../images/ogiov_flyer.png" class="is-portrait" alt="One Girl One Vote Fellowship flyer — full layout" loading="lazy" />
+          </div>
+          <div class="port-sidebar__aside">
+            <div class="port-tile">
+              <img src="../images/ogiov_detail.png" class="is-portrait" alt="One Girl One Vote — detail: typographic hierarchy in long-form copy" loading="lazy" />
+            </div>
+            <p class="port-img-label">Detail: typographic hierarchy in long-form copy</p>
+          </div>
+        </div>
+
+        <div class="port-brief">
+          <div class="port-brief__label">Objective</div>
+          <p class="port-brief__text">Apply editorial design principles to civic advocacy materials — managing long-form text, clear hierarchy, and structured layout within a community-facing print format. Work that bridges the gap between graphic design and publication design.</p>
+        </div>
+      </section> -->
+
+      <!-- ══════════════════════════════════════
+           ADDITIONAL WORK
+      ═══════════════════════════════════════ -->
+      <section class="port-additional">
+        <div class="port-cs__header">
+          <div class="port-cs__num" style="font-size:2.5rem; padding-bottom: 0.25rem;">+</div>
+          <div>
+            <div class="port-cs__eyebrow">Selected Work</div>
+            <h2 class="port-cs__title">Additional Projects</h2>
+          </div>
+        </div>
+
+        <div class="port-additional__section">
+          <div class="port-additional__header">Broadcast Identity — WLBT</div>
+          <div class="port-grid-4">
+            <div class="port-tile"><img src="../images/healthminute.png" class="is-square" alt="WLBT — Health Minute" loading="lazy" /></div>
+            <div class="port-tile"><img src="../images/hollywoodminute.png" class="is-square" alt="WLBT — Hollywood Minute" loading="lazy" /></div>
+            <div class="port-tile"><img src="../images/makeendsmeet.png" class="is-square" alt="WLBT — Make Ends Meet" loading="lazy" /></div>
+            <div class="port-tile"><img src="../images/didyouknow.png" class="is-square" alt="WLBT — Did You Know" loading="lazy" /></div>
+          </div>
+        </div>
+
+        <div class="port-additional__section">
+          <div class="port-additional__header">Retail Marketing — Fondren Art Gallery</div>
+          <div class="port-grid-4">
+            <div class="port-tile"><img src="../images/birdisthewordad.png" class="is-square" alt="Fondren — Bird Is The Word" loading="lazy" /></div>
+            <div class="port-tile"><img src="../images/gotfish.png" class="is-square" alt="Fondren — Got Fish?" loading="lazy" /></div>
+            <div class="port-tile"><img src="../images/holidaysale.png" class="is-square" alt="Fondren — Holiday Sale" loading="lazy" /></div>
+      
+          </div>
+        </div>
+
+        <div class="port-additional__section">
+          <div class="port-additional__header">Event &amp; Brand</div>
+          <div class="port-grid-4">
+            <div class="port-tile"><img src="../images/EoAM+JXNology+Benefit+Show+poster.jpg" class="is-square" alt="JXNology Benefit Show poster" loading="lazy" /></div>
+            <div class="port-tile"><img src="../images/thickskull.png" class="is-square" alt="Thick Skull Crochet  logo" loading="lazy" /></div>
+          
+          </div>
+        </div>
+
+        <p class="port-motion-note">
+          For motion graphics and 2D animation, visit <strong>brendendavis.com/design</strong>
+        </p>
+      </section>
+
+      <!-- ══ CONTACT ══ -->
+      <div class="port-contact">
+        <div>
+          <div class="port-contact__eyebrow">Get In Touch</div>
+          <div class="port-contact__headline">LET'S WORK<br>TOGETHER.</div>
+          <div class="port-contact__items">
+            <div>
+              <span class="port-contact__item-label">Email</span>
+              <span class="port-contact__item-value">brendenedesign@gmail.com</span>
+            </div>
+            <div>
+              <span class="port-contact__item-label">Phone</span>
+              <span class="port-contact__item-value">601-769-7000</span>
+            </div>
+            <div>
+              <span class="port-contact__item-label">LinkedIn</span>
+              <span class="port-contact__item-value">linkedin.com/in/brenden-davis-2b9040a9</span>
+            </div>
+            <div>
+              <span class="port-contact__item-label">Website</span>
+              <span class="port-contact__item-value">brendendavis.com</span>
+            </div>
+          </div>
+        </div>
+        <div class="port-contact__right">
+          <div class="port-contact__reel-label">Motion Graphics &amp; Animation</div>
+          <div class="port-contact__reel-url">brendendavis.com</div>
+          <p class="port-contact__reel-note">To view motion graphics, animations, and the full interactive portfolio — including video work and carousel campaigns — visit the Design page on this site.</p>
+        </div>
+      </div>
+
+    </div><!-- /portfolio-wrap -->
+  </main>
+
+  <!-- ── SITE FOOTER — identical to rest of site ── -->
+  <footer>
+    <p>&copy; 2026 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+
+</body>
+</html>
