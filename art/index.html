@@ -11,15 +11,57 @@
   <!-- Optionally add a favicon here -->
   <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
   <style>
+    /* Editorial / tactile gallery styling */
+    .works {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .gallery-block {
+      margin-bottom: 5rem;
+    }
+
+    .gallery-block__header {
+      margin-bottom: 1.75rem;
+      max-width: 720px;
+    }
+
+    .gallery-block__header h3 {
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .gallery-block__header p {
+      opacity: 0.72;
+      line-height: 1.5;
+      font-size: 0.98rem;
+    }
+
+    .gallery-block__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .gallery-block__grid {
+        grid-template-columns: 1fr;
+      }
+    }
     /* Works page: Option A (filter chips + unified gallery) */
     .works-controls {
-      margin: 1.5rem 0 1.25rem;
+      margin: 2rem 0 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding-bottom: 1rem;
     }
 
     .filter-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
+      gap: 1.25rem;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -28,65 +70,94 @@
     .chip {
       appearance: none;
       -webkit-appearance: none;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
-      padding: 0.55rem 0.85rem;
-      border-radius: 999px;
-      letter-spacing: 0.03em;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      padding: 0;
+      border-radius: 0;
+      letter-spacing: 0.02em;
       font-size: 0.95rem;
       line-height: 1;
       cursor: pointer;
-      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+      font-family: inherit;
+      transition: color 180ms ease, opacity 180ms ease;
     }
 
     .chip:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.35);
+      color: rgba(255,255,255,0.88);
     }
 
     .chip.is-active {
-      background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.55);
+      color: #fff;
     }
 
-    /* Gallery tweaks so mixed work types feel intentional */
     .gallery.gallery--works {
-      gap: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .work-item {
       position: relative;
+      transition: transform 220ms ease, opacity 220ms ease;
+    }
+
+    .work-item:hover {
+      transform: translateY(-3px);
     }
 
     .work-item img {
       display: block;
       width: 100%;
       height: auto;
+      object-fit: cover;
+      filter: contrast(0.98) saturate(0.94);
+      transition: filter 220ms ease, transform 220ms ease;
     }
 
-    /* Artwork labels under thumbnails */
+    .work-item:hover img {
+      filter: contrast(1) saturate(1);
+      transform: scale(1.01);
+    }
+
     .work-label {
-      margin-top: 0.6rem;
+      margin-top: 0.8rem;
       text-align: left;
     }
 
     .work-label__title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       color: #fff;
       margin: 0 0 0.25rem;
+      line-height: 1.25;
     }
 
     .work-label__meta {
-      font-size: 0.9rem;
-      line-height: 1.35;
-      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.72);
       margin: 0;
     }
 
+    .lightbox-caption {
+      max-width: 700px;
+      background: rgba(0,0,0,0.42);
+      border: none;
+      backdrop-filter: blur(12px);
+    }
+
+    .lightbox-title {
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+
+    .lightbox-desc {
+      line-height: 1.6;
+      color: rgba(255,255,255,0.8);
+    }
   </style>
 </head>
 <body>
