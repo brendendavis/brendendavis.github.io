@@ -69,7 +69,7 @@ header {
 }
 
 .nav-list {
-  background-color: var(--color-background);  /* Using dark background for nav */
+  background-color: var(--color-background);
   list-style: none;
   display: flex;
   justify-content: center;
@@ -80,7 +80,7 @@ header {
 }
 
 .nav-list a {
-  color: var(--color-text);  /* ght text for nav nks */
+  color: var(--color-text);
   text-decoration: none;
   font-weight: bold;
   letter-spacing: 1px;
@@ -149,7 +149,7 @@ h1 a, p a {
   text-align: left;
   margin: 0;
   padding: 0;
-  max-width: 60ch; /* keeps line length readable */
+  max-width: 60ch;
 }
 
 .artist-bio-container .biography p {
@@ -167,7 +167,6 @@ h1 a, p a {
 .artist-bio-container .biography p:last-child {
   margin-bottom: 0;
 }
-
 
 .artist-bio-container .biography h2 {
   text-align: left;
@@ -389,7 +388,6 @@ section h2 {
   outline-offset: 2px;
 }
 
-/* Add a subtle chevron via CSS so you don't need extra markup */
 .bio-toggle::after {
   content: "›";
   font-size: 1.25em;
@@ -402,7 +400,8 @@ section h2 {
 .bio-toggle:hover::after {
   transform: translateY(-0.02em) translateX(1px);
 }
-/* Link Styling*/
+
+/* Link Styling */
 a {
   color:#F5F5F5;
 }
@@ -422,188 +421,254 @@ footer {
 }
 
 /* ============================================
-   Works Page (Option A: Filter Chips + Unified Gallery)
+   Works Page — Editorial / Tactile Gallery
    ============================================ */
+.works {
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
-/* Filter chips (works page) */
+/* Filter controls */
 .works-controls {
-  margin: 1.5rem 0 1.25rem;
+  margin: 2rem 0 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  justify-content: center;
+  gap: 1.25rem;
+  justify-content: flex-start;
 }
 
 .chip {
   appearance: none;
   -webkit-appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--color-text);
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  letter-spacing: 0.03em;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  padding: 0;
+  border-radius: 0;
+  letter-spacing: 0.02em;
   font-size: 0.95rem;
   line-height: 1;
   cursor: pointer;
-  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+  font-family: inherit;
+  transition: color 180ms ease, opacity 180ms ease;
 }
 
 .chip:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(255, 255, 255, 0.34);
+  color: rgba(255,255,255,0.88);
 }
 
 .chip.is-active {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
 }
 
-/* Unified gallery grid */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.25rem;
-  padding: 1rem 0;
+/* Overall gallery structure */
+.gallery.gallery--works {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-/* Structured gallery blocks (systems + deliverables + disciplines) */
-.gallery--works .gallery-block {
-  grid-column: 1 / -1; /* each block spans the full gallery width */
+/* Gallery sections */
+.gallery-block {
+  margin-bottom: 5rem;
 }
 
-/* Visual separation between blocks */
 .gallery--works .gallery-block + .gallery-block {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
-.gallery--works .gallery-block__header {
-  margin: 0 0 0.9rem;
+/* Section headers */
+.gallery-block__header {
+  margin-bottom: 1.75rem;
+  max-width: 720px;
 }
 
-.gallery--works .gallery-block__header h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1.35rem;
-  letter-spacing: 0.01em;
+.gallery-block__header h3 {
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
 }
 
-.gallery--works .gallery-block__header p {
-  margin: 0;
-  opacity: 0.82;
+.gallery-block__header p {
+  opacity: 0.72;
+  line-height: 1.5;
   font-size: 0.98rem;
-  line-height: 1.35;
 }
 
-.gallery--works .gallery-block__grid {
+/* Editorial-style grid */
+.gallery-block__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  align-items: start;
 }
 
-@media (max-width: 768px) {
-  .gallery--works .gallery-block__grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
+@media (max-width: 900px) {
+  .gallery-block__grid {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Slightly tighter on small screens */
-@media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-  }
-}
-
+/* Work items */
 .work-item,
 .print-item {
   position: relative;
   overflow: hidden;
-}
-
-/* Modern thumbnail treatment: consistent tile ratio + subtle border */
-/* Thumbnails (no cropping): show full image inside a clean tile */
-.gallery--works .work-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-.gallery--works .work-item img {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-  padding: 0.5rem;
   background: transparent;
-  transition: transform 0.35s ease;
+  border: none;
+  transition: transform 220ms ease, opacity 220ms ease;
 }
 
+.work-item:hover,
+.print-item:hover {
+  transform: translateY(-3px);
+}
 
-.works-grid .work-item img {
+/* Images */
+.work-item img,
+.print-item img {
   width: 100%;
   height: auto;
   display: block;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  transition: transform 0.35s ease;
-}
-
-/* Specific thumbnail tweak: center + contain the votetoday image inside a fixed tile */
-.works-grid .work-item img[src*="votetoday"],
-.gallery--works .work-item img[src*="votetoday"] {
-  aspect-ratio: 4 / 5;
-  width: 100%;
-  height: auto;            /* allow flex centering to work */
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center;
-  padding: 0.5rem;
+  object-fit: cover;
+  padding: 0;
+  border: none;
   background: transparent;
-  border: none; /* border should live on the tile, not the image */
+  filter: contrast(0.98) saturate(0.94);
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
 }
 
-/* Center the votetoday tile container within its grid cell */
-.works-grid .work-item:has(img[src*="votetoday"]),
-.gallery--works .work-item:has(img[src*="votetoday"]) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.work-item:hover img,
+.print-item:hover img {
+  filter: contrast(1) saturate(1);
+  transform: scale(1.01);
 }
 
-/* Slight inset so the centered tile never kisses the card border */
-.works-grid .work-item:has(img[src*="votetoday"]) img,
-.gallery--works .work-item:has(img[src*="votetoday"]) img {
-  max-width: calc(100% - 1.25rem);
-  max-height: calc(100% - 1.25rem);
+/* Metadata */
+.work-meta {
+  padding-top: 0.8rem;
 }
 
-/* Avoid double borders in works gallery: keep the border on .work-item only */
-.gallery--works .work-item img {
+.work-meta h3 {
+  font-size: 1rem;
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.work-subtitle {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.72);
+  margin: 0.25rem 0 0;
+}
+
+.work-desc {
+  margin-top: 0.45rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.76);
+}
+
+/* Video work */
+.work-item--video,
+.work-item--video.work-item--featured {
+  background: transparent;
   border: none;
 }
 
-.gallery--works .work-item:hover img,
-.works-grid .work-item:hover img {
-  transform: scale(1.02);
+/* Video thumbnail */
+.video-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  padding: 0;
+  display: block;
+  background: transparent;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
 }
 
-/* Video tiles */
-.work-item--video {
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.04);
+/* Video thumbnail image */
+.video-thumb__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform: scale(1);
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+  filter: contrast(0.98) saturate(0.94);
 }
 
+.work-item--video:hover .video-thumb__img {
+  transform: scale(1.01);
+  filter: contrast(1) saturate(1);
+}
+
+/* Subtle overlay */
+.video-thumb__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.work-item--video:hover .video-thumb__overlay,
+.work-item--video:focus-within .video-thumb__overlay {
+  opacity: 1;
+}
+
+/* Minimal play button */
+.video-thumb__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.98);
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 22px;
+  line-height: 1;
+  opacity: 0;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  backdrop-filter: blur(6px);
+}
+
+.work-item--video:hover .video-thumb__play,
+.work-item--video:focus-within .video-thumb__play {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Video embeds */
 .video-embed {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
+  background: transparent;
+  border: none;
 }
 
 .video-embed iframe {
@@ -614,192 +679,101 @@ footer {
   border: 0;
 }
 
-/* Featured video thumbnail tile (works grid) */
-.work-item--video.work-item--featured {
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.03);
+/* Lightbox refinements */
+.lightbox-caption {
+  max-width: 700px;
+  background: rgba(0,0,0,0.42);
+  border: none;
+  backdrop-filter: blur(12px);
 }
 
-/* Use an image thumbnail with cinematic overlay */
-.video-thumb {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  cursor: pointer;
-  user-select: none;
-  background: rgba(255, 255, 255, 0.02);
+.lightbox-title {
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
 }
 
-.video-thumb__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  transform: scale(1);
-  transition: transform 0.35s ease;
-}
-
-/* Soft dark gradient for readability + cinematic feel */
-/* Subtle overlay (no gradient) */
-.video-thumb__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.22);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-/* Subtle play icon overlay (appears on hover/focus) */
-.video-thumb__play {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0.98);
-  width: 72px;
-  height: 72px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.40);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  font-size: 30px;
-  line-height: 1;
-  opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
-}
-
-.work-item--video.work-item--featured:hover .video-thumb__img {
-  transform: scale(1.03);
-}
-
-.work-item--video.work-item--featured:hover .video-thumb__overlay {
-  opacity: 1;
-}
-
-.work-item--video.work-item--featured:focus-within .video-thumb__overlay {
-  opacity: 1;
-}
-
-.work-item--video.work-item--featured:hover .video-thumb__play {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.work-item--video.work-item--featured:focus-within .video-thumb__play {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.work-item--video.work-item--featured:focus-within {
-  outline: 2px solid rgba(255, 255, 255, 0.25);
-  outline-offset: 2px;
-}
-
-
-/* Lightbox video container */
-.lightbox-video {
-  display: none;
-  width: min(900px, 92vw);
-}
-
-.lightbox-video__frame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-}
-
-.lightbox-video__iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+.lightbox-desc {
+  line-height: 1.6;
+  color: rgba(255,255,255,0.8);
 }
 
 /* ============================================
    Contact Form Styling
    ============================================ */
-   form {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: var(--padding-large);
-    background-color: rgba(255, 255, 255, 0.1); /* Slight background for contrast */
-    border-radius: 8px;
-  }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-    color: var(--color-text);
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-family: var(--font-base);
-    color: var(--color-text);
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--color-primary);
-    border-radius: 4px;
-    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
-  }
-  
-  .form-group input:focus,
-  .form-group textarea:focus {
-    border-color: var(--color-secondary);
-    box-shadow: 0 0 8px rgba(187, 134, 252, 0.5); /* Light purple glow */
-    outline: none;
-  }
-  
-  .form-group textarea {
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 150px; /* Set a minimum height */
-  }
-  
-  button[type="submit"] {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--color-text);
-    background-color: var(--color-primary);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color var(--transition-speed);
-  }
-  
-  button[type="submit"]:hover {
-    background-color: var(--color-secondary);
-  }
+form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: var(--padding-large);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 8px rgba(187, 134, 252, 0.5);
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-text);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+button[type="submit"]:hover {
+  background-color: var(--color-secondary);
+}
 
 /* ============================================
    Lightbox Modal Styles
    ============================================ */
-
 .lightbox-modal {
-  display: none; /* Hidden by default; will be set to flex via JS when opened */
+  display: none;
   position: fixed;
   z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
-
-  /* Center the stack (image + caption) and keep it off the edges */
-  display: none;
+  background-color: rgba(0, 0, 0, 0.8);
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -863,7 +837,7 @@ footer {
 .lightbox-content {
   display: block;
   max-width: calc(100% - 0rem);
-  max-height: calc(100% - 10rem); /* leaves space for caption */
+  max-height: calc(100% - 10rem);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
 }
 
@@ -879,12 +853,9 @@ footer {
 /* Lightbox caption */
 .lightbox-caption {
   display: none;
-  max-width: 520px; /* narrower so it doesn't span the whole screen */
   width: calc(100% - 2rem);
-  margin: 1rem auto 0; /* centered under image */
+  margin: 1rem auto 0;
   padding: 0.75rem 0.9rem;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.18);
   text-align: center;
 }
 
@@ -894,22 +865,10 @@ footer {
   }
 }
 
-.lightbox-title {
-  font-size: 1.05rem;
-  line-height: 1.2;
-}
-
 .lightbox-subtitle {
   margin-top: 0.25rem;
   opacity: 0.85;
   font-size: 0.95rem;
-}
-
-.lightbox-desc {
-  margin-top: 0.45rem;
-  opacity: 0.82;
-  font-size: 0.95rem;
-  line-height: 1.35;
 }
 
 .lightbox-modal .close {
@@ -926,39 +885,37 @@ footer {
 /* ============================================
    Responsive Adjustments
    ============================================ */
-   @media (max-width: 768px) {
-    /* Stack artist image and biography vertically */
-    .artist-bio-container {
-      flex-direction: column;
-      align-items: center;
-    }
-    /* Artist image adjustments */
-    .artist-image {
-      width: 100%;
-      max-width: 400px;
-      display: block;
-      margin: 0 auto;
-    }
-
-    /* Biography text adjustments */
-    .artist-bio-container .biography p {
-      font-size: 1.1rem;
-      line-height: 1.65;
-      padding-top: 50%;
-    }
-
-    .biography h2 {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      text-align: left;
-      margin: 0 0.5rem;
-    }
-
-    /* Adjust hero text sizes */
-    .hero h1 {
-      font-size: 2.5rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-    }
+@media (max-width: 768px) {
+  .artist-bio-container {
+    flex-direction: column;
+    align-items: center;
   }
+
+  .artist-image {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .artist-bio-container .biography p {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    padding-top: 50%;
+  }
+
+  .biography h2 {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: left;
+    margin: 0 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+  }
+}
