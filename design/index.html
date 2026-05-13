@@ -9,6 +9,13 @@
   <link rel="stylesheet" href="../css/clash-display.css" />
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="icon" href="../images/favicon.ico" type="image/x-icon" /> 
+  <style>
+    .lightbox-video--portrait .lightbox-video__frame {
+      aspect-ratio: 9 / 16;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -60,7 +67,7 @@
               </div>
             </div>
 
-            <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="graphic-design" data-title="Voter Registration toolkit (2026)" data-subtitle="" data-desc="A PDF toolkit explaining the Mississippi voter registration process and providing resources in a clear, accessible format." data-video="https://drive.google.com/file/d/12NkAjmEgrziDW7E50c5CIQdAKUcFZ5Hy/preview">
+            <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="graphic-design" data-title="Voter Registration toolkit (2026)" data-subtitle="" data-desc="A PDF toolkit explaining the Mississippi voter registration process and providing resources in a clear, accessible format." data-video="https://drive.google.com/file/d/12NkAjmEgrziDW7E50c5CIQdAKUcFZ5Hy/preview" data-aspect="portrait">
               <div class="video-thumb" aria-label="View Voter Registration Toolkit">
                 <img class="video-thumb__img" src="../images/cover_VoterRegistrationToolkit.png" alt="Voter Registration toolkit thumbnail" />
                 <div class="video-thumb__overlay" aria-hidden="true"></div>
@@ -254,6 +261,7 @@
     const videoItems = document.querySelectorAll(".gallery--works .work-item[data-video]");
     const modalVideoWrap = document.querySelector(".lightbox-video");
     const modalVideoIframe = document.querySelector(".lightbox-video__iframe");
+    const modalVideoFrame = document.querySelector(".lightbox-video__frame");
 
     let carouselImages = [];
     let carouselIndex = 0;
@@ -314,6 +322,12 @@
         carouselImages = [];
         updateCarouselUI();
         if (modalVideoWrap) modalVideoWrap.style.display = "block";
+        if (modalVideoFrame) {
+          modalVideoFrame.classList.toggle(
+            "lightbox-video--portrait",
+            item.dataset.aspect === "portrait"
+          );
+        }
         if (modalVideoIframe) {
           modalVideoIframe.src = item.dataset.video;
           modalVideoIframe.title = item.dataset.title || "Expanded video";
@@ -356,6 +370,9 @@
       modalImg.src = "";
       if (modalVideoIframe) modalVideoIframe.src = "";
       if (modalVideoWrap) modalVideoWrap.style.display = "none";
+      if (modalVideoFrame) {
+        modalVideoFrame.classList.remove("lightbox-video--portrait");
+      }
       modalImg.style.display = "block";
       carouselImages = [];
       updateCarouselUI();
