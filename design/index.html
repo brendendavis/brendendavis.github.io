@@ -46,7 +46,6 @@
           </div>
           <div class="gallery-block__grid">
 
-            <!-- Featured Carousel Project: Legislative Update Series -->
             <div class="work-item work-item--carousel" data-category="graphic-design" data-title="Legislative Update Series (2026)" data-subtitle="" data-desc="Weekly social carousel translating legislative developments into clear, accessible public updates." data-carousel="../images/legupdate1.png,../images/legupdate2.png,../images/legupdate3.png,../images/legupdate4.png,../images/legupdate5.png,../images/legupdate6.png,../images/legupdate7.png">
               <img src="../images/legupdate1.png" alt="MS Votes Legislative Update Carousel Series cover slide" />
               <div class="work-meta">
@@ -54,7 +53,6 @@
               </div>
             </div>
 
-            <!-- Featured Carousel Project: Second Chances Carousel -->
             <div class="work-item work-item--carousel" data-category="graphic-design" data-title="Second Chances Campaign (2026)" data-subtitle="" data-desc="Informational event carousel promoting voting rights restoration advocacy and Capitol day logistics." data-carousel="../images/secondchance1.png,../images/secondchance2.png,../images/secondchance3.png,../images/secondchance4.png">
               <img src="../images/secondchance1.png" alt="Second Chances advocacy carousel cover slide" />
               <div class="work-meta">
@@ -62,7 +60,6 @@
               </div>
             </div>
 
-            <!-- Featured Motion Project: Voting Process Explainer -->
             <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="graphic-design" data-title="Voting Process Explainer Animation (2025)" data-subtitle="" data-desc="45-second educational motion graphic explaining the Mississippi voting process in a clear, accessible format." data-video="https://drive.google.com/file/d/11SWjAVafmIBl70mndNzovWIlN5-ZUH8F/preview">
               <div class="video-thumb" aria-label="Play Voting Process Explainer Animation">
                 <img class="video-thumb__img" src="../images/votetoday.png" alt="Voting Process Explainer Animation thumbnail" />
@@ -71,7 +68,6 @@
               </div>
             </div>
 
-            <!-- Broadcast Motion (external link) -->
             <div class="work-item" data-category="graphic-design" data-title="Studio 3 Segment Intro Animation (WLBT, 2024)" data-subtitle="" data-desc="Broadcast intro animation for WLBT Studio 3 segment; motion design and timing for on-air package." data-external="true">
               <a class="work-link" href="https://www.wlbt.com/video/2024/03/29/nandys-candy/" target="_blank" rel="noopener noreferrer" aria-label="Open WLBT Studio 3 segment page in a new tab">
                 <div class="video-thumb">
@@ -141,7 +137,7 @@
           </div>
         </div>
 
-        <!-- Animation (videos) -->
+        <!-- Motion Graphics -->
         <div class="gallery-block" data-block="animation">
           <div class="gallery-block__header">
             <h3>Motion Graphics</h3>
@@ -150,8 +146,8 @@
           <div class="gallery-block__grid">
 
             <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" id="videoworks" data-title="Motion Snippet 01" data-subtitle="" data-desc="Short motion piece (Google Drive embed opens in lightbox)." data-video="https://drive.google.com/file/d/1dva1RZRulbkAzKaZvfeWx63ohjlTrzaB/preview">
-              <div class="video-thumb" aria-label='How To Volunteer motiongfx'>
-               <img class="video-thumb__img" src="https://drive.google.com/file/d/120qIuFvUgYTR2HQRm0lRGD2yW6F2MCxe/view?usp=sharing" alt="Motion Snippet 01 thumbnail" loading="lazy" decoding="async" />
+              <div class="video-thumb" aria-label="How To Volunteer motiongfx">
+                <img class="video-thumb__img" src="https://drive.google.com/thumbnail?id=120qIuFvUgYTR2HQRm0lRGD2yW6F2MCxe&sz=w1200" alt="Motion Snippet 01 thumbnail" loading="lazy" decoding="async" />
                 <div class="video-thumb__overlay" aria-hidden="true"></div>
                 <div class="video-thumb__play" aria-hidden="true">▶</div>
               </div>
@@ -159,7 +155,7 @@
 
             <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" data-title="Motion Snippet 02" data-subtitle="" data-desc="Short motion piece (Google Drive embed opens in lightbox)." data-video="https://drive.google.com/file/d/1cXk_3UeYcTaYvSoMLW7kHSHT2nxSZBCN/preview">
               <div class="video-thumb" aria-label="SHIELD ACT motion gfx">
-                <img class="video-thumb__img" src="https://drive.google.com/file/d/1_3kxMnhjRsoACcqyeH654Rtd6_piaiVi/view?usp=sharing" alt="Motion Snippet 02 thumbnail" loading="lazy" decoding="async" />
+                <img class="video-thumb__img" src="https://drive.google.com/thumbnail?id=1_3kxMnhjRsoACcqyeH654Rtd6_piaiVi&sz=w1200" alt="Motion Snippet 02 thumbnail" loading="lazy" decoding="async" />
                 <div class="video-thumb__overlay" aria-hidden="true"></div>
                 <div class="video-thumb__play" aria-hidden="true">▶</div>
               </div>
@@ -196,7 +192,6 @@
 
   <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Filter chips
     const chips = Array.from(document.querySelectorAll(".chip"));
     const items = Array.from(document.querySelectorAll(".gallery--works .work-item"));
     const blocks = Array.from(document.querySelectorAll(".gallery--works .gallery-block"));
@@ -215,32 +210,26 @@
         const show = filter === "all" || category === filter;
         item.hidden = !show;
       });
-
       blocks.forEach((block) => {
         const blockItems = Array.from(block.querySelectorAll(".work-item"));
         const anyVisible = blockItems.some((it) => !it.hidden);
         block.hidden = !anyVisible;
       });
-
       setActiveChip(filter);
     }
 
     chips.forEach((chip) => {
-      chip.addEventListener("click", () => {
-        applyFilter(chip.dataset.filter);
-      });
+      chip.addEventListener("click", () => applyFilter(chip.dataset.filter));
     });
 
     applyFilter("all");
 
-    // Lightbox
     const modal = document.getElementById("lightbox-modal");
     const modalImg = document.querySelector(".lightbox-content");
     const closeBtn = document.querySelector(".lightbox-modal .close");
     const prevBtn = document.querySelector(".lightbox-prev");
     const nextBtn = document.querySelector(".lightbox-next");
     const counterEl = document.querySelector(".lightbox-counter");
-
     const captionEl = document.querySelector(".lightbox-caption");
     const captionTitle = document.querySelector(".lightbox-title");
     const captionSubtitle = document.querySelector(".lightbox-subtitle");
@@ -253,8 +242,7 @@
       captionTitle.textContent = t;
       captionSubtitle.textContent = st;
       captionDesc.textContent = d;
-      const hasAny = Boolean(t || st || d);
-      captionEl.style.display = hasAny ? "block" : "none";
+      captionEl.style.display = Boolean(t || st || d) ? "block" : "none";
     }
 
     const images = document.querySelectorAll(".gallery--works img");
