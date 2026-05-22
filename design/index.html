@@ -147,7 +147,7 @@
             <div class="work-item" data-category="graphic-design">
               <img src="../images/MSVotesBannermockups.png" alt="MS Votes — retractable banner mockups: DIA Convening, #UP2US, Freedom & Justice Honors" loading="lazy"  />
               <div class="work-meta">
-                <p class="work-subtitle">Retractable banner series designed for Mississippi Votes events and convenings — large-format print across three distinct use cases within a unified brand system."</p>
+                <p class="work-subtitle">Retractable banner series designed for Mississippi Votes events and convenings — large-format print across three distinct use cases within a unified brand system.</p>
               </div>
             </div>
 
@@ -162,7 +162,7 @@
           </div>
           <div class="gallery-block__grid">
 
-            <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" id="videoworks" data-title="Voter Education Series: Early Voting in the Southern US (pt 4)" data-subtitle="" data-desc="Part 4 of Mississippi Votes’ Early Voting video series." data-video="https://www.youtube.com/embed/NVB01yYiSHU">
+            <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" id="videoworks" data-title="Voter Education Series: Early Voting in the Southern US (pt 4)" data-subtitle="" data-desc="Part 4 of Mississippi Votes’ Early Voting video series. " data-video="https://www.youtube.com/embed/NVB01yYiSHU" data-aspect="portrait">
 
   <div class="video-thumb" aria-label="Voter Education Series: Early Voting in the Southern US (pt 4)">
 
@@ -194,6 +194,37 @@
 
 </div>
             <div class="work-item work-item--video work-item--featured" role="button" tabindex="0" data-category="animation" data-title="Executive Order Explainer (2026)" data-subtitle="" data-desc="Motion graphics explainer created for Mississippi Votes nonprofit breaking down how a recent executive order could affect the voting process." data-video="https://drive.google.com/file/d/1_3kxMnhjRsoACcqyeH654Rtd6_piaiVi/preview">
+            <div class="work-item work-item--video work-item--featured" 
+                 role="button" 
+                 tabindex="0" 
+                 data-category="animation" 
+                 data-title="Voter Education Series (ep. 2): Absentee Voting" 
+                 data-subtitle="" 
+                 data-desc="Episode 2 of Mississippi Votes’ Voter Education Series exploring the history and present-day impact of absentee voting laws in Mississippi. The video traces absentee voting from wartime origins through Jim Crow restrictions, Freedom Summer organizing efforts, modern absentee ballot regulations, the SHIELD Act, and felony disenfranchisement." 
+                 data-video="https://www.youtube.com/embed/T-wIEtnsJss">
+
+              <div class="video-thumb" aria-label="Voter Education Series Episode 2: Absentee Voting">
+
+                <img class="video-thumb__img" 
+                     src="https://img.youtube.com/vi/T-wIEtnsJss/hqdefault.jpg" 
+                     alt="Absentee Voting video thumbnail" 
+                     loading="lazy" 
+                     decoding="async" />
+
+                <div class="video-thumb__overlay" aria-hidden="true"></div>
+                <div class="video-thumb__play" aria-hidden="true">▶</div>
+
+              </div>
+
+              <div class="work-meta">
+
+                <p class="work-subtitle">
+                  Voter Education Series (ep. 2): Absentee Voting | Motion graphics explainer produced for Mississippi Votes examining the history and impact of absentee voting laws in Mississippi.
+                </p>
+
+              </div>
+
+            </div>
               <div class="video-thumb" aria-label="SHIELD ACT motion gfx">
                 <img class="video-thumb__img" src="https://drive.google.com/thumbnail?id=1_3kxMnhjRsoACcqyeH654Rtd6_piaiVi&sz=w1200" alt="Motion Snippet 02 thumbnail" loading="lazy" decoding="async" />
                 <div class="video-thumb__overlay" aria-hidden="true"></div>
@@ -203,38 +234,6 @@
                 <p class="work-subtitle">Executive Order Explainer (2026) | Motion graphics explainer created for Mississippi Votes nonprofit breaking down how a recent executive order could affect the voting process.</p>
               </div>
             </div>
-
-            <div class="work-item work-item--video work-item--featured" 
-     role="button" 
-     tabindex="0" 
-     data-category="animation" 
-     data-title="Voter Education Series (ep. 2): Absentee Voting" 
-     data-subtitle="" 
-     data-desc="Episode 2 of Mississippi Votes’ Voter Education Series exploring the history and present-day impact of absentee voting laws in Mississippi. The video traces absentee voting from wartime origins through Jim Crow restrictions, Freedom Summer organizing efforts, modern absentee ballot regulations, the SHIELD Act, and felony disenfranchisement." 
-     data-video="https://www.youtube.com/embed/T-wIEtnsJss">
-
-  <div class="video-thumb" aria-label="Voter Education Series Episode 2: Absentee Voting">
-
-    <img class="video-thumb__img" 
-         src="https://img.youtube.com/vi/T-wIEtnsJss/hqdefault.jpg" 
-         alt="Absentee Voting video thumbnail" 
-         loading="lazy" 
-         decoding="async" />
-
-    <div class="video-thumb__overlay" aria-hidden="true"></div>
-    <div class="video-thumb__play" aria-hidden="true">▶</div>
-
-  </div>
-
-  <div class="work-meta">
-
-    <p class="work-subtitle">
-      Voter Education Series (ep. 2): Absentee Voting | Motion graphics explainer produced for Mississippi Votes examining the history and impact of absentee voting laws in Mississippi.
-    </p>
-
-  </div>
-
-</div>
 
           </div>
         </div>
@@ -397,7 +396,7 @@
           );
         }
         if (modalVideoIframe) {
-          modalVideoIframe.src = item.dataset.video;
+          modalVideoIframe.src = item.dataset.video + "?autoplay=1&rel=0";
           modalVideoIframe.title = item.dataset.title || "Expanded video";
         }
         document.onkeydown = function (e) {
