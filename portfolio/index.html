@@ -626,21 +626,21 @@
           <div class="port-tile"><img src="../images/secondchance4.png" class="is-portrait" alt="Second Chances campaign — slide 4" loading="lazy" /></div>
         </div>
 
-        <div class="port-cs__sub">Youth Civic Engagement Day — Apparel Design (2026)</div>
         <div class="port-grid-2">
-          <div class="port-tile"><img src="../images/YCE_Day_shirt_mockup.png" class="is-landscape" alt="YCE Day 2026 t-shirt mockup — MS Votes screen-print apparel" loading="lazy" /></div>
-          <div></div>
-        </div>
+          <div>
+            <div class="port-cs__sub">Youth Civic Engagement Day — Apparel Design (2026)</div>
+            <div class="port-tile"><img src="../images/YCE_Day_shirt_mockup.png" class="is-landscape" alt="YCE Day 2026 t-shirt mockup — MS Votes screen-print apparel" loading="lazy" /></div>
+          </div>
 
-        <div class="port-cs__sub">Event Signage — Retractable Banners</div>
-        <div class="port-grid-2">
-          <div class="port-tile"><img src="../images/MSVotesBannermockups.png" class="is-landscape" alt="MS Votes — retractable banner mockups: DIA Convening, #UP2US, Freedom & Justice Honors" loading="lazy" /></div>
-          <div></div>
+          <div>
+            <div class="port-cs__sub">Event Signage — Retractable Banners</div>
+            <div class="port-tile"><img src="../images/MSVotesBannermockups.png" class="is-landscape" alt="MS Votes — retractable banner mockups: DIA Convening, #UP2US, Freedom & Justice Honors" loading="lazy" /></div>
+          </div>
         </div>
 
         <div class="port-brief">
           <div class="port-brief__label">Objective</div>
-          <p class="port-brief__text">From weekly legislative carousels to voting rights advocacy campaigns to large-format event signage and apparel design, this case study demonstrates a sustained visual language across every touchpoint of a civic engagement organization. Each piece translates complex or urgent information into accessible, brand-consistent content — designed for the communities most affected by the issues at stake.</p>
+          <p class="port-brief__text">From weekly legislative carousels to voting rights advocacy campaigns to large-format event signage and apparel design, this case study demonstrates a sustained visual language across every touchpoint of a civic engagement organization. Each piece translates complex or urgent information into accessible, brand-consistent content designed for the communities most affected by the issues at stake.</p>
         </div>
       </section>
 
@@ -838,4 +838,147 @@
   </footer>
 
 </body>
+  <div id="lightbox-modal" class="lightbox-modal">
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous slide">&#10094;</button>
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Next slide">&#10095;</button>
+    <div class="lightbox-counter" aria-live="polite"></div>
+    <span class="close" aria-label="Close">&times;</span>
+    <img class="lightbox-content" src="" alt="Expanded work" />
+    <div class="lightbox-video" aria-live="polite" aria-hidden="true">
+      <div class="lightbox-video__frame">
+        <iframe class="lightbox-video__iframe" src="" allow="autoplay; fullscreen" title="Expanded video"></iframe>
+      </div>
+    </div>
+    <div class="lightbox-caption" aria-live="polite">
+      <div class="lightbox-title"></div>
+      <div class="lightbox-subtitle"></div>
+      <div class="lightbox-desc"></div>
+    </div>
+  </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("lightbox-modal");
+    const modalImg = document.querySelector(".lightbox-content");
+    const closeBtn = document.querySelector(".lightbox-modal .close");
+    const prevBtn = document.querySelector(".lightbox-prev");
+    const nextBtn = document.querySelector(".lightbox-next");
+    const counterEl = document.querySelector(".lightbox-counter");
+    const captionEl = document.querySelector(".lightbox-caption");
+    const captionTitle = document.querySelector(".lightbox-title");
+    const captionSubtitle = document.querySelector(".lightbox-subtitle");
+    const captionDesc = document.querySelector(".lightbox-desc");
+
+    const modalVideoWrap = document.querySelector(".lightbox-video");
+    const modalVideoIframe = document.querySelector(".lightbox-video__iframe");
+    const modalVideoFrame = document.querySelector(".lightbox-video__frame");
+
+    let carouselImages = [];
+    let carouselIndex = 0;
+
+    function updateCarouselUI() {
+      const isCarousel = carouselImages.length > 1;
+      prevBtn.style.display = isCarousel ? "block" : "none";
+      nextBtn.style.display = isCarousel ? "block" : "none";
+      counterEl.style.display = isCarousel ? "block" : "none";
+      counterEl.textContent = isCarousel ? `${carouselIndex + 1} / ${carouselImages.length}` : "";
+    }
+
+    function showCarouselImage(index) {
+      if (!carouselImages.length) {
+        updateCarouselUI();
+        return;
+      }
+      carouselIndex = (index + carouselImages.length) % carouselImages.length;
+      modalImg.src = carouselImages[carouselIndex].trim();
+      updateCarouselUI();
+    }
+
+    function setCaption(title = "", subtitle = "", desc = "") {
+      captionTitle.textContent = title;
+      captionSubtitle.textContent = subtitle;
+      captionDesc.textContent = desc;
+      captionEl.style.display = Boolean(title || subtitle || desc) ? "block" : "none";
+    }
+
+    prevBtn.addEventListener("click", () => showCarouselImage(carouselIndex - 1));
+    nextBtn.addEventListener("click", () => showCarouselImage(carouselIndex + 1));
+
+    const grids = document.querySelectorAll(".port-grid-2, .port-grid-4, .port-sidebar");
+
+    grids.forEach((grid) => {
+      const tiles = Array.from(grid.querySelectorAll(".port-tile img"));
+
+      tiles.forEach((img, index) => {
+        img.style.cursor = "pointer";
+
+        img.addEventListener("click", function () {
+          carouselImages = tiles.map((tile) => tile.src);
+          carouselIndex = index;
+
+          modal.style.display = "flex";
+          modalImg.style.display = "block";
+
+          if (modalVideoWrap) modalVideoWrap.style.display = "none";
+          if (modalVideoIframe) modalVideoIframe.src = "";
+          if (modalVideoFrame) {
+            modalVideoFrame.classList.remove("lightbox-video--portrait");
+          }
+
+          setCaption();
+          showCarouselImage(carouselIndex);
+
+          document.onkeydown = function (e) {
+            if (e.key === "ArrowRight") showCarouselImage(carouselIndex + 1);
+            if (e.key === "ArrowLeft") showCarouselImage(carouselIndex - 1);
+            if (e.key === "Escape") closeLightbox();
+          };
+        });
+      });
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleSwipe() {
+      if (carouselImages.length <= 1) return;
+      const dx = touchEndX - touchStartX;
+      if (Math.abs(dx) < 40) return;
+      if (dx < 0) showCarouselImage(carouselIndex + 1);
+      if (dx > 0) showCarouselImage(carouselIndex - 1);
+    }
+
+    modal.addEventListener("touchstart", (e) => {
+      if (!e.touches || !e.touches.length) return;
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    modal.addEventListener("touchend", (e) => {
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }, { passive: true });
+
+    function closeLightbox() {
+      modal.style.display = "none";
+      modalImg.src = "";
+
+      if (modalVideoIframe) modalVideoIframe.src = "";
+      if (modalVideoWrap) modalVideoWrap.style.display = "none";
+      if (modalVideoFrame) {
+        modalVideoFrame.classList.remove("lightbox-video--portrait");
+      }
+
+      modalImg.style.display = "block";
+      carouselImages = [];
+      updateCarouselUI();
+      setCaption();
+      document.onkeydown = null;
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeLightbox();
+    });
+  });
+  </script>
 </html>
