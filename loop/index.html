@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="One By One, the Infinite Loop - An exhibition featuring Mississippi-based artists Brenden Davis and Justin Ransburg through various mediums." />
+  <title>BRENDEN DAVIS - One by One, the Infinite Loop</title>
+  <link rel="preload" href="/fonts/ClashDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/clash-display.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+  
+  <!-- Page-specific styles -->
+  <style>
+    .exhibition-hero-image {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      object-fit: cover;
+      padding-top: 2rem;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .exhibition-hero {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .video-container {
+      flex: 1;
+      max-width: 300px;
+    }
+    .video-container p {
+      max-width: 400px;
+    }
+    .image-container {
+      flex: 0 0 50%;       /* container takes half the row */
+      max-width: 50%;
+    }
+    .exhibition-side-image {
+      width: 100%;         /* fill its container */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .exhibition-video {
+  width: 100%;
+  height: auto;
+  max-height: 600px; /* Limit height for portrait video */
+  object-fit: contain;
+}
+
+    .featured-artists {
+      text-align: right;
+      margin-top: -50px; /* Reduces space between statement and artists list */
+      margin-top: 5%;
+    }
+
+    .featured-artists ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .featured-artists li {
+      margin: 50px 0;
+    }
+
+    .biography {
+      margin-top: -50px; /* Reduces space between images and statement */
+    }
+
+    .statement-text {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Make layout responsive */
+    @media (max-width: 768px) {
+      .content-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50%;
+      }
+
+      .video-container {
+        width: 100%;
+      }
+    }
+   
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1><a href="/home/">BRENDEN DAVIS</a></h1>
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="/home/">Home</a></li>
+          <li><a href="/design/">Design</a></li>
+          <li><a href="/art/">Art</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/cv/">CV</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="artist-bio-container">
+      <section class="exhibition-hero" aria-labelledby="hero-heading-memory">
+        <h2 id="hero-heading-memory" class="visually-hidden">Infinite Loop exhibition overview graphic</h2>
+        <img
+          src="/images/infloop_banner.jpg"
+          alt="Memory Corrupted exhibition header and artist bio"
+          class="exhibition-hero-image"
+          loading="lazy"
+        />
+      </section>
+    </div>
+    
+    <!-- Featured Artists Section -->
+    <section class="featured-artists" aria-labelledby="artists-heading">
+      <!-- Curatorial Statement Section -->
+      <section class="biography" aria-labelledby="statement-heading">
+        <h2 id="statement-heading" class="visually-hidden">Memory Corrupted</h2>
+        <h2></h2>
+        <div class="statement-text">
+          <p>1 by 1: The Infinite Loop brings together Jackson-based artists Brenden Davis and Justin Ransburg in a multimedia exploration of the human psyche, social interaction, and the expectations that shape how people understand themselves and one another.
+Combining the visual languages of film, comics, and fine art, the exhibition moves across painting, large-scale illustration, mixed-media sculpture, self-published zines, and animation.<br><br> Familiar figures, objects, and environments are transformed into surreal spaces where memory, anxiety, identity, and possibility overlap. Davis’s abstract dreamscapes and interior emotional worlds enter into conversation with Ransburg’s character-driven imagery and narrative approach, creating connections between personal experience and shared social realities.
+<br><br>Rooted in Afrofuturism, surrealism, abstraction, and social awareness, the exhibition treats the infinite loop as both a structure and a metaphor. Ideas, emotions, and interactions repeat, shift, and return in new forms. Rather than presenting a single linear story, 1 by 1 invites viewers to move through a cycle of interconnected works and consider how perception changes each time we encounter ourselves, one another, and the worlds we create.<br><br></p>
+        </div>
+      </section>
+   <!-- Artists and Video Container -->
+   <div class="content-container">
+    <div class="image-container">
+      <img 
+        src="/images/loopPreview.gif"
+        alt="Featured artwork"
+        class="exhibition-side-image"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="video-container">
+      <video 
+        src="/images/looppreview.mp4"
+        class="exhibition-video"
+        controls
+        autoplay muted
+        preload="metadata">
+        Your browser does not support the video element.
+      </video>
+    </div>
+  </div>
+  <!--
+<h2 class="guided-discussion-heading" style="margin-bottom: 0.5rem; margin-top: 10%;">Guided Discussion</h2>
+  <div style="display: flex; justify-content: center; align-items: center;">
+      <iframe 
+      style= "align-items: center;" 
+      src="https://drive.google.com/file/d/14zPWoWSZpl8qlZwOgQ0BLLvp1pB86ZRs/preview" 
+      width="960" 
+      height="540" 
+      allow="autoplay"
+      loading="lazy"
+      title="Guided discussion video player">
+    </iframe>
+    </div>
+  </section>
+  -->
+  </main>
+
+  <footer>
+    <p>&copy; 2026 BRENDEN DAVIS. All rights reserved. <a href="https://brendendavis.com" target="_blank">Web Design by Brenden Davis</a></p>
+  </footer>
+</body>
+</html>
