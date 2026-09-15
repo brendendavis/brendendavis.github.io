@@ -64,7 +64,6 @@
 
     .featured-artists {
       text-align: right;
-      margin-top: -50px; /* Reduces space between statement and artists list */
       margin-top: 5%;
     }
 
@@ -78,8 +77,17 @@
       margin: 50px 0;
     }
 
-    .biography {
-      margin-top: -50px; /* Reduces space between images and statement */
+    .exhibition-statement {
+      text-align: left;
+    }
+
+    .statement-text p {
+      margin: 0 0 1.5rem;
+      line-height: 1.6;
+    }
+
+    .exhibition-details {
+      margin-top: 2.5rem;
     }
 
     .statement-text {
@@ -92,11 +100,14 @@
       .content-container {
         flex-direction: column;
         align-items: center;
-        margin-top: 50%;
+        gap: 24px;
       }
 
+      .image-container,
       .video-container {
         width: 100%;
+        max-width: 100%;
+        flex: none;
       }
     }
    
@@ -120,27 +131,65 @@
 
   <main>
     <div class="artist-bio-container">
-      <section class="exhibition-hero" aria-labelledby="hero-heading-memory">
-        <h2 id="hero-heading-memory" class="visually-hidden">Infinite Loop exhibition overview graphic</h2>
+      <section class="exhibition-hero" aria-labelledby="hero-heading-loop">
+        <h2 id="hero-heading-loop" class="visually-hidden">1 by 1: The Infinite Loop exhibition</h2>
         <img
           src="/images/infloop_banner.jpg"
-          alt="Memory Corrupted exhibition header and artist bio"
+          alt="Banner for 1 by 1: The Infinite Loop, an exhibition by Brenden Davis and Justin Ransburg"
           class="exhibition-hero-image"
-          loading="lazy"
+          fetchpriority="high"
         />
       </section>
     </div>
     
     <!-- Featured Artists Section -->
-    <section class="featured-artists" aria-labelledby="artists-heading">
+    <div class="featured-artists">
       <!-- Curatorial Statement Section -->
-      <section class="biography" aria-labelledby="statement-heading">
-        <h2 id="statement-heading" class="visually-hidden">Memory Corrupted</h2>
-        <h2></h2>
+      <section class="exhibition-statement" aria-labelledby="statement-heading">
+        <h2 id="statement-heading">About the Exhibition</h2>
+
         <div class="statement-text">
-          <p>1 by 1: The Infinite Loop brings together Jackson-based artists Brenden Davis and Justin Ransburg in a multimedia exploration of the human psyche, social interaction, and the expectations that shape how people understand themselves and one another.
-Combining the visual languages of film, comics, and fine art, the exhibition moves across painting, large-scale illustration, mixed-media sculpture, self-published zines, and animation.<br><br> Familiar figures, objects, and environments are transformed into surreal spaces where memory, anxiety, identity, and possibility overlap. Davis’s abstract dreamscapes and interior emotional worlds enter into conversation with Ransburg’s character-driven imagery and narrative approach, creating connections between personal experience and shared social realities.
-<br><br>Rooted in Afrofuturism, surrealism, abstraction, and social awareness, the exhibition treats the infinite loop as both a structure and a metaphor. Ideas, emotions, and interactions repeat, shift, and return in new forms. Rather than presenting a single linear story, 1 by 1 invites viewers to move through a cycle of interconnected works and consider how perception changes each time we encounter ourselves, one another, and the worlds we create.<br><br></p>
+          <p>
+            <em>1 by 1: The Infinite Loop</em> brings together Jackson-based
+            artists Brenden Davis and Justin Ransburg in a multimedia exploration
+            of the human psyche, social interaction, and the expectations that
+            shape how people understand themselves and one another.
+          </p>
+
+          <p>
+            Combining the visual languages of film, comics, and fine art, the
+            exhibition moves across painting, large-scale illustration,
+            mixed-media sculpture, self-published zines, and animation. Familiar
+            figures, objects, and environments are transformed into surreal spaces
+            where memory, anxiety, identity, and possibility overlap. Davis’s
+            abstract dreamscapes and interior emotional worlds enter into
+            conversation with Ransburg’s character-driven imagery and narrative
+            approach, creating connections between personal experience and shared
+            social realities.
+          </p>
+
+          <p>
+            Rooted in Afrofuturism, surrealism, abstraction, and social awareness,
+            the exhibition treats the infinite loop as both a structure and a
+            metaphor. Ideas, emotions, and interactions repeat, shift, and return
+            in new forms. Rather than presenting a single linear story,
+            <em>1 by 1</em> invites viewers to move through a cycle of
+            interconnected works and consider how perception changes each time
+            we encounter ourselves, one another, and the worlds we create.
+          </p>
+
+          <div class="exhibition-details">
+            <p>
+              <strong>On view:</strong> September 12–November 29, 2026<br>
+              <strong>Location:</strong> Arts Center of Mississippi,
+              201 E. Pascagoula Street, Jackson, Mississippi
+            </p>
+
+            <p>
+              Select works are available for purchase.
+              <a href="/contact/">Contact Brenden for pricing and availability.</a>
+            </p>
+          </div>
         </div>
       </section>
    <!-- Artists and Video Container -->
@@ -148,7 +197,7 @@ Combining the visual languages of film, comics, and fine art, the exhibition mov
     <div class="image-container">
       <img 
         src="/images/loopPreview.gif"
-        alt="Featured artwork"
+        alt="Animated preview of 1 by 1: The Infinite Loop"
         class="exhibition-side-image"
         loading="lazy"
       />
@@ -159,8 +208,12 @@ Combining the visual languages of film, comics, and fine art, the exhibition mov
         src="/images/looppreview.mp4"
         class="exhibition-video"
         controls
-        autoplay muted
-        preload="metadata">
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-label="First-person walkthrough of 1 by 1: The Infinite Loop">
         Your browser does not support the video element.
       </video>
     </div>
@@ -179,7 +232,9 @@ Combining the visual languages of film, comics, and fine art, the exhibition mov
     </iframe>
     </div>
   </section>
+  
   -->
+    </div>
   </main>
 
   <footer>
