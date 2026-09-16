@@ -543,7 +543,7 @@ footer {
   border: none;
   background: transparent;
   filter: contrast(0.98) saturate(0.94);
-  transition:
+  transition: 
     transform 220ms ease,
     filter 220ms ease;
 }
