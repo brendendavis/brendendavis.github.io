@@ -543,7 +543,7 @@ footer {
   border: none;
   background: transparent;
   filter: contrast(0.98) saturate(0.94);
-  transition: 
+  transition:
     transform 220ms ease,
     filter 220ms ease;
 }
@@ -917,5 +917,91 @@ button[type="submit"]:hover {
 
   .hero p {
     font-size: 1.2rem;
+  }
+}
+
+/* Current exhibition feature on both homepage routes. */
+.on-view {
+  max-width: 1000px;
+  margin: 5rem auto;
+  padding: 0 1rem;
+  text-align: left;
+}
+
+.on-view-label {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.375rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.125rem;
+  text-transform: uppercase;
+}
+
+.on-view-label span {
+  flex: 0 0 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b6a0ff;
+}
+
+.on-view-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.on-view-details {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1.625rem;
+}
+
+.on-view h2 {
+  margin: 0 0 0.75rem;
+  text-align: left;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.15;
+  font-weight: 500;
+}
+
+.on-view-artists {
+  margin-bottom: 1rem;
+}
+
+.on-view-location {
+  color: #c3c3c3;
+}
+
+.on-view-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.125rem;
+  flex-shrink: 0;
+  padding: 0.875rem 1.125rem;
+  border: 1px solid #777;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.on-view-link:hover,
+.on-view-link:focus-visible {
+  background: var(--color-text);
+  color: var(--color-background);
+}
+
+@media (max-width: 768px) {
+  .on-view {
+    margin: 3rem auto;
+    padding: 0;
+  }
+
+  .on-view-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
   }
 }
